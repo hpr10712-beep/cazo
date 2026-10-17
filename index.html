@@ -14,7 +14,6 @@
   --shadow-sm:0 1px 3px rgba(0,0,0,0.05);--shadow-md:0 4px 12px rgba(0,0,0,0.08);
   --font:'Inter',system-ui,sans-serif;
   
-  /* Variabel Header Baru */
   --page-bg:#f8fafc;--c1:#4c1d95;--c2:#7c3aed;--c3:#db2777;--c4:#2563eb;--speed:1;--ink:#1e1b4b;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -23,11 +22,7 @@ body.loaded{opacity:1;}
 a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{font-family:inherit;cursor:pointer;border:none;background:none}
 [hidden]{display:none!important}
 
-/* === LOADING SCREEN === */
-#page-loader{position:fixed;inset:0;background:#fff;z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease, visibility 0.5s;}
-#page-loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
-
-/* === HEADER ANIMASI BARU === */
+/* === HEADER ANIMASI === */
 .cz-header{position:relative;color:#fff;padding:0;isolation:isolate;background:linear-gradient(120deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c1));background-size:300% 300%;animation:flow calc(14s/var(--speed)) ease-in-out infinite;overflow:hidden;border-radius:0 0 30px 30px;margin-bottom:20px;}
 .cz-bg{position:absolute;inset:0;overflow:hidden;z-index:-1}
 @keyframes flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
@@ -62,9 +57,8 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .shim{background:linear-gradient(90deg,#fde047,#f9a8d4,#a5f3fc,#fde047);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 4s linear infinite;text-shadow:none;filter:drop-shadow(0 2px 0 rgba(30,27,75,.45))}
 @keyframes sh{to{background-position:-200% 0}}
 
-/* TOMBOL MASUK & PROFIL */
-.acct{position:relative;z-index:50;}
-.login{position:relative;border:0;padding:2.5px;border-radius:999px;cursor:pointer;overflow:hidden;background:none;transition:transform .2s;}
+/* TOMBOL MASUK */
+.login{position:relative;border:0;padding:2.5px;border-radius:999px;cursor:pointer;overflow:hidden;background:none;transition:transform .2s;z-index:20;}
 .login:active{transform:scale(.95)}
 .login::before{content:"";position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;translate:-50% -50%;background:conic-gradient(#fde047,#f472b6,#22d3ee,#4ade80,#fde047);animation:rot 3s linear infinite}
 .login span{position:relative;display:flex;align-items:center;gap:9px;background:#fff;color:#1f2937;font-weight:800;font-size:15px;padding:8px 18px 8px 12px;border-radius:999px;box-shadow:0 3px 0 rgba(30,27,75,.25)}
@@ -72,28 +66,33 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .login .g svg{width:22px;height:22px}
 .login:hover span{background:#f1f5f9}
 
-.user{display:block;padding:0;border:0;background:none;border-radius:50%;cursor:pointer;transition:transform .2s;filter:drop-shadow(0 4px 6px rgba(30,27,75,.4))}
-.user:active{transform:scale(.92)}
-.user .av{width:46px;height:46px;transition:transform .25s}
-.user[aria-expanded=true] .av{transform:scale(1.07)}
-.av{position:relative;flex:none;width:38px;height:38px;border-radius:50%}
+/* === CARD PROFIL RAPI (FOTO + NAMA) === */
+.acct{position:relative;z-index:50;}
+.profile-card{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.95);
+  border-radius:999px;
+  padding:4px 14px 4px 4px;
+  cursor:pointer;
+  box-shadow:0 3px 0 rgba(30,27,75,.25);
+  transition:transform .2s, background .2s;
+  max-width:180px;
+  border:0;
+}
+.profile-card:active{transform:scale(.95)}
+.profile-card:hover{background:#f1f5f9}
+.profile-card .av{width:32px;height:32px;}
+.pname{
+  font-weight:800;font-size:13px;color:#1e1b4b;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:100px;
+}
+
+/* AVATAR */
+.av{position:relative;flex:none;border-radius:50%;display:inline-block;}
 .av::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#fde047,#f472b6,#22d3ee,#fde047);animation:rot 3s linear infinite}
 .av img,.av .ini{position:absolute;inset:2.5px;width:calc(100% - 5px);height:calc(100% - 5px);border-radius:50%;object-fit:cover;background:#fff}
-.av .ini{display:grid;place-items:center;font-weight:900;color:#fff;font-size:17px;background:linear-gradient(135deg,#7c3aed,#db2777)}
-.av.on::after{content:"";position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid #fff}
-
-/* DROPDOWN PROFIL */
-.menu{position:absolute;right:0;top:calc(100% + 10px);width:250px;background:#fff;color:var(--ink);border-radius:20px;padding:16px;z-index:999;
-  box-shadow:0 14px 40px rgba(30,27,75,.35),0 0 0 3px var(--ink);transform-origin:top right;animation:pop .3s cubic-bezier(.34,1.8,.64,1)}
-@keyframes pop{from{transform:scale(.7);opacity:0}}
-.menu[hidden]{display:none}
-.mh{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.mh .av{width:54px;height:54px}.mh .av .ini{font-size:24px}
-.mh b{display:block;font-size:16px;color:#1e1b4b}.mh small{display:block;color:#64748b;font-size:12.5px;word-break:break-all}
-.out{width:100%;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;font-weight:800;font-size:15px;padding:12px;border-radius:14px;
-  background:linear-gradient(135deg,#fb7185,#e11d48);box-shadow:0 4px 0 #9f1239;transition:transform .15s,box-shadow .15s}
-.out:active{transform:translateY(3px);box-shadow:0 1px 0 #9f1239}
-.out svg{width:18px;height:18px}
+.av .ini{display:grid;place-items:center;font-weight:900;color:#fff;font-size:14px;background:linear-gradient(135deg,#7c3aed,#db2777)}
 
 .hero{text-align:center;padding:22px 20px 0}
 .hero h1{font-size:clamp(36px,10vw,56px);font-weight:900;letter-spacing:-1.5px;line-height:1;text-shadow:0 4px 0 rgba(30,27,75,.35)}
@@ -160,16 +159,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 </head>
 <body>
 
-<!-- PAGE LOADER -->
-<div id="page-loader">
-  <div id="custom-loader-content" style="display:flex; flex-direction:column; align-items:center;">
-    <!-- Default Logo Animasi -->
-    <div style="width:80px;height:80px;animation:pulse 1.5s infinite;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%"><rect x="4" y="4" width="120" height="120" rx="30" fill="#0b1220"/><circle cx="64" cy="70" r="50" fill="#4f46e5" opacity=".28"/><g transform="rotate(-5 64 66)"><path d="M48 52V42Q48 26 64 26Q80 26 80 42V52" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/><path d="M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z" fill="#34d399" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/><path d="M35 48H93L93.7 57H34.3Z" fill="#10b981"/><circle cx="50" cy="52.5" r="3" fill="#0b1220"/><circle cx="78" cy="52.5" r="3" fill="#0b1220"/><g fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M53 69L43 80L53 91"/><path d="M75 69L85 80L75 91"/><path d="M68 67L60 93"/></g></g><path transform="translate(99 33) scale(.8)" fill="#ffe14d" d="M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z"/></svg></div>
-    <div style="width:160px;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:24px;"><div style="width:50%;height:100%;background:var(--primary);border-radius:4px;animation:loadBar 1s infinite ease-in-out alternate;"></div></div>
-  </div>
-</div>
-<style>@keyframes pulse{0%{transform:scale(0.95);opacity:0.8}50%{transform:scale(1.05);opacity:1}100%{transform:scale(0.95);opacity:0.8}} @keyframes loadBar{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}</style>
-
 <!-- SVG DEFINITIONS -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -218,33 +207,19 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
     <div class="name" id="brandName">Cazo <span class="shim">Market</span></div>
 
     <div class="acct">
-      <!-- TOMBOL MASUK -->
-      <button class="login" id="loginBtn" onclick="handleAuth()">
+      <!-- TOMBOL MASUK (Belum Login) -->
+      <button class="login" id="loginBtn" onclick="handleLogin()">
         <span>
           <i class="g"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></i>
           Masuk
         </span>
       </button>
 
-      <!-- CARD PROFIL (Muncul Setelah Login) -->
-      <button class="user" id="userChip" aria-haspopup="true" aria-expanded="false" hidden onclick="toggleMenu(event)">
-        <span class="av on" id="av"></span>
+      <!-- CARD PROFIL (Setelah Login): Foto + Nama -->
+      <button class="profile-card" id="userChip" hidden onclick="handleLogout()">
+        <span class="av" id="av"></span>
+        <span class="pname" id="pname"></span>
       </button>
-      
-      <!-- DROPDOWN PROFIL -->
-      <div class="menu" id="menu" hidden>
-        <div class="mh">
-          <span class="av on" id="mav"></span>
-          <div>
-            <b id="mname"></b>
-            <small id="memail"></small>
-          </div>
-        </div>
-        <button class="out" onclick="handleAuth()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>
-          Keluar
-        </button>
-      </div>
     </div>
   </div>
 
@@ -330,12 +305,10 @@ const firebaseConfig = { apiKey: "AIzaSyCHr0eemIkfHNFDUkSaFDklp_c1OgmSnl8", auth
 const app = initializeApp(firebaseConfig); const db = getDatabase(app); const auth = getAuth(app); const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 
-const DEFAULT_LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%"><rect x="4" y="4" width="120" height="120" rx="30" fill="#0b1220"/><circle cx="64" cy="70" r="50" fill="#4f46e5" opacity=".28"/><g transform="rotate(-5 64 66)"><path d="M48 52V42Q48 26 64 26Q80 26 80 42V52" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/><path d="M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z" fill="#34d399" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/><path d="M35 48H93L93.7 57H34.3Z" fill="#10b981"/><circle cx="50" cy="52.5" r="3" fill="#0b1220"/><circle cx="78" cy="52.5" r="3" fill="#0b1220"/><g fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M53 69L43 80L53 91"/><path d="M75 69L85 80L75 91"/><path d="M68 67L60 93"/></g></g><path transform="translate(99 33) scale(.8)" fill="#ffe14d" d="M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z"/></svg>`;
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rupiah = n => "Rp" + Number(n||0).toLocaleString("id-ID");
 
-let state = { user: null, settings: {}, products: {}, showAllMenus: false, dataLoaded: 0 };
-const startTime = Date.now();
+let state = { user: null, settings: {}, products: {}, showAllMenus: false };
 
 function createIframe(code, round, interactive=false) { 
   const i = document.createElement("iframe"); 
@@ -344,82 +317,48 @@ function createIframe(code, round, interactive=false) {
   return i; 
 }
 
-// --- AUTHENTIKASI ---
-window.handleAuth = async () => { 
-  if (state.user) { 
-    if(confirm("Keluar dari akun?")) await signOut(auth); 
-  } else { 
-    try { 
-      await signInWithPopup(auth, provider); 
-    } catch(e){ 
-      alert("Gagal login: " + e.message); 
-    } 
+// --- LOGIN & LOGOUT ---
+window.handleLogin = async () => { 
+  try { 
+    await signInWithPopup(auth, provider); 
+  } catch(e){ 
+    alert("Gagal login: " + e.message); 
   } 
 };
 
-window.toggleMenu = (e) => { 
-  e.stopPropagation(); 
-  const m = document.getElementById('menu'); 
-  const c = document.getElementById('userChip'); 
-  const o = m.hidden; 
-  m.hidden = !o; 
-  c.setAttribute('aria-expanded', String(o)); 
+window.handleLogout = async () => { 
+  if(confirm("Keluar dari akun " + (state.user?.displayName || "") + "?")) {
+    try { await signOut(auth); } catch(e){ alert(e.message); }
+  }
 };
 
-document.addEventListener('click', () => { 
-  const m = document.getElementById('menu'); 
-  if(m) m.hidden = true; 
-});
-
+// --- STATE AUTH ---
 onAuthStateChanged(auth, user => { 
   state.user = user; 
   const loginBtn = document.getElementById('loginBtn');
   const userChip = document.getElementById('userChip');
   
   if(user) {
-    loginBtn.style.display = "none"; 
-    userChip.style.display = "block"; 
+    loginBtn.hidden = true; 
     userChip.hidden = false;
     
-    document.getElementById('mname').textContent = user.displayName || "Pengguna";
-    document.getElementById('memail').textContent = user.email || "";
+    const fullName = user.displayName || "Pengguna";
+    document.getElementById('pname').textContent = fullName.split(' ')[0];
     
-    const ini = (user.displayName || "?").charAt(0).toUpperCase();
-    const imgHTML = user.photoURL ? `<img src="${user.photoURL}" referrerpolicy="no-referrer" alt="Profile">` : `<span class="ini">${ini}</span>`;
-    
+    const ini = fullName.charAt(0).toUpperCase();
+    const imgHTML = user.photoURL 
+      ? `<img src="${user.photoURL}" referrerpolicy="no-referrer" alt="">` 
+      : `<span class="ini">${ini}</span>`;
     document.getElementById('av').innerHTML = imgHTML;
-    document.getElementById('mav').innerHTML = imgHTML;
   } else {
-    loginBtn.style.display = "flex"; 
-    userChip.style.display = "none"; 
+    loginBtn.hidden = false; 
     userChip.hidden = true;
-    document.getElementById('menu').hidden = true;
   }
 });
 
-// --- FUNGSI CEK LOADING SELESAI ---
-function checkLoadComplete() {
-  state.dataLoaded++;
-  if(state.dataLoaded >= 2) {
-    const elapsed = Date.now() - startTime;
-    const minDelay = 2500; // Minimal 2.5 detik agar animasi loading selesai
-    const remaining = Math.max(0, minDelay - elapsed);
-    
-    setTimeout(() => {
-      document.getElementById('page-loader').classList.add('hidden');
-      document.body.classList.add('loaded');
-    }, remaining);
-  }
-}
-
-// --- LOAD DATA DARI FIREBASE ---
+// --- LOAD DATA ---
 onValue(ref(db, "settings/marketplace"), s => { 
   state.settings = s.val() || {}; 
-  
-  if(state.settings.loadingCustomHTML) {
-    document.getElementById('custom-loader-content').innerHTML = state.settings.loadingCustomHTML;
-  }
-  
   const name = state.settings.name || "Cazo Market";
   const words = name.split(' ');
   const firstWord = words[0];
@@ -430,16 +369,14 @@ onValue(ref(db, "settings/marketplace"), s => {
   document.getElementById('heroDesc').textContent = state.settings.description || "Marketplace Produk Digital Eksklusif.";
   
   renderQuickMenu();
-  checkLoadComplete();
 });
 
 onValue(ref(db, "products"), s => { 
   state.products = s.val() || {}; 
   renderProducts(); 
-  checkLoadComplete();
 });
 
-// --- RENDER MENU CEPAT ---
+// --- MENU CEPAT ---
 function renderQuickMenu() {
   const container = document.getElementById('quickMenu');
   const defaultMenus = [
@@ -476,7 +413,7 @@ function renderQuickMenu() {
   });
 }
 
-// --- RENDER PRODUK ---
+// --- PRODUK ---
 function renderProducts() {
   if(!state.products) return;
   const latest = Object.entries(state.products).map(([id, p]) => ({id, ...p})).filter(p => p.status !== 'sold').sort((a,b) => (b.createdAt||0) - (a.createdAt||0)).slice(0, 8);
@@ -493,7 +430,7 @@ function renderProducts() {
   `).join("") : `<div class="empty-state">Belum ada produk.</div>`;
 }
 
-// --- EFEK MENGETIK MASKOT ---
+// --- MASKOT MENGETIK ---
 (function () {
   var MESSAGES = ["Buruan beli, nanti habis nyesel loh!", "Cari produk digital? Cek menu Katalog ya.", "Punya produk? Yuk jualan di Cazo Market!"];
   var typed = document.getElementById("typed"), say = document.getElementById("say"), bubble = document.querySelector(".bubble"), caret = document.querySelector(".caret");
@@ -526,6 +463,8 @@ function renderProducts() {
     }
   })();
 })();
+
+document.body.classList.add('loaded');
 </script>
 </body>
 </html>
