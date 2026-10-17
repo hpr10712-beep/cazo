@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Riwayat — KodinganKita</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="splash-screen"></div>
+
+<header class="site">
+  <a href="index.html" class="brand">
+    <div id="headerLogo"></div>
+    <span>KodinganKita</span>
+  </a>
+  <button id="authBtn" class="btn-login" onclick="handleAuth()">Masuk</button>
+</header>
+
+<main class="container" id="app">
+  <div class="loading"></div>
+</main>
+
+<div class="bottom-nav-container"><div class="bottom-nav" id="bottomNav"></div></div>
+<div id="toast-container"></div>
+
+<script type="module">
+import { db, ref, get, state, esc, rupiah, DEFAULT_LOGO, renderNav, toast } from './app.js';
+
+window.onDataReady = async () => {
+  renderNav();
+  document.getElementById('headerLogo').innerHTML = DEFAULT_LOGO;
+  
+  if(!state.user) {
+    document.getElementById('app').innerHTML = `<div class="empty-state">Silakan login untuk melihat riwayat.</div>`;
+    return;
+  }
+  
+  const snap = await get(ref(db, 'orders'));
+  const all = snap.val() || {};
+  const myOrders = Object.entries(all).map(([id, o]) => ({id, ...o}))
+    .filter(o => o.buyerId === state.user.uid).sort((a,b) => b.createdAt - a.createdAt);
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <h2 class="section-title">Riwayat Pembelian</h2>
+    ${myOrders.length ? myOrders.map(o => `
+      <div class="card" style="padding:16px;margin-bottom:12px;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <div style="font-weight:700;font-size:15px">${esc(o.productTitleSnapshot)}</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">${new Date(o.createdAt).toLocaleDateString('id-ID')}</div>
+          <div style="margin-top:8px">
+            ${o.paymentStatus === 'paid' ? `<span style="color:var(--success);font-weight:700;font-size:12px">LUNAS</span>` : 
+              o.paymentStatus === 'awaiting_verification' ? `<span style="color:var(--warning);font-weight:700;font-size:12px">MENUNGGU VERIFIKASI</span>` :
+              o.paymentStatus === 'pending' ? `<span style="color:var(--warning);font-weight:700;font-size:12px">BELUM DIBAYAR</span>` :
+              `<span style="color:var(--danger);font-weight:700;font-size:12px">DIBATALKAN</span>`}
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800;color:var(--primary);margin-bottom:10px">${rupiah(o.priceSnapshot)}</div>
+          ${o.paymentStatus === 'paid' 
+            ? `<button class="btn btn-primary" style="width:auto;padding:8px 16px" onclick="downloadFile('${o.id}')">Unduh File</button>`
+            : ''}
+        </div>
+      </div>
+    `).join('') : `<div class="empty-state">Belum ada riwayat.</div>`}
+  `;
+};
+
+window.downloadFile = async (orderId) => {
+  toast("Memeriksa akses...");
+  const oSnap = await get(ref(db, `orders/${orderId}`));
+  const o = oSnap.val();
+  if(o.paymentStatus !== 'paid') return toast("Pembayaran belum lunas", "error");
+  
+  const pSnap = await get(ref(db, `products/${o.productId}`));
+  const fileUrl = pSnap.val()?.fileDownloadURL;
+  if(fileUrl) { window.open(fileUrl, '_blank'); } 
+  else { alert("File produk belum diunggah oleh Admin."); }
+};
+</script>
+</body>
+</html>
