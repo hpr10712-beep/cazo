@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Katalog — KodinganKita</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="splash-screen"></div>
+
+<header class="site">
+  <a href="index.html" class="brand">
+    <div id="headerLogo"></div>
+    <span>KodinganKita</span>
+  </a>
+  <div class="search-bar">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="navSearch" placeholder="Cari produk keren...">
+  </div>
+  <button id="authBtn" class="btn-login" onclick="handleAuth()">Masuk</button>
+</header>
+
+<main class="container" id="app">
+  <h2 class="section-title">Katalog Produk</h2>
+  <input type="text" id="searchInput" class="input-field" placeholder="Ketik untuk mencari...">
+  <div class="grid" id="grid"><div class="loading"></div></div>
+</main>
+
+<div class="bottom-nav-container"><div class="bottom-nav" id="bottomNav"></div></div>
+<div id="toast-container"></div>
+
+<script type="module">
+import { state, esc, rupiah, DEFAULT_LOGO, renderNav } from './app.js';
+
+function renderProducts(query = '') {
+  let products = Object.entries(state.products).map(([id, p]) => ({id, ...p})).filter(p => p.status !== 'sold');
+  if(query) {
+    const q = query.toLowerCase();
+    products = products.filter(p => (p.title||"").toLowerCase().includes(q) || (p.category||"").toLowerCase().includes(q));
+  }
+  const grid = document.getElementById('grid');
+  if(products.length) {
+    grid.innerHTML = products.map(p => `
+      <a href="detail.html?id=${p.id}" class="card">
+        <div class="card-img"><img src="${p.imageURLs?.[0] || 'https://placehold.co/400x400/f1f5f9/64748b?text=No+Image'}"></div>
+        <div class="card-body">
+          <div class="card-title">${esc(p.title)}</div>
+          <div class="card-price">${rupiah(p.price)}</div>
+        </div>
+      </a>
+    `).join("");
+  } else {
+    grid.innerHTML = `<div class="empty-state">Produk tidak ditemukan.</div>`;
+  }
+}
+
+window.onDataReady = () => {
+  renderNav();
+  document.getElementById('headerLogo').innerHTML = DEFAULT_LOGO;
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialQ = urlParams.get('q') || '';
+  document.getElementById('searchInput').value = initialQ;
+  renderProducts(initialQ);
+  
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    renderProducts(e.target.value);
+  });
+  document.getElementById('navSearch').addEventListener('input', (e) => {
+    document.getElementById('searchInput').value = e.target.value;
+    renderProducts(e.target.value);
+  });
+};
+</script>
+</body>
+</html>
