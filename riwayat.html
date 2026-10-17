@@ -4,19 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Riwayat — KodinganKita</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<style>
+/* CSS SAMA DENGAN KATALOG */
+:root{--primary:#4f46e5;--primary-hover:#4338ca;--primary-light:#eef2ff;--bg-body:#f8fafc;--bg-card:#ffffff;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--success:#10b981;--warning:#f59e0b;--radius-sm:8px;--radius-md:14px;--radius-lg:24px;--radius-full:999px;--shadow-sm:0 1px 3px rgba(0,0,0,0.05);--shadow-md:0 4px 12px rgba(0,0,0,0.08);--font:'Inter',system-ui,sans-serif;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}body{margin:0;font-family:var(--font);background:var(--bg-body);color:var(--text-main);padding-bottom:100px;}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{font-family:inherit;cursor:pointer;border:none;background:none}
+#splash-screen{position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease}#splash-screen.hidden{opacity:0;pointer-events:none}.loading-bar{width:200px;height:4px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:20px}.loading-bar-inner{width:50%;height:100%;background:var(--primary);border-radius:4px;animation:loadBar 1s infinite ease-in-out alternate}@keyframes loadBar{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);backdrop-filter:blur(15px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}.brand svg{width:34px;height:34px;border-radius:8px}.btn-login{background:#fff;border:1px solid var(--border);padding:8px 16px;border-radius:var(--radius-full);font-weight:600;font-size:14px}
+.bottom-nav-container{position:fixed;bottom:20px;left:0;right:0;display:flex;justify-content:center;z-index:50;pointer-events:none}.bottom-nav{background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.3);box-shadow:0 10px 40px rgba(0,0,0,0.15);border-radius:var(--radius-full);display:flex;justify-content:space-around;padding:12px 24px;width:92%;max-width:450px;pointer-events:auto}.nav-item{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-muted);text-decoration:none}.nav-item.active{color:var(--primary);transform:translateY(-2px)}.nav-item .icon-wrap{width:24px;height:24px;display:flex;align-items:center;justify-content:center}.nav-item .icon-wrap iframe{width:100%;height:100%;border:none;pointer-events:none}.nav-item .icon-wrap svg{width:24px;height:24px}.nav-item span{font-size:10px;font-weight:700}
+.container{max-width:1000px;margin:0 auto;padding:20px}.section-title{font-size:20px;font-weight:800;margin:0 0 16px}
+.card{background:#fff;border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;border:1px solid var(--border);text-decoration:none;color:inherit;padding:16px;margin-bottom:12px;flex-direction:row;gap:16px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;border-radius:var(--radius-sm);font-weight:700;font-size:13px;transition:0.2s;cursor:pointer}.btn-primary{background:var(--primary);color:#fff}.btn-outline{background:#fff;color:var(--text-main);border:1px solid var(--border)}
+.loading{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:40px auto}@keyframes spin{to{transform:rotate(360deg)}}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.badge-green{background:#dcfce7;color:#166534}.badge-yellow{background:#fef3c7;color:#92400e}.badge-red{background:#fee2e2;color:#991b1b}
+</style>
 </head>
 <body>
-
-<div id="splash-screen"></div>
-
+<div id="splash-screen" style="display:none;"></div>
 <header class="site">
-  <a href="index.html" class="brand">
-    <div id="headerLogo"></div>
-    <span>KodinganKita</span>
-  </a>
+  <a href="index.html" class="brand" id="brandLogo">KodinganKita</a>
   <button id="authBtn" class="btn-login" onclick="handleAuth()">Masuk</button>
 </header>
 
@@ -25,56 +32,78 @@
 </main>
 
 <div class="bottom-nav-container"><div class="bottom-nav" id="bottomNav"></div></div>
-<div id="toast-container"></div>
 
 <script type="module">
-import { db, ref, get, state, esc, rupiah, DEFAULT_LOGO, renderNav, toast } from './app.js';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-window.onDataReady = async () => {
-  renderNav();
-  document.getElementById('headerLogo').innerHTML = DEFAULT_LOGO;
+const firebaseConfig = { apiKey: "AIzaSyCHr0eemIkfHNFDUkSaFDklp_c1OgmSnl8", authDomain: "mybro-9ba5f.firebaseapp.com", databaseURL: "https://mybro-9ba5f-default-rtdb.firebaseio.com", projectId: "mybro-9ba5f", storageBucket: "mybro-9ba5f.firebasestorage.app", messagingSenderId: "820948893264", appId: "1:820948893264:web:e564509a8fdc4c56335b55" };
+const app = initializeApp(firebaseConfig); const db = getDatabase(app); const auth = getAuth(app); const provider = new GoogleAuthProvider();
+const DEFAULT_LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%"><rect x="4" y="4" width="120" height="120" rx="30" fill="#0b1220"/><circle cx="64" cy="70" r="50" fill="#4f46e5" opacity=".28"/><g transform="rotate(-5 64 66)"><path d="M48 52V42Q48 26 64 26Q80 26 80 42V52" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/><path d="M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z" fill="#34d399" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/><path d="M35 48H93L93.7 57H34.3Z" fill="#10b981"/><circle cx="50" cy="52.5" r="3" fill="#0b1220"/><circle cx="78" cy="52.5" r="3" fill="#0b1220"/><g fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M53 69L43 80L53 91"/><path d="M75 69L85 80L75 91"/><path d="M68 67L60 93"/></g></g><path transform="translate(99 33) scale(.8)" fill="#ffe14d" d="M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z"/></svg>`;
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rupiah = n => "Rp" + Number(n||0).toLocaleString("id-ID");
+
+let state = { user: null, settings: {}, loaded: 0 };
+function checkLoaded() { state.loaded++; if(state.loaded >= 2) { const sp = document.getElementById('splash-screen'); if(sp) sp.remove(); initPage(); } }
+function createIframe(code, round) { const i = document.createElement("iframe"); if(round) i.style.borderRadius="50%"; i.srcdoc=`<html><head><style>body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;overflow:hidden;pointer-events:none;}*{box-sizing:border-box;}</style></head><body>${code}</body></html>`; return i; }
+
+window.handleAuth = async () => { if (state.user) { if(confirm("Keluar?")) await signOut(auth); } else { try { await signInWithPopup(auth, provider); } catch(e){ alert(e.message); } } };
+onAuthStateChanged(auth, user => { state.user = user; const btn = document.getElementById('authBtn'); if(btn) btn.innerHTML = user ? `Keluar (${user.displayName.split(' ')[0]})` : 'Masuk'; initPage(); });
+
+onValue(ref(db, "settings/marketplace"), s => { state.settings = s.val() || {}; checkLoaded(); });
+
+async function initPage() {
+  if(!state.settings) return;
+  document.getElementById('brandLogo').innerHTML = `<div style="width:34px;height:34px;display:inline-block;vertical-align:middle;margin-right:8px;">${DEFAULT_LOGO}</div> ${esc(state.settings.name || "KodinganKita")}`;
   
+  const defaultNavs = [
+    { id: "home", label: "Beranda", href: "index.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>` },
+    { id: "catalog", label: "Katalog", href: "katalog.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>` },
+    { id: "history", label: "Riwayat", href: "riwayat.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path></svg>` },
+    { id: "profile", label: "Profil", href: "profil.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` }
+  ];
+  const navs = (state.settings.bottomMenus && state.settings.bottomMenus.length > 0) ? state.settings.bottomMenus : defaultNavs;
+  document.getElementById('bottomNav').innerHTML = navs.map(n => `<a href="${n.href}" class="nav-item ${n.href === 'riwayat.html' ? 'active' : ''}"><div class="icon-wrap" id="nav-${n.id}">${n.code}</div><span>${n.label}</span></a>`).join("");
+  navs.forEach(n => { if(n.code.includes('<style>')) { const w = document.getElementById(`nav-${n.id}`); if(w){w.innerHTML="";w.appendChild(createIframe(n.code,false));} } });
+
   if(!state.user) {
-    document.getElementById('app').innerHTML = `<div class="empty-state">Silakan login untuk melihat riwayat.</div>`;
+    document.getElementById('app').innerHTML = `<div style="text-align:center;padding:60px 20px"><h2>Silakan Login</h2><p style="color:var(--text-muted)">Masuk untuk melihat riwayat.</p></div>`;
     return;
   }
   
   const snap = await get(ref(db, 'orders'));
   const all = snap.val() || {};
-  const myOrders = Object.entries(all).map(([id, o]) => ({id, ...o}))
-    .filter(o => o.buyerId === state.user.uid).sort((a,b) => b.createdAt - a.createdAt);
+  const myOrders = Object.entries(all).map(([id, o]) => ({id, ...o})).filter(o => o.buyerId === state.user.uid).sort((a,b) => b.createdAt - a.createdAt);
 
-  const app = document.getElementById('app');
-  app.innerHTML = `
+  document.getElementById('app').innerHTML = `
     <h2 class="section-title">Riwayat Pembelian</h2>
     ${myOrders.length ? myOrders.map(o => `
-      <div class="card" style="padding:16px;margin-bottom:12px;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+      <div class="card">
         <div style="flex:1;min-width:200px">
           <div style="font-weight:700;font-size:15px">${esc(o.productTitleSnapshot)}</div>
           <div style="font-size:12px;color:var(--text-muted);margin-top:4px">${new Date(o.createdAt).toLocaleDateString('id-ID')}</div>
           <div style="margin-top:8px">
-            ${o.paymentStatus === 'paid' ? `<span style="color:var(--success);font-weight:700;font-size:12px">LUNAS</span>` : 
-              o.paymentStatus === 'awaiting_verification' ? `<span style="color:var(--warning);font-weight:700;font-size:12px">MENUNGGU VERIFIKASI</span>` :
-              o.paymentStatus === 'pending' ? `<span style="color:var(--warning);font-weight:700;font-size:12px">BELUM DIBAYAR</span>` :
-              `<span style="color:var(--danger);font-weight:700;font-size:12px">DIBATALKAN</span>`}
+            ${o.paymentStatus === 'paid' ? `<span class="badge badge-green">LUNAS</span>` : 
+              o.paymentStatus === 'awaiting_verification' ? `<span class="badge badge-yellow">MENUNGGU VERIFIKASI</span>` :
+              o.paymentStatus === 'pending' ? `<span class="badge badge-yellow">BELUM DIBAYAR</span>` :
+              `<span class="badge badge-red">DIBATALKAN</span>`}
           </div>
         </div>
         <div style="text-align:right">
           <div style="font-weight:800;color:var(--primary);margin-bottom:10px">${rupiah(o.priceSnapshot)}</div>
-          ${o.paymentStatus === 'paid' 
-            ? `<button class="btn btn-primary" style="width:auto;padding:8px 16px" onclick="downloadFile('${o.id}')">Unduh File</button>`
-            : ''}
+          ${o.paymentStatus === 'paid' ? `<button class="btn btn-primary" onclick="downloadFile('${o.id}')">Unduh File</button>` : ''}
         </div>
       </div>
-    `).join('') : `<div class="empty-state">Belum ada riwayat.</div>`}
+    `).join('') : `<div style="text-align:center;padding:40px;color:var(--text-muted)">Belum ada riwayat.</div>`}
   `;
-};
+}
 
 window.downloadFile = async (orderId) => {
-  toast("Memeriksa akses...");
+  alert("Memeriksa akses...");
   const oSnap = await get(ref(db, `orders/${orderId}`));
   const o = oSnap.val();
-  if(o.paymentStatus !== 'paid') return toast("Pembayaran belum lunas", "error");
+  if(o.paymentStatus !== 'paid') return alert("Pembayaran belum lunas");
   
   const pSnap = await get(ref(db, `products/${o.productId}`));
   const fileUrl = pSnap.val()?.fileDownloadURL;
