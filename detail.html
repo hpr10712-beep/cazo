@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Detail Produk — KodinganKita</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="splash-screen"></div>
+
+<header class="site">
+  <a href="index.html" class="brand">
+    <div id="headerLogo"></div>
+    <span>KodinganKita</span>
+  </a>
+  <button id="authBtn" class="btn-login" onclick="handleAuth()">Masuk</button>
+</header>
+
+<main class="container" id="app">
+  <div class="loading"></div>
+</main>
+
+<div class="bottom-nav-container"><div class="bottom-nav" id="bottomNav"></div></div>
+<div id="modal-root"></div>
+<div id="toast-container"></div>
+
+<script type="module">
+import { db, ref, get, push, runTransaction, update, state, esc, rupiah, createIframe, DEFAULT_LOGO, QRIS_IMG, checkAvailability, handleAuth, closeModal, toast, renderNav } from './app.js';
+
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('id');
+let orderTimer = null;
+let pendingProductId = null;
+
+window.onDataReady = () => {
+  renderNav();
+  document.getElementById('headerLogo').innerHTML = DEFAULT_LOGO;
+  if(!productId) return document.getElementById('app').innerHTML = `<div class="empty-state">ID Produk tidak valid.</div>`;
+  renderProduct();
+};
+
+function renderProduct() {
+  const p = state.products[productId];
+  if(!p) return document.getElementById('app').innerHTML = `<div class="empty-state">Produk tidak ditemukan.</div>`;
+  
+  const isAvail = checkAvailability(p);
+  const isSold = !isAvail && p.status === 'sold';
+  const isLimited = p.productType === 'limited_html';
+
+  document.getElementById('app').innerHTML = `
+    <a href="katalog.html" style="display:inline-block;margin-bottom:16px;font-size:14px;font-weight:600;color:var(--text-muted)">&larr; Kembali</a>
+    <div class="detail-img">
+      <img src="${p.imageURLs?.[0] || 'https://placehold.co/800x450/f1f5f9/64748b?text=No+Image'}">
+    </div>
+    
+    <div class="detail-header">
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;margin-bottom:4px">${esc(p.category)}</div>
+        <h1 class="detail-title">${esc(p.title)}</h1>
+      </div>
+      <button class="btn-icon" onclick="navigator.clipboard.writeText(window.location.href); alert('Link disalin!')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+      </button>
+    </div>
+
+    <div class="price-box">${rupiah(p.price)}</div>
+
+    ${isLimited ? `
+      <div class="meta-info"><span style="color:${isAvail ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">${isAvail ? 'Tersedia (Sisa 1)' : 'Sudah Terjual'}</span></div>
+      ${p.hashtags ? `<div class="hashtags">${p.hashtags.split(',').map(h => `<span class="hashtag">#${esc(h.trim())}</span>`).join('')}</div>` : ''}
+    ` : `
+      <div class="meta-info">
+        <span>Total Terjual: <b>${p.totalSold || 0}</b></span>
+        <span>Rating: <b>${p.ratingAvg ? p.ratingAvg.toFixed(1) : '0.0'}</b></span>
+      </div>
+    `}
+
+    <h3 class="desc-title">Deskripsi Lengkap</h3>
+    <div class="desc-text">${esc(p.description || "Tidak ada deskripsi.")}</div>
+
+    ${isLimited && p.demoURL ? `<a href="${p.demoURL}" target="_blank" class="btn btn-outline" style="margin-bottom:12px">Lihat Proyek (Live Preview)</a>` : ''}
+
+    ${isSold 
+      ? `<button class="btn btn-disabled" disabled>Maaf, Produk Sudah Terjual</button>`
+      : `<button class="btn btn-primary" onclick="buyFlow('${p.id}')">Beli Sekarang</button>`
+    }
+  `;
+}
+
+window.buyFlow = async (pid) => {
+  if(!state.user) {
+    pendingProductId = pid;
+    document.getElementById("modal-root").innerHTML = `
+      <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+        <div class="modal-box">
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+          <div class="modal-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg></div>
+          <h3 class="modal-title">Harap Masuk</h3>
+          <p class="modal-desc">Silakan masuk dengan akun Google Anda untuk melanjutkan.</p>
+          <button class="btn btn-primary" onclick="handleAuth(); closeModal();" style="margin-bottom:10px"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" style="width:18px"> Masuk Google</button>
+          <button class="btn btn-outline" onclick="closeModal()">Batal</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const product = state.products[pid];
+  if(!checkAvailability(product)) return toast("Produk sudah terjual atau sedang dipesan.", "error");
+
+  try {
+    const orderRef = push(ref(db, 'orders'));
+    const orderId = orderRef.key;
+    const now = Date.now();
+    const expiresAt = now + (3 * 60 * 1000); 
+
+    const result = await runTransaction(ref(db, `products/${pid}`), (p) => {
+      if (!p) return null;
+      if (p.status === 'sold' || (p.status === 'reserved' && p.reservedUntil > Date.now())) return null;
+      return { ...p, status: 'reserved', availability: 'reserved', reservedBy: state.user.uid, reservedUntil: expiresAt, reservationOrderId: orderId };
+    });
+
+    if (!result.committed) return toast("Maaf, produk baru saja diambil orang lain.", "error");
+
+    const commRate = state.settings.commissionRate || 0.10;
+    const price = Number(product.price);
+    await set(orderRef, {
+      buyerId: state.user.uid, buyerName: state.user.displayName, sellerId: product.sellerId || 'admin', shopId: product.shopId || 'admin', productId: pid,
+      productTitleSnapshot: product.title, priceSnapshot: price, commissionSnapshot: price * commRate, sellerAmountSnapshot: price - (price * commRate),
+      paymentStatus: 'pending', orderStatus: 'reserved', createdAt: now, expiresAt: expiresAt
+    });
+
+    renderPayment(orderId, price, expiresAt);
+  } catch(e) { toast("Gagal membuat pesanan: " + e.message, "error"); }
+};
+
+function renderPayment(orderId, price, expiresAt) {
+  document.getElementById('app').innerHTML = `
+    <div style="max-width:480px;margin:0 auto;text-align:center;padding-top:20px">
+      <h2 style="margin-bottom:20px">Selesaikan Pembayaran</h2>
+      <div class="timer" id="timerDisplay">03:00</div>
+      <div class="qris-box">
+        <img src="${QRIS_IMG}">
+        <p style="font-size:13px;color:var(--text-muted);margin-top:16px">Total: <b style="color:var(--primary);font-size:18px">${rupiah(price)}</b></p>
+      </div>
+      <button class="btn btn-primary" style="margin-bottom:12px" onclick="confirmPayment('${orderId}', '${productId}', this)">Saya Sudah Bayar</button>
+      <button class="btn btn-outline" onclick="cancelOrder('${orderId}', '${productId}')">Batalkan Pesanan</button>
+    </div>
+  `;
+
+  if(orderTimer) clearInterval(orderTimer);
+  const tick = () => {
+    const r = expiresAt - Date.now();
+    if(r <= 0) { clearInterval(orderTimer); expireOrder(orderId, productId); return; }
+    const m = Math.floor(r / 60000), s = Math.floor((r % 60000) / 1000);
+    const el = document.getElementById("timerDisplay");
+    if(el) el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  };
+  tick();
+  orderTimer = setInterval(tick, 1000);
+}
+
+window.confirmPayment = async (orderId, pid, btn) => {
+  if(!confirm("Pastikan Anda sudah mentransfer dana. Lanjutkan?")) return;
+  btn.textContent = "Memproses..."; btn.disabled = true;
+  await update(ref(db, `orders/${orderId}`), { paymentStatus: 'awaiting_verification' });
+  clearInterval(orderTimer);
+  toast("Konfirmasi terkirim. Menunggu verifikasi Admin.", "success");
+  window.location.href = "riwayat.html";
+};
+
+window.cancelOrder = async (orderId, pid) => {
+  if(!confirm("Batalkan pesanan ini?")) return;
+  await runTransaction(ref(db, `products/${pid}`), (p) => {
+    if(!p || p.reservationOrderId !== orderId) return p;
+    return { ...p, status: 'available', availability: 'available', reservedBy: null, reservationOrderId: null };
+  });
+  await update(ref(db, `orders/${orderId}`), { paymentStatus: 'cancelled', orderStatus: 'cancelled' });
+  clearInterval(orderTimer);
+  window.location.href = "katalog.html";
+};
+
+async function expireOrder(orderId, pid) {
+  await runTransaction(ref(db, `products/${pid}`), (p) => {
+    if(!p || p.reservationOrderId !== orderId) return p;
+    return { ...p, status: 'available', availability: 'available', reservedBy: null, reservationOrderId: null };
+  });
+  await update(ref(db, `orders/${orderId}`), { paymentStatus: 'expired', orderStatus: 'expired' });
+  clearInterval(orderTimer);
+  toast("Waktu habis. Pesanan dibatalkan.", "error");
+  renderProduct(); 
+}
+</script>
+</body>
+</html>
