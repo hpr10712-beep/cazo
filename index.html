@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KodinganKita — Marketplace</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOADING SCREEN (Bisa diubah Admin) -->
+<div id="splash-screen"></div>
+
+<header class="site">
+  <a href="index.html" class="brand">
+    <div id="headerLogo"></div>
+    <span>KodinganKita</span>
+  </a>
+  <div class="search-bar">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="navSearch" placeholder="Cari produk keren..." onkeydown="if(event.key==='Enter') window.location.href='katalog.html?q='+this.value">
+  </div>
+  <button id="authBtn" class="btn-login" onclick="handleAuth()">Masuk</button>
+</header>
+
+<main id="app">
+  <div class="hero">
+    <h1 class="hero-title" id="heroTitle">KodinganKita</h1>
+    <p class="hero-desc" id="heroDesc">Marketplace Produk Digital Eksklusif.</p>
+    <div class="mascot-box" id="mascotBox"></div>
+    <div class="quick-menu" id="quickMenu"></div>
+  </div>
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h2 class="section-title" style="margin:0">Produk Terbaru</h2>
+      <a href="katalog.html" style="font-size:14px;font-weight:600;color:var(--primary)">Lihat Semua</a>
+    </div>
+    <div class="grid" id="latestGrid"><div class="loading"></div></div>
+  </div>
+</main>
+
+<div class="bottom-nav-container"><div class="bottom-nav" id="bottomNav"></div></div>
+<div id="modal-root"></div>
+<div id="toast-container"></div>
+
+<script type="module">
+import { state, esc, rupiah, createIframe, DEFAULT_LOGO, renderNav } from './app.js';
+
+window.onDataReady = () => {
+  renderNav();
+  const s = state.settings;
+  document.getElementById('headerLogo').innerHTML = DEFAULT_LOGO;
+  document.getElementById('heroTitle').textContent = s.name || "KodinganKita";
+  document.getElementById('heroDesc').textContent = s.description || "Marketplace Produk Digital Eksklusif. Setiap produk hanya dijual satu kali.";
+  
+  // Mascot
+  const mBox = document.getElementById('mascotBox');
+  if(s.mascot?.code) mBox.appendChild(createIframe(s.mascot.code));
+
+  // Menu Atas
+  const defaultMenus = [
+    { label: "Katalog", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`, action: "katalog.html" },
+    { label: "Cari", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>`, action: "katalog.html" },
+    { label: "Jual", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M12 4v16m8-8H4"/></svg>`, action: "profil.html" },
+    { label: "Riwayat", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/></svg>`, action: "riwayat.html" }
+  ];
+  const menus = (s.menuItems && s.menuItems.length > 0) ? s.menuItems : defaultMenus;
+  document.getElementById('quickMenu').innerHTML = menus.slice(0,4).map((m, i) => `
+    <a href="${esc(m.action)}" class="quick-item">
+      <div class="quick-icon" id="menu-icon-${i}"></div>
+      <span class="quick-label">${esc(m.label)}</span>
+    </a>
+  `).join("");
+  menus.slice(0,4).forEach((m, i) => { if(m.code) document.getElementById(`menu-icon-${i}`).appendChild(createIframe(m.code, true)); });
+
+  // Produk
+  const latest = Object.entries(state.products).map(([id, p]) => ({id, ...p}))
+    .filter(p => p.status !== 'sold').sort((a,b) => (b.createdAt||0) - (a.createdAt||0)).slice(0, 8);
+  const grid = document.getElementById('latestGrid');
+  if(latest.length) {
+    grid.innerHTML = latest.map(p => `
+      <a href="detail.html?id=${p.id}" class="card">
+        <div class="card-img"><img src="${p.imageURLs?.[0] || 'https://placehold.co/400x400/f1f5f9/64748b?text=No+Image'}"></div>
+        <div class="card-body">
+          <div class="card-title">${esc(p.title)}</div>
+          <div class="card-price">${rupiah(p.price)}</div>
+        </div>
+      </a>
+    `).join("");
+  } else {
+    grid.innerHTML = `<div class="empty-state">Belum ada produk.</div>`;
+  }
+};
+</script>
+</body>
+</html>
