@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — KodinganKita</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#4f46e5; --primary-hover:#4338ca; --primary-light:#eef2ff;
+  --bg-body:#f8fafc; --bg-card:#ffffff;
+  --text-main:#0f172a; --text-muted:#64748b;
+  --border:#e2e8f0;
+  --danger:#ef4444; --success:#10b981; --warning:#f59e0b;
+  --radius:12px; --shadow-sm:0 1px 2px 0 rgba(0,0,0,.05);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
+  --font:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);background:var(--bg-body);color:var(--text-main);display:flex;height:100vh;overflow:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:inherit}
+.sidebar{width:260px;background:var(--bg-card);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%}
+.main-content{flex:1;display:flex;flex-direction:column;height:100%;overflow-y:auto}
+.topbar{background:var(--bg-card);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.content-pad{padding:24px;max-width:1200px;margin:0 auto;width:100%}
+.brand{display:flex;align-items:center;gap:12px;padding:20px;font-weight:800;font-size:18px;border-bottom:1px solid var(--border)}
+.brand svg{width:32px;height:32px;border-radius:8px}
+.nav-menu{flex:1;padding:16px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;color:var(--text-muted);font-weight:500;font-size:14px;cursor:pointer;transition:all .2s}
+.nav-item:hover{background:var(--primary-light);color:var(--primary)}
+.nav-item.active{background:var(--primary);color:#fff;box-shadow:var(--shadow-sm)}
+.nav-item svg{width:18px;height:18px;stroke-width:2;flex-shrink:0}
+
+/* COMPONENTS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;border-radius:8px;border:1px solid transparent;font-weight:600;font-size:13px;cursor:pointer;transition:all .15s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-success{background:var(--success);color:#fff}
+.btn-success:hover{background:#059669}
+.btn-outline{background:#fff;border-color:var(--border);color:var(--text-main)}
+.btn-outline:hover{background:var(--bg-body)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:6px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);margin-bottom:24px}
+.card-title{margin:0 0 16px 0;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px;text-align:left}
+th{background:var(--bg-body);padding:12px 16px;font-weight:600;color:var(--text-muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
+
+/* FORMS */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text-main)}
+.input,.select,.textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;outline:none;transition:border .15s;background:#fff}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.textarea{min-height:100px;resize:vertical;font-family:monospace;white-space:pre-wrap;word-wrap:break-word;overflow-x:hidden}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:768px){.row{grid-template-columns:1fr}}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-yellow{background:#fef3c7;color:#92400e}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-gray{background:#f1f5f9;color:#475569}
+.badge-blue{background:#e0e7ff;color:#3730a3}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.stat-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm)}
+.stat-box .label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px}
+.stat-box .value{font-size:24px;font-weight:800;color:var(--text-main)}
+
+/* AUTH SCREEN */
+#auth-screen{position:fixed;inset:0;background:var(--bg-body);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+.auth-card{background:#fff;padding:40px;border-radius:16px;box-shadow:var(--shadow-md);text-align:center;max-width:400px;width:100%}
+.auth-card h1{color:var(--danger);font-size:24px;margin:16px 0 8px}
+.auth-card p{color:var(--text-muted);font-size:14px;margin-bottom:24px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.modal-content{background:#fff;border-radius:12px;width:100%;max-width:600px;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow-md);animation:slideUp 0.2s ease}
+.modal-header{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-title{font-size:18px;font-weight:700;margin:0}
+.modal-close{background:none;border:0;font-size:24px;cursor:pointer;color:var(--text-muted);line-height:1}
+.modal-body{padding:20px;overflow-y:auto}
+.modal-footer{padding:16px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:12px;background:var(--bg-body);border-radius:0 0 12px 12px}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* TOAST */
+#toast-container{position:fixed;bottom:24px;right:24px;z-index:1001;display:flex;flex-direction:column;gap:8px}
+.toast{background:#fff;border-left:4px solid var(--primary);padding:12px 16px;border-radius:8px;box-shadow:var(--shadow-md);font-size:13px;font-weight:500;animation:slideIn .2s ease}
+.toast.error{border-left-color:var(--danger)}
+.toast.success{border-left-color:var(--success)}
+@keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* PREVIEW BOX */
+.preview-box{background:#f8fafc;border:1px dashed var(--border);border-radius:8px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.preview-box iframe{width:100%;height:100%;border:0;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div id="auth-screen">
+  <div class="auth-card">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    <h1>Akses Ditolak</h1>
+    <p id="auth-message">Silakan masuk dengan akun administrator.</p>
+    <button class="btn btn-primary" id="loginBtn" style="width:100%">Masuk dengan Google</button>
+  </div>
+</div>
+
+<div id="app-container" style="display:none;width:100%;height:100%">
+  <aside class="sidebar">
+    <div class="brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect x="4" y="4" width="120" height="120" rx="30" fill="#0b1220"/><circle cx="64" cy="70" r="50" fill="#4f46e5" opacity=".28"/><g transform="rotate(-5 64 66)"><path d="M48 52V42Q48 26 64 26Q80 26 80 42V52" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/><path d="M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z" fill="#34d399" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/><path d="M35 48H93L93.7 57H34.3Z" fill="#10b981"/><circle cx="50" cy="52.5" r="3" fill="#0b1220"/><circle cx="78" cy="52.5" r="3" fill="#0b1220"/><g fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M53 69L43 80L53 91"/><path d="M75 69L85 80L75 91"/><path d="M68 67L60 93"/></g></g><path transform="translate(99 33) scale(.8)" fill="#ffe14d" d="M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z"/></svg>
+      <span>Admin Panel</span>
+    </div>
+    <nav class="nav-menu">
+      <a href="#dashboard" class="nav-item" data-route="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        Dashboard
+      </a>
+      <a href="#sellers" class="nav-item" data-route="sellers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Pengajuan Toko
+      </a>
+      <a href="#shops" class="nav-item" data-route="shops">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        Manajemen Toko
+      </a>
+      <a href="#products" class="nav-item" data-route="products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        Produk
+      </a>
+      <a href="#orders" class="nav-item" data-route="orders">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Pesanan
+      </a>
+      <a href="#reviews" class="nav-item" data-route="reviews">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        Ulasan
+      </a>
+      <a href="#settings" class="nav-item" data-route="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Pengaturan
+      </a>
+      <a href="#audit" class="nav-item" data-route="audit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        Audit Log
+      </a>
+    </nav>
+    <div style="padding:16px;border-top:1px solid var(--border)">
+      <button class="btn btn-outline" id="logoutBtn" style="width:100%">Keluar</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div style="font-weight:700;font-size:18px" id="page-title">Dashboard</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <a href="index.html" target="_blank" class="btn btn-outline btn-sm">Lihat Situs</a>
+        <span id="user-email" style="font-size:13px;color:var(--text-muted)"></span>
+      </div>
+    </header>
+    <div class="content-pad" id="view"></div>
+  </main>
+</div>
+
+<div id="modal-container"></div>
+<div id="toast-container"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, get, set, update, push, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCHr0eemIkfHNFDUkSaFDklp_c1OgmSnl8",
+  authDomain: "mybro-9ba5f.firebaseapp.com",
+  databaseURL: "https://mybro-9ba5f-default-rtdb.firebaseio.com",
+  projectId: "mybro-9ba5f",
+  storageBucket: "mybro-9ba5f.firebasestorage.app",
+  messagingSenderId: "820948893264",
+  appId: "1:820948893264:web:e564509a8fdc4c56335b55"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rupiah = n => "Rp"+Number(n||0).toLocaleString("id-ID");
+
+function toast(msg, type="info") {
+  const el = document.createElement("div");
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  $("#toast-container").appendChild(el);
+  setTimeout(() => { el.style.opacity="0"; setTimeout(()=>el.remove(),300); }, 4000);
+}
+
+function statusBadge(s) {
+  const map = { pending:"badge-yellow", approved:"badge-green", rejected:"badge-red", suspended:"badge-red", available:"badge-green", sold:"badge-gray", paid:"badge-green", expired:"badge-red", cancelled:"badge-gray", awaiting_verification:"badge-yellow", pending_review:"badge-yellow", completed:"badge-green" };
+  return `<span class="badge ${map[s]||"badge-blue"}">${esc(s||"-")}</span>`;
+}
+
+/* --- UTILS: IFRAME ISOLATION --- */
+function createIframe(code, isRound = false) {
+  const iframe = document.createElement("iframe");
+  if (isRound) iframe.style.borderRadius = "50%";
+  iframe.srcdoc = `<html><head><style>body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;overflow:hidden;background:transparent;pointer-events:none;}*{box-sizing:border-box;}</style></head><body>${code}</body></html>`;
+  return iframe;
+}
+
+/* --- MODAL HELPER --- */
+function openModal(title, contentHTML, onSubmit) {
+  $("#modal-container").innerHTML = `
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">${title}</h2>
+          <button class="modal-close" onclick="document.getElementById('modal-container').innerHTML=''">&times;</button>
+        </div>
+        <div class="modal-body">${contentHTML}</div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="document.getElementById('modal-container').innerHTML=''">Batal</button>
+          <button class="btn btn-primary" id="modalSubmitBtn">Simpan</button>
+        </div>
+      </div>
+    </div>
+  `;
+  if(onSubmit) {
+    $("#modalSubmitBtn").onclick = async () => {
+      $("#modalSubmitBtn").disabled = true;
+      $("#modalSubmitBtn").textContent = "Menyimpan...";
+      try {
+        await onSubmit();
+        $("#modal-container").innerHTML = '';
+      } catch(e) {
+        toast(e.message, "error");
+        $("#modalSubmitBtn").disabled = false;
+        $("#modalSubmitBtn").textContent = "Simpan";
+      }
+    };
+  }
+}
+
+/* --- AUTH & ROUTING --- */
+let adminUser = null;
+
+async function isAdmin(uid) {
+  try { const snap = await get(ref(db, `admins/${uid}`)); return snap.val() === true; } catch { return false; }
+}
+
+onAuthStateChanged(auth, async user => {
+  if (!user) {
+    $("#auth-screen").style.display = "flex";
+    $("#app-container").style.display = "none";
+    $("#auth-message").textContent = "Silakan masuk dengan akun administrator.";
+    $("#loginBtn").onclick = () => signInWithPopup(auth, provider).catch(e => toast(e.message, "error"));
+    return;
+  }
+  
+  const ok = await isAdmin(user.uid);
+  if (!ok) {
+    $("#auth-screen").style.display = "flex";
+    $("#app-container").style.display = "none";
+    $("#auth-message").innerHTML = `Akun <b>${esc(user.email)}</b> tidak memiliki akses.<br><br>Buat node <code>admins/${user.uid} = true</code> di Firebase.`;
+    $("#loginBtn").onclick = () => signOut(auth);
+    $("#loginBtn").textContent = "Ganti Akun";
+    return;
+  }
+
+  adminUser = user;
+  $("#auth-screen").style.display = "none";
+  $("#app-container").style.display = "flex";
+  $("#user-email").textContent = user.email;
+  $("#logoutBtn").onclick = () => signOut(auth);
+  
+  initRouter();
+});
+
+function initRouter() {
+  $$(".nav-item").forEach(a => a.addEventListener("click", e => {
+    e.preventDefault();
+    location.hash = a.dataset.route;
+  }));
+  window.addEventListener("hashchange", route);
+  route();
+}
+
+async function route() {
+  if (!adminUser) return;
+  const r = location.hash.replace(/^#/,"") || "dashboard";
+  $$(".nav-item").forEach(a => a.classList.toggle("active", a.dataset.route === r));
+  $("#page-title").textContent = $(`.nav-item[data-route="${r}"]`)?.textContent.trim() || "Dashboard";
+  $("#view").innerHTML = `<div class="card">Memuat data...</div>`;
+  
+  try {
+    if (r === "dashboard") await viewDashboard();
+    else if (r === "sellers") await viewSellers();
+    else if (r === "shops") await viewShops();
+    else if (r === "products") await viewProducts();
+    else if (r === "orders") await viewOrders();
+    else if (r === "reviews") await viewReviews();
+    else if (r === "settings") await viewSettings();
+    else if (r === "audit") await viewAudit();
+  } catch(e) {
+    $("#view").innerHTML = `<div class="card" style="border-color:var(--danger)"><div style="color:var(--danger);font-weight:700">Error: ${esc(e.message)}</div></div>`;
+  }
+}
+
+/* =========================================================
+   VIEWS
+   ========================================================= */
+
+async function viewDashboard() {
+  const [users, shops, apps, products, orders] = await Promise.all([
+    get(ref(db,"users")).then(s=>s.val()||{}), get(ref(db,"shops")).then(s=>s.val()||{}),
+    get(ref(db,"sellerApplications")).then(s=>s.val()||{}), get(ref(db,"products")).then(s=>s.val()||{}),
+    get(ref(db,"orders")).then(s=>s.val()||{})
+  ]);
+  const pendingOrders = Object.values(orders).filter(o => o.paymentStatus==="pending" || o.paymentStatus==="awaiting_verification").length;
+  const paidOrders = Object.values(orders).filter(o => o.paymentStatus==="paid");
+  const totalSales = paidOrders.reduce((s,o)=>s+Number(o.priceSnapshot||0),0);
+  const totalComm = paidOrders.reduce((s,o)=>s+Number(o.commissionSnapshot||0),0);
+  const pendingApps = Object.values(apps).filter(a=>a.status==="pending").length;
+
+  $("#view").innerHTML = `
+    <div class="stat-grid" style="margin-bottom:24px">
+      <div class="stat-box"><div class="label">Total Pengguna</div><div class="value">${Object.keys(users).length}</div></div>
+      <div class="stat-box"><div class="label">Toko Aktif</div><div class="value">${Object.values(shops).filter(s=>s.status==="approved").length}</div></div>
+      <div class="stat-box"><div class="label">Produk Tersedia</div><div class="value">${Object.values(products).filter(p=>p.status==="available").length}</div></div>
+      <div class="stat-box"><div class="label">Produk Terjual</div><div class="value">${Object.values(products).filter(p=>p.status==="sold").length}</div></div>
+      <div class="stat-box" style="border-left:4px solid var(--warning)"><div class="label">Perlu Verifikasi</div><div class="value">${pendingOrders} Pesanan</div></div>
+      <div class="stat-box" style="border-left:4px solid var(--success)"><div class="label">Total Pendapatan</div><div class="value">${rupiah(totalSales)}</div></div>
+      <div class="stat-box" style="border-left:4px solid var(--primary)"><div class="label">Komisi Platform</div><div class="value">${rupiah(totalComm)}</div></div>
+    </div>
+  `;
+}
+
+async function viewSellers() {
+  const snap = await get(ref(db,"sellerApplications"));
+  const list = Object.entries(snap.val() || {}).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+  $("#view").innerHTML = `
+    <div class="card">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Toko</th><th>Pemilik</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody>${list.map(([id,a])=>`
+          <tr>
+            <td><b>${esc(a.shopName)}</b><br><span style="color:var(--text-muted);font-size:11px">/${esc(a.slug)}</span></td>
+            <td>${esc(a.ownerName)}<br><span style="color:var(--text-muted);font-size:11px">${esc(a.email)}</span></td>
+            <td>${statusBadge(a.status)}</td>
+            <td>
+              ${a.status === "pending" ? `
+                <button class="btn btn-success btn-sm" onclick="approveSeller('${id}', '${esc(a.shopName)}', '${esc(a.userId)}', '${esc(a.slug)}', '${esc(a.description||"")}')">Setujui</button>
+                <button class="btn btn-danger btn-sm" onclick="rejectSeller('${id}')">Tolak</button>
+              ` : ""}
+            </td>
+          </tr>`).join("") || `<tr><td colspan="4" style="text-align:center">Tidak ada data.</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+}
+
+window.approveSeller = async (id, name, ownerId, slug, desc) => {
+  if(!confirm(`Setujui toko "${name}"?`)) return;
+  try {
+    const shopRef = push(ref(db,"shops"));
+    await set(shopRef, {
+      ownerId, name, slug, description: desc, verificationStatus: "approved", status: "approved",
+      ratingAverage: 0, ratingCount: 0, transactionCount: 0, createdAt: Date.now()
+    });
+    await update(ref(db,`sellerApplications/${id}`), { status: "approved", reviewedAt: Date.now(), reviewedBy: adminUser.uid });
+    toast("Toko disetujui.","success"); route();
+  } catch(e) { toast(e.message,"error"); }
+};
+
+window.rejectSeller = async (id) => {
+  const reason = prompt("Alasan penolakan:");
+  if(!reason) return;
+  await update(ref(db,`sellerApplications/${id}`), { status: "rejected", rejectionReason: reason, reviewedAt: Date.now(), reviewedBy: adminUser.uid });
+  toast("Pengajuan ditolak.","success"); route();
+};
+
+async function viewShops() {
+  const snap = await get(ref(db,"shops"));
+  const list = Object.entries(snap.val() || {});
+  $("#view").innerHTML = `
+    <div class="card">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Toko</th><th>Status</th><th>Rating</th><th>Aksi</th></tr></thead>
+        <tbody>${list.map(([id,s])=>`
+          <tr>
+            <td><b>${esc(s.name)}</b></td>
+            <td>${statusBadge(s.status||s.verificationStatus)}</td>
+            <td>${(s.ratingAverage||0).toFixed(1)} (${s.ratingCount||0})</td>
+            <td>
+              ${s.status !== "suspended" 
+                ? `<button class="btn btn-danger btn-sm" onclick="toggleShop('${id}','suspended')">Suspend</button>` 
+                : `<button class="btn btn-success btn-sm" onclick="toggleShop('${id}','approved')">Aktifkan</button>`}
+            </td>
+          </tr>`).join("") || `<tr><td colspan="4" style="text-align:center">Tidak ada data.</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+}
+
+window.toggleShop = async (id, status) => {
+  await update(ref(db,`shops/${id}`), { status, verificationStatus: status });
+  toast("Status toko diperbarui.","success"); route();
+};
+
+/* --- MANAJEMEN PRODUK (TAMBAH/EDIT/HAPUS) --- */
+async function viewProducts() {
+  const snap = await get(ref(db,"products"));
+  const list = Object.entries(snap.val() || {}).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+  
+  $("#view").innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title" style="margin:0">Daftar Produk</h3>
+        <button class="btn btn-primary" onclick="openAddProduct()">+ Tambah Produk</button>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Produk</th><th>Harga</th><th>Tipe</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody>${list.map(([id,p])=>`
+          <tr>
+            <td><b>${esc(p.title)}</b><br><span style="font-size:11px;color:var(--text-muted)">${esc(p.category)}</span></td>
+            <td>${rupiah(p.price)}</td>
+            <td>${p.productType === 'limited_html' ? '<span class="badge badge-blue">Limited</span>' : '<span class="badge badge-gray">Digital</span>'}</td>
+            <td>${statusBadge(p.status)}</td>
+            <td>
+              ${p.status === "pending_review" ? `
+                <button class="btn btn-success btn-sm" onclick="toggleProduct('${id}','available','available')">Setujui</button>
+                <button class="btn btn-danger btn-sm" onclick="toggleProduct('${id}','rejected','unavailable')">Tolak</button>
+              ` : ""}
+              ${p.status === "available" ? `<button class="btn btn-danger btn-sm" onclick="toggleProduct('${id}','suspended','suspended')">Suspend</button>` : ""}
+              ${p.status === "suspended" ? `<button class="btn btn-success btn-sm" onclick="toggleProduct('${id}','available','available')">Pulihkan</button>` : ""}
+              
+              <button class="btn btn-outline btn-sm" onclick="openEditProduct('${id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteProduct('${id}')">Hapus</button>
+            </td>
+          </tr>`).join("") || `<tr><td colspan="5" style="text-align:center">Tidak ada data.</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+
+  // FUNGSI UNTUK RENDER FORM PRODUK
+  const productFormHTML = (data = {}) => `
+    <form id="productForm">
+      <div class="field"><label>Nama Produk</label><input class="input" name="title" value="${esc(data.title||'')}" required></div>
+      <div class="row">
+        <div class="field"><label>Kategori</label><input class="input" name="category" value="${esc(data.category||'')}" required placeholder="Cth: Template HTML"></div>
+        <div class="field"><label>Harga (Rp)</label><input class="input" name="price" type="number" value="${data.price||''}" required></div>
+      </div>
+      <div class="field">
+        <label>Tipe Produk</label>
+        <select class="select" name="productType" id="prodType" onchange="document.getElementById('limitedFields').style.display = this.value === 'limited_html' ? 'block' : 'none'">
+          <option value="digital" ${data.productType !== 'limited_html' ? 'selected' : ''}>Produk Digital Biasa</option>
+          <option value="limited_html" ${data.productType === 'limited_html' ? 'selected' : ''}>Produk Limited (HTML Code)</option>
+        </select>
+      </div>
+      <div id="limitedFields" style="display:${data.productType === 'limited_html' ? 'block' : 'none'}; background:var(--bg-body); padding:12px; border-radius:8px; margin-bottom:16px;">
+        <div class="field"><label>URL Demo (Live Preview)</label><input class="input" name="demoURL" value="${esc(data.demoURL||'')}" placeholder="https://..."></div>
+        <div class="field"><label>Hashtag (Pisahkan dengan koma)</label><input class="input" name="hashtags" value="${esc(data.hashtags||'')}" placeholder="html, css, toko-online"></div>
+      </div>
+      <div class="field">
+        <label>Toko Penjual</label>
+        <select class="select" name="shopId" id="shopSelect" required><option value="">-- Pilih Toko --</option></select>
+      </div>
+      <div class="field"><label>Deskripsi</label><textarea class="textarea" name="description" required>${esc(data.description||'')}</textarea></div>
+      <div class="field"><label>URL Gambar</label><input class="input" name="imageURL" value="${esc(data.imageURLs?.[0] || '')}" required></div>
+      <div class="field"><label>URL File Unduhan (Setelah Lunas)</label><input class="input" name="fileDownloadURL" value="${esc(data.fileDownloadURL||'')}" placeholder="https://drive.google.com/..."></div>
+    </form>
+  `;
+
+  const loadShopOptions = async (selectedShopId = '') => {
+    const shopsSnap = await get(ref(db,"shops"));
+    const shops = shopsSnap.val() || {};
+    const select = $("#shopSelect");
+    if(select) {
+      select.innerHTML = `<option value="">-- Pilih Toko --</option>` + Object.entries(shops).map(([id, s]) => 
+        `<option value="${id}" ${id === selectedShopId ? 'selected' : ''}>${esc(s.name)}</option>`
+      ).join("");
+    }
+  };
+
+  window.openAddProduct = async () => {
+    openModal("Tambah Produk Baru", productFormHTML(), async () => {
+      const form = $("#productForm");
+      const fd = new FormData(form);
+      const price = Number(fd.get("price"));
+      if(!price || price < 1000) throw new Error("Harga minimal Rp 1.000");
+      if(!fd.get("shopId")) throw new Error("Pilih toko penjual");
+
+      const shopOwnerSnap = await get(ref(db, `shops/${fd.get("shopId")}/ownerId`));
+      const sellerId = shopOwnerSnap.val() || adminUser.uid; 
+
+      const prRef = push(ref(db,"products"));
+      await set(prRef, {
+        title: fd.get("title"), category: fd.get("category"), price: price,
+        shopId: fd.get("shopId"), sellerId: sellerId, description: fd.get("description"),
+        imageURLs: [fd.get("imageURL")], status: "available", availability: "available",
+        productType: fd.get("productType"),
+        demoURL: fd.get("demoURL") || "",
+        hashtags: fd.get("hashtags") || "",
+        fileDownloadURL: fd.get("fileDownloadURL") || "",
+        createdAt: Date.now(), updatedAt: Date.now()
+      });
+      toast("Produk berhasil ditambahkan.", "success");
+      route();
+    });
+    await loadShopOptions();
+  };
+
+  window.openEditProduct = async (id) => {
+    const p = (await get(ref(db, `products/${id}`))).val();
+    if(!p) return toast("Produk tidak ditemukan", "error");
+    
+    openModal("Edit Produk", productFormHTML(p), async () => {
+      const fd = new FormData($("#productForm"));
+      await update(ref(db, `products/${id}`), {
+        title: fd.get("title"), category: fd.get("category"), price: Number(fd.get("price")),
+        shopId: fd.get("shopId"), description: fd.get("description"),
+        imageURLs: [fd.get("imageURL")], productType: fd.get("productType"),
+        demoURL: fd.get("demoURL") || "", hashtags: fd.get("hashtags") || "",
+        fileDownloadURL: fd.get("fileDownloadURL") || "", updatedAt: Date.now()
+      });
+      toast("Produk diperbarui.", "success");
+      route();
+    });
+    await loadShopOptions(p.shopId);
+  };
+
+  window.deleteProduct = async (id) => {
+    if(!confirm("Hapus produk ini secara permanen?")) return;
+    await remove(ref(db, `products/${id}`));
+    toast("Produk dihapus.", "success");
+    route();
+  };
+}
+
+window.toggleProduct = async (id, status, availability) => {
+  await update(ref(db,`products/${id}`), { status, availability, updatedAt: Date.now() });
+  toast("Status diperbarui.","success"); route();
+};
+
+async function viewOrders() {
+  const snap = await get(ref(db,"orders"));
+  const list = Object.entries(snap.val() || {}).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+  $("#view").innerHTML = `
+    <div class="card">
+      <div class="table-wrap"><table>
+        <thead><tr><th>ID Pesanan</th><th>Pembeli</th><th>Produk</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody>${list.map(([id,o])=>`
+          <tr>
+            <td><code style="font-size:11px;background:var(--bg-body);padding:2px 4px;border-radius:4px">${esc(id)}</code></td>
+            <td>${esc(o.buyerName||o.buyerId)}</td>
+            <td>${esc(o.productTitleSnapshot)}</td>
+            <td>${rupiah(o.priceSnapshot)}</td>
+            <td>${statusBadge(o.paymentStatus)}</td>
+            <td>
+              ${(o.paymentStatus === "awaiting_verification" || o.paymentStatus === "pending") ? `
+                <button class="btn btn-success btn-sm" onclick="confirmPayment('${id}', '${o.productId}')">Konfirmasi Lunas</button>
+              ` : ""}
+            </td>
+          </tr>`).join("") || `<tr><td colspan="6" style="text-align:center">Tidak ada data.</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+}
+
+window.confirmPayment = async (orderId, productId) => {
+  if (!confirm("Konfirmasi pesanan ini sebagai LUNAS?\n\nPastikan Anda sudah memverifikasi bukti transfer.")) return;
+  const now = Date.now();
+  try {
+    await update(ref(db,`products/${productId}`), { status: "sold", availability: "sold", soldAt: now });
+    await update(ref(db,`orders/${orderId}`), { paymentStatus: "paid", orderStatus: "completed", paidAt: now });
+    toast("Pesanan Lunas. Produk terjual."); route();
+  } catch(e) { toast(e.message, "error"); }
+};
+
+async function viewReviews() {
+  const snap = await get(ref(db,"reviews"));
+  const list = Object.entries(snap.val() || {}).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+  $("#view").innerHTML = `
+    <div class="card">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Pembeli</th><th>Rating</th><th>Komentar</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody>${list.map(([id,r])=>`
+          <tr>
+            <td>${esc(r.buyerName||r.buyerId)}</td>
+            <td style="color:var(--warning);font-size:16px">${"★".repeat(Number(r.rating||0))}${"☆".repeat(5-Number(r.rating||0))}</td>
+            <td style="max-width:300px;white-space:normal">${esc(r.comment||"-")}</td>
+            <td>${statusBadge(r.status)}</td>
+            <td>
+              ${r.status === "visible" 
+                ? `<button class="btn btn-danger btn-sm" onclick="toggleReview('${id}','hidden')">Sembunyikan</button>`
+                : `<button class="btn btn-success btn-sm" onclick="toggleReview('${id}','visible')">Tampilkan</button>`}
+            </td>
+          </tr>`).join("") || `<tr><td colspan="5" style="text-align:center">Tidak ada data.</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+}
+window.toggleReview = async (id, status) => {
+  await update(ref(db,`reviews/${id}`), { status });
+  toast("Status ulasan diperbarui.","success"); route();
+};
+
+/* --- PENGATURAN (SETTINGS) --- */
+async function viewSettings() {
+  const snap = await get(ref(db,"settings/marketplace"));
+  const s = snap.val() || {};
+  
+  // Default Values
+  const defaultMascot = `<svg viewBox="0 0 100 100" style="width:80px;height:80px;color:#4f46e5"><circle cx="50" cy="50" r="45" fill="currentColor" opacity="0.1"/><path d="M30 50 Q50 20 70 50 Q50 80 30 50" fill="currentColor"/></svg>`;
+  const mascotCode = s.mascot?.code || defaultMascot;
+  
+  const defaultMenus = [
+    { label: "Katalog", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`, action: "katalog.html" },
+    { label: "Cari", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>`, action: "katalog.html" },
+    { label: "Jual", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M12 4v16m8-8H4"/></svg>`, action: "profil.html" },
+    { label: "Riwayat", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/></svg>`, action: "riwayat.html" }
+  ];
+  let menuItems = s.menuItems || defaultMenus;
+
+  const defaultBottomNavs = [
+    { id: "home", label: "Beranda", href: "index.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>` },
+    { id: "catalog", label: "Katalog", href: "katalog.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>` },
+    { id: "history", label: "Riwayat", href: "riwayat.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 01-8 0"></path></svg>` },
+    { id: "profile", label: "Profil", href: "profil.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` }
+  ];
+  let bottomMenus = s.bottomMenus || defaultBottomNavs;
+
+  const loadingScreen = s.loadingScreen || { type: 'default', value: '' };
+
+  $("#view").innerHTML = `
+    <div class="card">
+      <h3 class="card-title">Informasi Dasar</h3>
+      <form id="generalForm">
+        <div class="row">
+          <div class="field"><label>Nama Toko</label><input class="input" name="name" value="${esc(s.name||'KodinganKita')}"></div>
+          <div class="field"><label>Deskripsi</label><input class="input" name="description" value="${esc(s.description||'Marketplace Produk Digital Eksklusif')}"></div>
+        </div>
+        <button class="btn btn-primary" type="submit">Simpan Info</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">Loading Screen (Splash)</h3>
+      <div class="field">
+        <label>Tipe Loading</label>
+        <select class="select" id="loadType" onchange="document.getElementById('loadValueField').style.display = this.value === 'default' ? 'none' : 'block'">
+          <option value="default" ${loadingScreen.type === 'default' ? 'selected' : ''}>Logo Bawaan (SVG)</option>
+          <option value="image" ${loadingScreen.type === 'image' ? 'selected' : ''}>Gambar (URL)</option>
+          <option value="html" ${loadingScreen.type === 'html' ? 'selected' : ''}>HTML Kustom</option>
+        </select>
+      </div>
+      <div class="field" id="loadValueField" style="display:${loadingScreen.type !== 'default' ? 'block' : 'none'}">
+        <label>URL Gambar / Kode HTML</label>
+        <textarea class="textarea" id="loadValue">${esc(loadingScreen.value || '')}</textarea>
+      </div>
+      <button class="btn btn-primary" onclick="saveLoading()">Simpan Loading Screen</button>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">Editor Mascot Utama</h3>
+      <div class="row">
+        <div class="field">
+          <textarea id="mascotCode" class="textarea" style="height:150px" oninput="previewMascot()">${esc(mascotCode)}</textarea>
+        </div>
+        <div class="field">
+          <div class="preview-box" id="mascotPreview" style="height:150px;border-radius:12px"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="saveMascot()">Simpan Mascot</button>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">Editor Menu Cepat (Bulat)</h3>
+      <div id="menuEditor"></div>
+      <button class="btn btn-primary" onclick="saveMenu()" style="margin-top:16px">Simpan Menu Cepat</button>
+    </div>
+
+    <div class="card">
+      <h3 class="card-title">Editor Navigasi Bawah (Dock)</h3>
+      <div id="bottomMenuEditor"></div>
+      <button class="btn btn-primary" onclick="saveBottomMenu()" style="margin-top:16px">Simpan Navigasi Bawah</button>
+    </div>
+  `;
+
+  // PREVIEW MASCOT
+  window.previewMascot = () => {
+    const box = $("#mascotPreview"); box.innerHTML = "";
+    box.appendChild(createIframe($("#mascotCode").value));
+  };
+  window.previewMascot();
+
+  // SIMPAN INFO
+  $("#generalForm").onsubmit = async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    await update(ref(db,"settings/marketplace"), { name: fd.get("name"), description: fd.get("description") });
+    toast("Tersimpan.", "success");
+  };
+
+  // SIMPAN LOADING
+  window.saveLoading = async () => {
+    const type = $("#loadType").value;
+    const value = $("#loadValue").value;
+    await update(ref(db,"settings/marketplace"), { loadingScreen: { type, value } });
+    toast("Loading screen disimpan.", "success");
+  };
+
+  // SIMPAN MASCOT
+  window.saveMascot = async () => {
+    await update(ref(db,"settings/marketplace"), { mascot: { code: $("#mascotCode").value } });
+    toast("Mascot tersimpan.", "success");
+  };
+
+  // EDITOR MENU CEPAT
+  window.renderMenuEditor = () => {
+    $("#menuEditor").innerHTML = menuItems.map((m,i)=>`
+      <div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;position:relative">
+        <button class="btn btn-danger btn-sm" style="position:absolute;top:12px;right:12px" onclick="removeMenuItem(${i})">Hapus</button>
+        <div class="row" style="margin-bottom:12px">
+          <div class="field" style="margin:0"><label>Label</label><input class="input" value="${esc(m.label)}" oninput="updateMenuData(${i}, 'label', this.value)"></div>
+          <div class="field" style="margin:0"><label>Link Aksi (cth: katalog.html)</label><input class="input" value="${esc(m.action)}" oninput="updateMenuData(${i}, 'action', this.value)"></div>
+        </div>
+        <div class="row">
+          <div class="field" style="margin:0"><label>Kode Ikon</label><textarea class="textarea" style="height:80px" oninput="updateMenuData(${i}, 'code', this.value)">${esc(m.code)}</textarea></div>
+          <div class="field" style="margin:0"><label>Preview</label><div class="preview-box" id="menu-preview-${i}" style="width:64px;height:64px;border-radius:50%;padding:0"></div></div>
+        </div>
+      </div>`).join("");
+    menuItems.forEach((m, i) => { const el = $(`#menu-preview-${i}`); if(el) el.appendChild(createIframe(m.code, true)); });
+  };
+  window.updateMenuData = (idx, field, val) => {
+    menuItems[idx][field] = val;
+    if(field === 'code') { const el = $(`#menu-preview-${idx}`); if(el) { el.innerHTML=""; el.appendChild(createIframe(val, true)); } }
+  };
+  window.removeMenuItem = (idx) => { menuItems.splice(idx, 1); renderMenuEditor(); };
+  window.saveMenu = async () => { await update(ref(db,"settings/marketplace"), { menuItems: menuItems }); toast("Menu tersimpan.", "success"); };
+  renderMenuEditor();
+
+  // EDITOR BOTTOM NAV
+  window.renderBottomMenuEditor = () => {
+    $("#bottomMenuEditor").innerHTML = bottomMenus.map((m,i)=>`
+      <div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;position:relative">
+        <div class="row" style="margin-bottom:12px">
+          <div class="field" style="margin:0"><label>Label</label><input class="input" value="${esc(m.label)}" oninput="updateBottomMenuData(${i}, 'label', this.value)"></div>
+          <div class="field" style="margin:0"><label>Link (cth: index.html)</label><input class="input" value="${esc(m.href)}" oninput="updateBottomMenuData(${i}, 'href', this.value)"></div>
+        </div>
+        <div class="row">
+          <div class="field" style="margin:0"><label>Kode Ikon</label><textarea class="textarea" style="height:80px" oninput="updateBottomMenuData(${i}, 'code', this.value)">${esc(m.code)}</textarea></div>
+          <div class="field" style="margin:0"><label>Preview</label><div class="preview-box" id="bnav-preview-${i}" style="width:40px;height:40px;padding:0"></div></div>
+        </div>
+      </div>`).join("");
+    bottomMenus.forEach((m, i) => { const el = $(`#bnav-preview-${i}`); if(el) el.appendChild(createIframe(m.code, false)); });
+  };
+  window.updateBottomMenuData = (idx, field, val) => {
+    bottomMenus[idx][field] = val;
+    if(field === 'code') { const el = $(`#bnav-preview-${idx}`); if(el) { el.innerHTML=""; el.appendChild(createIframe(val, false)); } }
+  };
+  window.saveBottomMenu = async () => { await update(ref(db,"settings/marketplace"), { bottomMenus: bottomMenus }); toast("Navigasi tersimpan.", "success"); };
+  renderBottomMenuEditor();
+}
+
+async function viewAudit() {
+  const snap = await get(ref(db,"auditLogs"));
+  const logs = Object.entries(snap.val() || {}).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0)).slice(0,100);
+  $("#view").innerHTML = `
+    <div class="card">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Waktu</th><th>Aktor</th><th>Aksi</th><th>Detail</th></tr></thead>
+        <tbody>${logs.map(([,l])=>`
+          <tr>
+            <td style="font-size:12px">${new Date(l.createdAt).toLocaleString('id-ID')}</td>
+            <td style="font-size:12px">${esc(l.actorEmail||l.actorId)}</td>
+            <td><span class="badge badge-blue">${esc(l.action)}</span></td>
+            <td style="font-size:12px">${esc(l.reason||"-")}</td>
+          </tr>`).join("") || `<tr><td colspan="4" style="text-align:center">Belum ada aktivitas.</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+}
+</script>
+</body>
+  </html>
