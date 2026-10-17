@@ -21,10 +21,14 @@
 body{margin:0;font-family:var(--font);background:var(--bg-body);color:var(--text-main);display:flex;height:100vh;overflow:hidden}
 a{text-decoration:none;color:inherit}
 button,input,select,textarea{font-family:inherit}
+
+/* LAYOUT */
 .sidebar{width:260px;background:var(--bg-card);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%}
 .main-content{flex:1;display:flex;flex-direction:column;height:100%;overflow-y:auto}
 .topbar{background:var(--bg-card);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
 .content-pad{padding:24px;max-width:1200px;margin:0 auto;width:100%}
+
+/* SIDEBAR */
 .brand{display:flex;align-items:center;gap:12px;padding:20px;font-weight:800;font-size:18px;border-bottom:1px solid var(--border)}
 .brand svg{width:32px;height:32px;border-radius:8px}
 .nav-menu{flex:1;padding:16px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
@@ -337,7 +341,6 @@ async function viewDashboard() {
   const paidOrders = Object.values(orders).filter(o => o.paymentStatus==="paid");
   const totalSales = paidOrders.reduce((s,o)=>s+Number(o.priceSnapshot||0),0);
   const totalComm = paidOrders.reduce((s,o)=>s+Number(o.commissionSnapshot||0),0);
-  const pendingApps = Object.values(apps).filter(a=>a.status==="pending").length;
 
   $("#view").innerHTML = `
     <div class="stat-grid" style="margin-bottom:24px">
@@ -424,7 +427,7 @@ window.toggleShop = async (id, status) => {
   toast("Status toko diperbarui.","success"); route();
 };
 
-/* --- MANAJEMEN PRODUK (TAMBAH/EDIT/HAPUS) --- */
+/* --- MANAJEMEN PRODUK --- */
 async function viewProducts() {
   const snap = await get(ref(db,"products"));
   const list = Object.entries(snap.val() || {}).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
@@ -459,7 +462,6 @@ async function viewProducts() {
       </table></div>
     </div>`;
 
-  // FUNGSI UNTUK RENDER FORM PRODUK
   const productFormHTML = (data = {}) => `
     <form id="productForm">
       <div class="field"><label>Nama Produk</label><input class="input" name="title" value="${esc(data.title||'')}" required></div>
@@ -627,7 +629,6 @@ async function viewSettings() {
   const snap = await get(ref(db,"settings/marketplace"));
   const s = snap.val() || {};
   
-  // Default Values
   const defaultMascot = `<svg viewBox="0 0 100 100" style="width:80px;height:80px;color:#4f46e5"><circle cx="50" cy="50" r="45" fill="currentColor" opacity="0.1"/><path d="M30 50 Q50 20 70 50 Q50 80 30 50" fill="currentColor"/></svg>`;
   const mascotCode = s.mascot?.code || defaultMascot;
   
@@ -640,14 +641,12 @@ async function viewSettings() {
   let menuItems = s.menuItems || defaultMenus;
 
   const defaultBottomNavs = [
-    { id: "home", label: "Beranda", href: "index.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>` },
+    { id: "home", label: "Beranda", href: "index.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>` },
     { id: "catalog", label: "Katalog", href: "katalog.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>` },
-    { id: "history", label: "Riwayat", href: "riwayat.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 01-8 0"></path></svg>` },
+    { id: "history", label: "Riwayat", href: "riwayat.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path></svg>` },
     { id: "profile", label: "Profil", href: "profil.html", code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` }
   ];
   let bottomMenus = s.bottomMenus || defaultBottomNavs;
-
-  const loadingScreen = s.loadingScreen || { type: 'default', value: '' };
 
   $("#view").innerHTML = `
     <div class="card">
@@ -664,18 +663,11 @@ async function viewSettings() {
     <div class="card">
       <h3 class="card-title">Loading Screen (Splash)</h3>
       <div class="field">
-        <label>Tipe Loading</label>
-        <select class="select" id="loadType" onchange="document.getElementById('loadValueField').style.display = this.value === 'default' ? 'none' : 'block'">
-          <option value="default" ${loadingScreen.type === 'default' ? 'selected' : ''}>Logo Bawaan (SVG)</option>
-          <option value="image" ${loadingScreen.type === 'image' ? 'selected' : ''}>Gambar (URL)</option>
-          <option value="html" ${loadingScreen.type === 'html' ? 'selected' : ''}>HTML Kustom</option>
-        </select>
+        <label>Custom HTML Loading (Opsional)</label>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Biarkan kosong jika ingin menggunakan logo default. Anda bisa memasukkan kode HTML/SVG/CSS di sini.</p>
+        <textarea class="textarea" id="customHTML" style="height:120px">${esc(s.loadingCustomHTML || '')}</textarea>
       </div>
-      <div class="field" id="loadValueField" style="display:${loadingScreen.type !== 'default' ? 'block' : 'none'}">
-        <label>URL Gambar / Kode HTML</label>
-        <textarea class="textarea" id="loadValue">${esc(loadingScreen.value || '')}</textarea>
-      </div>
-      <button class="btn btn-primary" onclick="saveLoading()">Simpan Loading Screen</button>
+      <button class="btn btn-primary" onclick="saveCustomHTML()">Simpan Custom HTML</button>
     </div>
 
     <div class="card">
@@ -719,12 +711,10 @@ async function viewSettings() {
     toast("Tersimpan.", "success");
   };
 
-  // SIMPAN LOADING
-  window.saveLoading = async () => {
-    const type = $("#loadType").value;
-    const value = $("#loadValue").value;
-    await update(ref(db,"settings/marketplace"), { loadingScreen: { type, value } });
-    toast("Loading screen disimpan.", "success");
+  // SIMPAN CUSTOM LOADING HTML
+  window.saveCustomHTML = async () => {
+    await update(ref(db,"settings/marketplace"), { loadingCustomHTML: $("#customHTML").value });
+    toast("Custom Loading HTML tersimpan.", "success");
   };
 
   // SIMPAN MASCOT
@@ -800,4 +790,4 @@ async function viewAudit() {
 }
 </script>
 </body>
-  </html>
+</html>
