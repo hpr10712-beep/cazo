@@ -18,14 +18,30 @@
   --page-bg:#f8fafc;--c1:#4c1d95;--c2:#7c3aed;--c3:#db2777;--c4:#2563eb;--speed:1;--ink:#1e1b4b;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{margin:0;font-family:var(--font);background:var(--bg-body);color:var(--text-main);padding-bottom:110px;opacity:0;transition:opacity 0.3s ease;}
-body.loaded{opacity:1;}
+
+/* HALAMAN UTAMA DISEMBUNYIKAN DULU */
+body{
+  margin:0;
+  font-family:var(--font);
+  background:var(--bg-body);
+  color:var(--text-main);
+  padding-bottom:110px;
+  overflow-x:hidden;
+  opacity:0;
+  transition:opacity 0.8s ease;
+}
+body.app-ready{
+  opacity:1;
+}
 body.lock{overflow:hidden;}
-a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
 [hidden]{display:none!important}
 
 /* =========================================
-   CUSTOM LOADING SCREEN PREMIUM (DIPERBARUI)
+   CUSTOM LOADING SCREEN PREMIUM
    ========================================= */
 #loader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;color:#fff;overflow:hidden;
   background:radial-gradient(circle at 50% 35%,#5b21b6 0%,#2e1065 55%,#1e1b4b 100%);transition:opacity .6s,transform .6s}
@@ -107,7 +123,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 @keyframes slide{to{transform:translateX(-50%)}}
 
 .bar{position:relative;display:flex;align-items:center;gap:12px;padding:14px 16px;z-index:20;}
-/* LOGO STATIS (Hanya Kilau, Tidak Goyang) */
 .logo{position:relative;z-index:0;width:50px;height:50px;flex:none;filter:drop-shadow(0 6px 6px rgba(30,27,75,.4))}
 .logo::before{content:"";position:absolute;inset:-3px;z-index:-1;border-radius:18px;background:conic-gradient(#fde047,#f472b6,#22d3ee,#4ade80,#fde047);filter:blur(9px);opacity:.75;animation:rot 4s linear infinite}
 .logo svg{width:100%;height:100%;display:block;overflow:visible}
@@ -118,7 +133,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .shim{background:linear-gradient(90deg,#fde047,#f9a8d4,#a5f3fc,#fde047);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 4s linear infinite;text-shadow:none;filter:drop-shadow(0 2px 0 rgba(30,27,75,.45))}
 @keyframes sh{to{background-position:-200% 0}}
 
-/* TOMBOL MASUK */
 .login{position:relative;border:0;padding:2.5px;border-radius:999px;cursor:pointer;overflow:hidden;background:none;transition:transform .2s;z-index:20;}
 .login:active{transform:scale(.95)}
 .login::before{content:"";position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;translate:-50% -50%;background:conic-gradient(#fde047,#f472b6,#22d3ee,#4ade80,#fde047);animation:rot 3s linear infinite}
@@ -127,7 +141,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .login .g svg{width:22px;height:22px}
 .login:hover span{background:#f1f5f9}
 
-/* CARD PROFIL */
 .acct{position:relative;z-index:50;}
 .profile-card{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.95);border-radius:999px;padding:4px 14px 4px 4px;cursor:pointer;box-shadow:0 3px 0 rgba(30,27,75,.25);transition:transform .2s, background .2s;max-width:180px;border:0;}
 .profile-card:active{transform:scale(.95)}
@@ -170,7 +183,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 @keyframes hg{50%{transform:rotate(4deg)}}
 @media (max-width:360px){.peek{width:100px}.say .bubble{font-size:13px;margin-bottom:34px}}
 
-/* === MENU CEPAT === */
 .container{max-width:1000px;margin:0 auto;padding:20px;}
 .quick-menu{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:500px;margin:-10px auto 30px;padding:0 16px;}
 .quick-item{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:inherit;cursor:pointer;}
@@ -179,7 +191,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .quick-icon iframe{width:100%;height:100%;border:none;border-radius:50%;pointer-events:none;}
 .quick-label{font-size:12px;font-weight:600;text-align:center;}
 
-/* === CARD PRODUK PREMIUM === */
 .section-title{font-size:20px;font-weight:800;margin:0 0 16px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}
@@ -205,7 +216,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .card-price{font-size:16px;font-weight:900;color:#4f46e5;margin-top:auto;padding-top:6px;letter-spacing:-0.3px;}
 .empty-state{text-align:center;padding:60px 20px;color:var(--text-muted);grid-column:1/-1}
 
-/* === NAVIGASI 3D BAWAH === */
 :root { --nav-ink:#1e1b4b; }
 .nav { position:fixed; left:12px; right:12px; bottom:16px; background:#fff; border-radius:34px; padding:10px 8px 10px; display:flex; justify-content:space-around; box-shadow:0 10px 30px rgba(76,29,149,.2), inset 0 -3px 0 rgba(30,27,75,.05); z-index: 100; }
 .item { position:relative; flex:1; border:0; background:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; font:900 11px inherit; color:#94a3b8; padding:0; text-decoration: none; outline: none; }
@@ -221,7 +231,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .item.active .tw { animation:tw 1.4s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
 @keyframes tw { 50% { transform:scale(.4) rotate(45deg); opacity:.5; } }
 
-/* === MODAL LOGOUT PREMIUM === */
 .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.65); backdrop-filter: blur(6px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
 .modal-overlay:not([hidden]) { opacity: 1; pointer-events: auto; }
 .modal-box { background: #fff; border-radius: 24px; width: 100%; max-width: 380px; padding: 32px 28px 24px; text-align: center; box-shadow: 0 25px 60px rgba(15,23,42,0.25); transform: scale(0.85) translateY(10px); transition: transform 0.3s cubic-bezier(.34,1.56,.64,1); position: relative; }
@@ -239,9 +248,9 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .btn-danger-modal:hover { box-shadow: 0 8px 20px rgba(225,29,72,0.45); }
 </style>
 </head>
-<body>
+<body class="lock">
 
-<!-- === CUSTOM LOADING SCREEN === -->
+<!-- LOADING SCREEN -->
 <div id="loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Memuat Cazo Market">
   <div class="rays"></div>
   <div class="stars" id="stars"></div>
@@ -249,7 +258,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 
   <div class="stage" id="stage" data-mood="wait">
     <div class="bubble" id="bubble"><div class="m" id="m"></div><div class="s" id="s"></div></div>
-
     <svg id="mascot" viewBox="0 0 200 250" aria-hidden="true">
       <defs>
         <linearGradient id="gp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
@@ -264,7 +272,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
         <path d="M64 120Q100 110 136 120L142 194H58Z" fill="url(#gp)"/>
         <path d="M88 116H112V194H88Z" fill="#fff" stroke-width="3"/>
         <path d="M103 134 93 160H101L96 182 111 154H103Z" fill="#fde047" stroke-width="2.5"/>
-
         <g class="armL">
           <path d="M66 132Q46 150 46 174" fill="none" stroke-width="22"/>
           <path d="M66 132Q46 150 46 174" fill="none" stroke="#f472b6" stroke-width="14"/>
@@ -278,7 +285,6 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
           <path d="M134 132Q152 120 162 98" fill="none" stroke="#f472b6" stroke-width="14"/>
           <circle cx="164" cy="92" r="9" fill="#ffe8d6" stroke-width="3.5"/>
         </g>
-
         <g class="head">
           <ellipse cx="100" cy="82" rx="45" ry="38" fill="#ffe8d6"/>
           <path d="M54 84C47 54 60 42 64 24L81 44 91 10 105 40 121 8 129 42 146 24C150 42 154 58 146 84 136 64 120 58 100 58S64 64 54 84Z" fill="url(#gb)"/>
@@ -300,13 +306,12 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
       </g>
     </svg>
   </div>
-
   <div class="bar"><div class="fill" id="fill"></div></div>
   <div class="label" id="label">Menyiapkan…</div>
   <div id="confetti"></div>
 </div>
 
-<!-- SVG DEFINITIONS UNTUK HALAMAN UTAMA -->
+<!-- SVG DEFINITIONS -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <linearGradient id="lgBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset=".55" stop-color="#7c3aed"/><stop offset="1" stop-color="#db2777"/></linearGradient>
@@ -324,7 +329,7 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
   <symbol id="mascot" viewBox="0 0 44 34"><g stroke="#1e1b4b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><circle cx="7" cy="30" r="4" fill="#ffe8d6"/><circle cx="37" cy="30" r="4" fill="#ffe8d6"/><ellipse cx="22" cy="21.5" rx="14.5" ry="10.5" fill="#ffe8d6"/><path d="M7 21C6 12 9 9 10 5l5 6 4-9 4 8 5-8 3 9 5-6c1 4 2 8 1 16-4-7-9-9-15-9S11 14 7 21Z" fill="#3b82f6"/></g><path d="M12 12c3-3 7-4 10-4" stroke="#fff" stroke-opacity=".6" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="15.5" cy="22.5" r="3.5" fill="#fbbf24" stroke="#1e1b4b" stroke-width="1.2"/><circle cx="28.5" cy="22.5" r="3.5" fill="#fbbf24" stroke="#1e1b4b" stroke-width="1.2"/><circle cx="15.8" cy="22.8" r="1.7" fill="#1e1b4b"/><circle cx="28.2" cy="22.8" r="1.7" fill="#1e1b4b"/><circle cx="14.8" cy="21.6" r=".8" fill="#fff"/><circle cx="27.2" cy="21.6" r=".8" fill="#fff"/><circle cx="10" cy="26.5" r="2" fill="#fda4af" opacity=".75"/><circle cx="34" cy="26.5" r="2" fill="#fda4af" opacity=".75"/><path d="M19.5 27.5q2.5 2.2 5 0" stroke="#be123c" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
 </svg>
 
-<!-- === HEADER === -->
+<!-- HEADER -->
 <header class="cz-header">
   <div class="cz-bg">
     <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
@@ -419,7 +424,7 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
   </div>
 </header>
 
-<!-- === KONTEN UTAMA === -->
+<!-- KONTEN UTAMA -->
 <main>
   <div class="quick-menu" id="quickMenu"></div>
   <div class="container">
@@ -433,7 +438,7 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
   </div>
 </main>
 
-<!-- === NAVIGASI BAWAH === -->
+<!-- NAVIGASI BAWAH -->
 <nav class="nav" id="nav">
   <a href="index.html" class="item active" style="--glow:#c4b5fd"><svg class="mascot"><use href="#mascot"/></svg><div class="iw"><svg class="icon" viewBox="0 0 56 56"><ellipse cx="28" cy="52" rx="17" ry="3" fill="#1e1b4b" opacity=".18"/><g stroke="#1e1b4b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><rect x="36" y="10" width="7" height="14" rx="2" fill="url(#gPink)"/><rect x="10" y="26" width="36" height="24" rx="5" fill="url(#gYellow)"/><path d="M5 30 28 7 51 30Z" fill="url(#gViolet)"/><circle cx="28" cy="22" r="4.5" fill="#bae6fd"/><path d="M23 50V40a5 5 0 0 1 10 0v10Z" fill="url(#gPink)"/><circle cx="30.5" cy="44.5" r="1" fill="#1e1b4b" stroke="none"/></g><path d="M12 28 26 14" stroke="#fff" stroke-opacity=".65" stroke-width="3" stroke-linecap="round"/><path d="M14 34v8" stroke="#fff" stroke-opacity=".7" stroke-width="2.6" stroke-linecap="round"/><use class="tw" href="#spark" x="43" y="1" width="10" height="10"/></svg></div>Beranda</a>
   <a href="katalog.html" class="item" style="--glow:#93c5fd"><svg class="mascot"><use href="#mascot"/></svg><div class="iw"><svg class="icon" viewBox="0 0 56 56"><ellipse cx="28" cy="52.5" rx="18" ry="3" fill="#1e1b4b" opacity=".18"/><g stroke="#1e1b4b" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="8" y="11" width="18" height="18" rx="6" fill="#1e1b4b"/><rect x="8" y="8" width="18" height="18" rx="6" fill="url(#gPink)"/><rect x="30" y="11" width="18" height="18" rx="6" fill="#1e1b4b"/><rect x="30" y="8" width="18" height="18" rx="6" fill="url(#gBlue)"/><rect x="8" y="33" width="18" height="18" rx="6" fill="#1e1b4b"/><rect x="8" y="30" width="18" height="18" rx="6" fill="url(#gYellow)"/><rect x="30" y="33" width="18" height="18" rx="6" fill="#1e1b4b"/><rect x="30" y="30" width="18" height="18" rx="6" fill="url(#gGreen)"/></g><g stroke="#fff" stroke-opacity=".75" stroke-width="2.4" fill="none" stroke-linecap="round"><path d="M12 17a5 5 0 0 1 5-5"/><path d="M34 17a5 5 0 0 1 5-5"/><path d="M12 39a5 5 0 0 1 5-5"/><path d="M34 39a5 5 0 0 1 5-5"/></g><use class="tw" href="#spark" x="42" y="1" width="10" height="10"/></svg></div>Katalog</a>
@@ -441,7 +446,7 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
   <a href="profil.html" class="item" style="--glow:#fdba74"><svg class="mascot"><use href="#mascot"/></svg><div class="iw"><svg class="icon" viewBox="0 0 56 56"><ellipse cx="28" cy="52.5" rx="17" ry="3" fill="#1e1b4b" opacity=".18"/><g stroke="#1e1b4b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M9 51C9 40 17 36 28 36S47 40 47 51Z" fill="url(#gOrange)"/><path d="M23 37l5 6 5-6Z" fill="#fff"/><circle cx="28" cy="22" r="13" fill="#ffe8d6"/><path d="M15 22C13 9 22 6 28 8c8-2 15 3 13 14-3-6-7-8-13-8s-10 2-13 8Z" fill="url(#gBlue)"/></g><path d="M18 14c2-3 5-4 8-4" stroke="#fff" stroke-opacity=".7" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="22.5" cy="25" r="2" fill="#1e1b4b"/><circle cx="33.5" cy="25" r="2" fill="#1e1b4b"/><circle cx="19" cy="28.5" r="2" fill="#fda4af" opacity=".8"/><circle cx="37" cy="28.5" r="2" fill="#fda4af" opacity=".8"/><path d="M25 29.5q3 3 6 0" stroke="#1e1b4b" stroke-width="1.8" fill="none" stroke-linecap="round"/><use class="tw" href="#spark" x="42" y="2" width="10" height="10"/></svg></div>Profil</a>
 </nav>
 
-<!-- === MODAL LOGOUT === -->
+<!-- MODAL LOGOUT -->
 <div id="logout-modal" class="modal-overlay" hidden>
   <div class="modal-box">
     <div class="modal-icon">
@@ -473,11 +478,10 @@ const rupiah = n => "Rp" + Number(n||0).toLocaleString("id-ID");
 
 let state = { user: null, settings: {}, products: {}, showAllMenus: false, dataLoaded: 0 };
 
-// --- SETUP LOGIKA LOADING SCREEN ---
+// --- SETUP LOADING SCREEN ---
 const $ = s => document.querySelector(s);
 const loader = $('#loader'), stage = $('#stage'), fill = $('#fill'), bubble = $('#bubble'),
       mEl = $('#m'), sEl = $('#s'), label = $('#label'), conf = $('#confetti');
-document.body.classList.add('lock');
 
 $('#stars').innerHTML = Array.from({length:36}, () =>
   `<i style="--x:${Math.random()*100}%;--y:${Math.random()*100}%;--s:${2+Math.random()*4}px;--d:${1.5+Math.random()*3}s"></i>`).join('');
@@ -512,7 +516,6 @@ function burst(n) {
 
 const tasks = [];
 const addTask = name => { const t = {name, p:0}; tasks.push(t); return t; };
-const nice = u => u.split('/').pop().replace(/\.\w+$/, '').replace(/[-_]/g, ' ') || u;
 
 function fakeTask(t, delay, dur) {
   setTimeout(() => { const s = performance.now();
@@ -521,16 +524,17 @@ function fakeTask(t, delay, dur) {
 }
 
 ['Beranda','Katalog','Produk terbaru','Riwayat','Profil','Gambar & ikon']
-  .forEach((n, i) => fakeTask(addTask(n), i*600, 1000 + Math.random()*1000));
+  .forEach((n, i) => fakeTask(addTask(n), i*500, 1000 + Math.random()*1000));
 
 const tl = addTask('Halaman');
 window.finishLoading = () => { tl.p = 1; };
 
-const CFG = { minMs: 3000, doneHoldMs: 1800 };
+const CFG = { minMs: 3000, doneHoldMs: 1500 }; // Minimal 3 detik agar animasi terlihat
 const t0 = performance.now();
-let shown = 0, mood = 'wait';
+let shown = 0, mood = 'wait', isFinished = false;
 
 function frame(now) {
+  if(isFinished) return;
   const real = tasks.reduce((a, t) => a + t.p, 0) / tasks.length * 100;
   const target = Math.min(real, (now - t0) / CFG.minMs * 100, 100);
   if (target > shown) shown = Math.min(target, shown + Math.max((target - shown) * .08, .12));
@@ -538,6 +542,7 @@ function frame(now) {
   shown < 100 ? requestAnimationFrame(frame) : finish();
 }
 function render(v) {
+  if(isFinished) return;
   const p = Math.floor(v);
   fill.style.width = v + '%';
   loader.setAttribute('aria-valuenow', p);
@@ -553,21 +558,33 @@ function render(v) {
     if (m === 'done') { burst(110); setTimeout(() => burst(70), 700); }
   }
 }
+
 function finish() {
+  if(isFinished) return;
+  isFinished = true;
   setTimeout(() => {
+    // 1. Loading Screen Mulai Pudar
     loader.classList.add('hide');
+    
     setTimeout(() => {
-      loader.remove(); document.body.classList.remove('lock');
-      document.body.classList.add('loaded');
+      // 2. Loading Screen Dihapus
+      loader.remove(); 
+      
+      // 3. Halaman Utama Muncul (Fade In) & Scroll Aktif Kembali
+      document.body.classList.remove('lock');
+      document.body.classList.add('app-ready'); 
+      
       document.dispatchEvent(new Event('kk:loaded'));
-    }, 650);
-  }, CFG.doneHoldMs);
+    }, 650); // Waktu tunggu memudarnya loader
+  }, CFG.doneHoldMs); // Waktu jeda perayaan sebelum mulai memudar
 }
 requestAnimationFrame(frame);
-// --- SELESAI SETUP LOADING ---
+
+// ANTISIPASI JIKA FIREBASE LAMA MERESPON (FORCE FINISH DALAM 5 DETIK)
+setTimeout(() => { if(!isFinished) window.finishLoading(); }, 5000);
 
 
-// --- LOGIKA AUTH ---
+// --- AUTH ---
 window.handleLogin = async () => { 
   try { await signInWithPopup(auth, provider); } catch(e){ alert("Gagal login: " + e.message); } 
 };
@@ -613,6 +630,9 @@ onValue(ref(db, "settings/marketplace"), s => {
   renderQuickMenu();
   state.dataLoaded++;
   if(state.dataLoaded >= 2) window.finishLoading();
+}, (error) => {
+  console.error("Firebase Error:", error);
+  window.finishLoading(); // Jika error, tetap buka web agar tidak blank
 });
 
 onValue(ref(db, "products"), s => { 
@@ -620,6 +640,9 @@ onValue(ref(db, "products"), s => {
   renderProducts(); 
   state.dataLoaded++;
   if(state.dataLoaded >= 2) window.finishLoading();
+}, (error) => {
+  console.error("Firebase Error:", error);
+  window.finishLoading();
 });
 
 // --- MENU CEPAT ---
