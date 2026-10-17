@@ -23,6 +23,10 @@ body.loaded{opacity:1;}
 a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{font-family:inherit;cursor:pointer;border:none;background:none}
 [hidden]{display:none!important}
 
+/* === LOADING SCREEN === */
+#page-loader{position:fixed;inset:0;background:#fff;z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease, visibility 0.5s;}
+#page-loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+
 /* === HEADER ANIMASI BARU === */
 .cz-header{position:relative;color:#fff;padding:0;isolation:isolate;background:linear-gradient(120deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c1));background-size:300% 300%;animation:flow calc(14s/var(--speed)) ease-in-out infinite;overflow:hidden;border-radius:0 0 30px 30px;margin-bottom:20px;}
 .cz-bg{position:absolute;inset:0;overflow:hidden;z-index:-1}
@@ -58,7 +62,9 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .shim{background:linear-gradient(90deg,#fde047,#f9a8d4,#a5f3fc,#fde047);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 4s linear infinite;text-shadow:none;filter:drop-shadow(0 2px 0 rgba(30,27,75,.45))}
 @keyframes sh{to{background-position:-200% 0}}
 
-.login{position:relative;border:0;padding:2.5px;border-radius:999px;cursor:pointer;overflow:hidden;background:none;transition:transform .2s;z-index:20;}
+/* TOMBOL MASUK & PROFIL */
+.acct{position:relative;z-index:50;}
+.login{position:relative;border:0;padding:2.5px;border-radius:999px;cursor:pointer;overflow:hidden;background:none;transition:transform .2s;}
 .login:active{transform:scale(.95)}
 .login::before{content:"";position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;translate:-50% -50%;background:conic-gradient(#fde047,#f472b6,#22d3ee,#4ade80,#fde047);animation:rot 3s linear infinite}
 .login span{position:relative;display:flex;align-items:center;gap:9px;background:#fff;color:#1f2937;font-weight:800;font-size:15px;padding:8px 18px 8px 12px;border-radius:999px;box-shadow:0 3px 0 rgba(30,27,75,.25)}
@@ -66,19 +72,17 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 .login .g svg{width:22px;height:22px}
 .login:hover span{background:#f1f5f9}
 
-.acct{position:relative;z-index:50;}
 .user{display:block;padding:0;border:0;background:none;border-radius:50%;cursor:pointer;transition:transform .2s;filter:drop-shadow(0 4px 6px rgba(30,27,75,.4))}
 .user:active{transform:scale(.92)}
 .user .av{width:46px;height:46px;transition:transform .25s}
 .user[aria-expanded=true] .av{transform:scale(1.07)}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:88vw;text-align:center;background:#1e1b4b;color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;font-size:14px;z-index:99;box-shadow:0 8px 24px rgba(30,27,75,.4);animation:pop .3s cubic-bezier(.34,1.8,.64,1)}
 .av{position:relative;flex:none;width:38px;height:38px;border-radius:50%}
 .av::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#fde047,#f472b6,#22d3ee,#fde047);animation:rot 3s linear infinite}
 .av img,.av .ini{position:absolute;inset:2.5px;width:calc(100% - 5px);height:calc(100% - 5px);border-radius:50%;object-fit:cover;background:#fff}
 .av .ini{display:grid;place-items:center;font-weight:900;color:#fff;font-size:17px;background:linear-gradient(135deg,#7c3aed,#db2777)}
 .av.on::after{content:"";position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid #fff}
 
-/* DROPDOWN MENU PROFIL */
+/* DROPDOWN PROFIL */
 .menu{position:absolute;right:0;top:calc(100% + 10px);width:250px;background:#fff;color:var(--ink);border-radius:20px;padding:16px;z-index:999;
   box-shadow:0 14px 40px rgba(30,27,75,.35),0 0 0 3px var(--ink);transform-origin:top right;animation:pop .3s cubic-bezier(.34,1.8,.64,1)}
 @keyframes pop{from{transform:scale(.7);opacity:0}}
@@ -156,7 +160,17 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 </head>
 <body>
 
-<!-- SVG DEFINITIONS (LOGO, WARNA, DLL) -->
+<!-- PAGE LOADER -->
+<div id="page-loader">
+  <div id="custom-loader-content" style="display:flex; flex-direction:column; align-items:center;">
+    <!-- Default Logo Animasi -->
+    <div style="width:80px;height:80px;animation:pulse 1.5s infinite;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%"><rect x="4" y="4" width="120" height="120" rx="30" fill="#0b1220"/><circle cx="64" cy="70" r="50" fill="#4f46e5" opacity=".28"/><g transform="rotate(-5 64 66)"><path d="M48 52V42Q48 26 64 26Q80 26 80 42V52" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/><path d="M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z" fill="#34d399" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/><path d="M35 48H93L93.7 57H34.3Z" fill="#10b981"/><circle cx="50" cy="52.5" r="3" fill="#0b1220"/><circle cx="78" cy="52.5" r="3" fill="#0b1220"/><g fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M53 69L43 80L53 91"/><path d="M75 69L85 80L75 91"/><path d="M68 67L60 93"/></g></g><path transform="translate(99 33) scale(.8)" fill="#ffe14d" d="M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z"/></svg></div>
+    <div style="width:160px;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:24px;"><div style="width:50%;height:100%;background:var(--primary);border-radius:4px;animation:loadBar 1s infinite ease-in-out alternate;"></div></div>
+  </div>
+</div>
+<style>@keyframes pulse{0%{transform:scale(0.95);opacity:0.8}50%{transform:scale(1.05);opacity:1}100%{transform:scale(0.95);opacity:0.8}} @keyframes loadBar{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}</style>
+
+<!-- SVG DEFINITIONS -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <linearGradient id="lgBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset=".55" stop-color="#7c3aed"/><stop offset="1" stop-color="#db2777"/></linearGradient>
@@ -212,11 +226,12 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
         </span>
       </button>
 
-      <!-- PROFIL CARD (MUNCUL SETELAH LOGIN) -->
+      <!-- CARD PROFIL (Muncul Setelah Login) -->
       <button class="user" id="userChip" aria-haspopup="true" aria-expanded="false" hidden onclick="toggleMenu(event)">
         <span class="av on" id="av"></span>
       </button>
       
+      <!-- DROPDOWN PROFIL -->
       <div class="menu" id="menu" hidden>
         <div class="mh">
           <span class="av on" id="mav"></span>
@@ -286,10 +301,7 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{fon
 
 <!-- KONTEN UTAMA -->
 <main>
-  <!-- MENU CEPAT -->
   <div class="quick-menu" id="quickMenu"></div>
-
-  <!-- PRODUK -->
   <div class="container">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <h2 class="section-title" style="margin:0">Produk Terbaru</h2>
@@ -322,7 +334,8 @@ const DEFAULT_LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 1
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rupiah = n => "Rp" + Number(n||0).toLocaleString("id-ID");
 
-let state = { user: null, settings: {}, products: {}, showAllMenus: false };
+let state = { user: null, settings: {}, products: {}, showAllMenus: false, dataLoaded: 0 };
+const startTime = Date.now();
 
 function createIframe(code, round, interactive=false) { 
   const i = document.createElement("iframe"); 
@@ -331,7 +344,7 @@ function createIframe(code, round, interactive=false) {
   return i; 
 }
 
-// --- LOGIKA AUTHENTIKASI (DIPERBAIKI) ---
+// --- AUTHENTIKASI ---
 window.handleAuth = async () => { 
   if (state.user) { 
     if(confirm("Keluar dari akun?")) await signOut(auth); 
@@ -364,11 +377,10 @@ onAuthStateChanged(auth, user => {
   const userChip = document.getElementById('userChip');
   
   if(user) {
-    // Sembunyikan tombol login, tampilkan card profil
-    loginBtn.hidden = true; 
+    loginBtn.style.display = "none"; 
+    userChip.style.display = "block"; 
     userChip.hidden = false;
     
-    // Isi data profil di dropdown
     document.getElementById('mname').textContent = user.displayName || "Pengguna";
     document.getElementById('memail').textContent = user.email || "";
     
@@ -378,16 +390,36 @@ onAuthStateChanged(auth, user => {
     document.getElementById('av').innerHTML = imgHTML;
     document.getElementById('mav').innerHTML = imgHTML;
   } else {
-    // Tampilkan tombol login, sembunyikan card profil
-    loginBtn.hidden = false; 
+    loginBtn.style.display = "flex"; 
+    userChip.style.display = "none"; 
     userChip.hidden = true;
     document.getElementById('menu').hidden = true;
   }
 });
 
+// --- FUNGSI CEK LOADING SELESAI ---
+function checkLoadComplete() {
+  state.dataLoaded++;
+  if(state.dataLoaded >= 2) {
+    const elapsed = Date.now() - startTime;
+    const minDelay = 2500; // Minimal 2.5 detik agar animasi loading selesai
+    const remaining = Math.max(0, minDelay - elapsed);
+    
+    setTimeout(() => {
+      document.getElementById('page-loader').classList.add('hidden');
+      document.body.classList.add('loaded');
+    }, remaining);
+  }
+}
+
 // --- LOAD DATA DARI FIREBASE ---
 onValue(ref(db, "settings/marketplace"), s => { 
   state.settings = s.val() || {}; 
+  
+  if(state.settings.loadingCustomHTML) {
+    document.getElementById('custom-loader-content').innerHTML = state.settings.loadingCustomHTML;
+  }
+  
   const name = state.settings.name || "Cazo Market";
   const words = name.split(' ');
   const firstWord = words[0];
@@ -398,14 +430,16 @@ onValue(ref(db, "settings/marketplace"), s => {
   document.getElementById('heroDesc').textContent = state.settings.description || "Marketplace Produk Digital Eksklusif.";
   
   renderQuickMenu();
+  checkLoadComplete();
 });
 
 onValue(ref(db, "products"), s => { 
   state.products = s.val() || {}; 
   renderProducts(); 
+  checkLoadComplete();
 });
 
-// --- RENDER MENU CEPAT (DENGAN FITUR LIHAT SEMUA) ---
+// --- RENDER MENU CEPAT ---
 function renderQuickMenu() {
   const container = document.getElementById('quickMenu');
   const defaultMenus = [
@@ -425,7 +459,6 @@ function renderQuickMenu() {
     </a>
   `).join("");
 
-  // TOMBOL LIHAT SEMUA
   if (menus.length > 4 && !state.showAllMenus) {
     html += `
       <a href="javascript:void(0)" onclick="document.getElementById('quickMenu').style.maxWidth='100%'; window.state.showAllMenus=true; renderQuickMenu();" class="quick-item">
@@ -493,9 +526,6 @@ function renderProducts() {
     }
   })();
 })();
-
-// Tampilkan Body
-document.body.classList.add('loaded');
 </script>
 </body>
 </html>
