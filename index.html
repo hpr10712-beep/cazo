@@ -3,46 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>KodinganKita — Marketplace</title>
+<title>Cazo Market — Marketplace</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#4f46e5;--primary-hover:#4338ca;--primary-light:#eef2ff;--bg-body:#f8fafc;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--success:#10b981;--radius-md:14px;--radius-full:999px;--shadow-sm:0 1px 3px rgba(0,0,0,0.05);--shadow-md:0 4px 12px rgba(0,0,0,0.08);--font:'Inter',system-ui,sans-serif;}
+:root{
+  --primary:#4f46e5;--primary-hover:#4338ca;--primary-light:#eef2ff;
+  --bg-body:#f8fafc;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;
+  --danger:#ef4444;--success:#10b981;--radius-md:14px;--radius-full:999px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.05);--shadow-md:0 4px 12px rgba(0,0,0,0.08);
+  --font:'Inter',system-ui,sans-serif;
+  
+  /* Variabel Header Baru */
+  --page-bg:#f8fafc;--c1:#4c1d95;--c2:#7c3aed;--c3:#db2777;--c4:#2563eb;--speed:1;--ink:#1e1b4b;
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{margin:0;font-family:var(--font);background:var(--bg-body);color:var(--text-main);padding-bottom:110px;opacity:0;transition:opacity 0.3s ease;}
 body.loaded{opacity:1;}
 a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{font-family:inherit;cursor:pointer;border:none;background:none}
+[hidden]{display:none!important}
 
-#page-loader{position:fixed;inset:0;background:#fff;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease, visibility 0.5s;}
-#page-loader.hidden{opacity:0;visibility:hidden;}
+/* === HEADER ANIMASI BARU === */
+.cz-header{position:relative;color:#fff;padding:0;isolation:isolate;background:linear-gradient(120deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c1));background-size:300% 300%;animation:flow calc(14s/var(--speed)) ease-in-out infinite;overflow:hidden;border-radius:0 0 30px 30px;margin-bottom:20px;}
+.cz-bg{position:absolute;inset:0;overflow:hidden;z-index:-1}
+@keyframes flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.cz-bg::before{content:"";position:absolute;inset:0;opacity:.6;background-image:linear-gradient(rgba(255,255,255,.3) 2.5px,transparent 2.5px),linear-gradient(90deg,rgba(255,255,255,.3) 2.5px,transparent 2.5px);background-size:34px 34px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 75%);animation:grid calc(6s/var(--speed)) linear infinite}
+@keyframes grid{to{background-position:34px 34px}}
+.cz-bg::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-20deg);animation:shine calc(7s/var(--speed)) ease-in-out infinite}
+@keyframes shine{0%,30%{left:-60%}70%,100%{left:130%}}
+.blob{position:absolute;border-radius:50%;filter:blur(38px);opacity:.55;mix-blend-mode:screen}
+.b1{width:220px;height:220px;background:#f472b6;left:-60px;top:-50px;animation:m1 calc(11s/var(--speed)) ease-in-out infinite}
+.b2{width:260px;height:260px;background:#22d3ee;right:-80px;top:20px;animation:m2 calc(13s/var(--speed)) ease-in-out infinite}
+.b3{width:180px;height:180px;background:#fde047;left:40%;bottom:-70px;animation:m3 calc(9s/var(--speed)) ease-in-out infinite}
+@keyframes m1{50%{transform:translate(90px,60px) scale(1.25)}}
+@keyframes m2{50%{transform:translate(-110px,40px) scale(.85)}}
+@keyframes m3{50%{transform:translate(-90px,-40px) scale(1.3)}}
+.fl{position:absolute;bottom:-30px;left:var(--x);font-weight:800;font-size:var(--s);color:rgba(255,255,255,.55);text-shadow:0 2px 10px rgba(30,27,75,.35);animation:rise calc(var(--d)/var(--speed)) linear infinite;animation-delay:var(--dl)}
+@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}15%{opacity:1}85%{opacity:.8}100%{transform:translateY(-340px) rotate(var(--r));opacity:0}}
+.wave{position:absolute;left:0;bottom:-1px;width:100%;height:56px;overflow:hidden;pointer-events:none;z-index:3}
+.wave svg{position:absolute;left:0;bottom:0;width:200%;height:100%}
+.w1{animation:slide calc(12s/var(--speed)) linear infinite}
+.w2{animation:slide calc(8s/var(--speed)) linear infinite reverse;opacity:.5}
+@keyframes slide{to{transform:translateX(-50%)}}
 
-header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);backdrop-filter:blur(15px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}.brand svg{width:34px;height:34px;border-radius:8px}
-.search-bar{flex:1;max-width:500px;position:relative;display:none}@media(min-width:640px){.search-bar{display:block}}
-.search-bar input{width:100%;padding:10px 16px 10px 40px;border:1px solid var(--border);border-radius:var(--radius-full);background:var(--bg-body);font-size:14px;outline:none}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-muted)}
-.btn-login{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);padding:8px 16px;border-radius:var(--radius-full);font-weight:600;font-size:14px}
+.bar{position:relative;display:flex;align-items:center;gap:12px;padding:14px 16px}
+.logo{position:relative;z-index:0;width:50px;height:50px;flex:none;animation:flt 3s ease-in-out infinite;filter:drop-shadow(0 6px 6px rgba(30,27,75,.4))}
+.logo::before{content:"";position:absolute;inset:-3px;z-index:-1;border-radius:18px;background:conic-gradient(#fde047,#f472b6,#22d3ee,#4ade80,#fde047);filter:blur(9px);opacity:.75;animation:rot 4s linear infinite}
+.logo svg{width:100%;height:100%;display:block;overflow:visible}
+.lshine{animation:ls 3.4s ease-in-out infinite}
+@keyframes ls{0%,55%{transform:translateX(0)}100%{transform:translateX(110px)}}
+@keyframes flt{50%{transform:translateY(-3px) rotate(-3deg)}}
+@keyframes rot{to{transform:rotate(360deg)}}
+.name{flex:1;font-weight:900;font-size:21px;letter-spacing:-.3px;line-height:1.05;text-shadow:0 2px 0 rgba(30,27,75,.4)}
+.shim{background:linear-gradient(90deg,#fde047,#f9a8d4,#a5f3fc,#fde047);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 4s linear infinite;text-shadow:none;filter:drop-shadow(0 2px 0 rgba(30,27,75,.45))}
+@keyframes sh{to{background-position:-200% 0}}
 
-.container{max-width:1000px;margin:0 auto;padding:20px}.hero{text-align:center;padding:40px 20px 20px}
-.hero-title{font-size:32px;font-weight:800;margin:0 0 10px;letter-spacing:-1px}
-.hero-desc{color:var(--text-muted);font-size:15px;margin:0 auto 30px;max-width:500px}
-.mascot-box{width:100%;max-width:600px;height:180px;margin:0 auto 30px;background:var(--primary-light);border-radius:var(--radius-md);overflow:hidden;display:flex;align-items:center;justify-content:center}
-.mascot-box iframe{width:100%;height:100%;border:none;pointer-events:auto;}
-.quick-menu{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:400px;margin:0 auto}
-.quick-item{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:inherit}
-.quick-icon{width:64px;height:64px;background:#fff;border-radius:50%;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.login{position:relative;border:0;padding:2.5px;border-radius:999px;cursor:pointer;overflow:hidden;background:none;transition:transform .2s}
+.login:active{transform:scale(.95)}
+.login::before{content:"";position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;translate:-50% -50%;background:conic-gradient(#fde047,#f472b6,#22d3ee,#4ade80,#fde047);animation:rot 3s linear infinite}
+.login span{position:relative;display:flex;align-items:center;gap:9px;background:#fff;color:#1f2937;font-weight:800;font-size:15px;padding:8px 18px 8px 12px;border-radius:999px;box-shadow:0 3px 0 rgba(30,27,75,.25)}
+.login .g{width:22px;height:22px;display:grid;place-items:center}
+.login .g svg{width:22px;height:22px}
+.login:hover span{background:#f1f5f9}
+
+.acct{position:relative}
+.user{display:block;padding:0;border:0;background:none;border-radius:50%;cursor:pointer;transition:transform .2s;filter:drop-shadow(0 4px 6px rgba(30,27,75,.4))}
+.user:active{transform:scale(.92)}
+.user .av{width:46px;height:46px;transition:transform .25s}
+.user[aria-expanded=true] .av{transform:scale(1.07)}
+.login.busy{opacity:.65;pointer-events:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:88vw;text-align:center;background:#1e1b4b;color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;font-size:14px;z-index:99;box-shadow:0 8px 24px rgba(30,27,75,.4);animation:pop .3s cubic-bezier(.34,1.8,.64,1)}
+.av{position:relative;flex:none;width:38px;height:38px;border-radius:50%}
+.av::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(#fde047,#f472b6,#22d3ee,#fde047);animation:rot 3s linear infinite}
+.av img,.av .ini{position:absolute;inset:2.5px;width:calc(100% - 5px);height:calc(100% - 5px);border-radius:50%;object-fit:cover;background:#fff}
+.av .ini{display:grid;place-items:center;font-weight:900;color:#fff;font-size:17px;background:linear-gradient(135deg,#7c3aed,#db2777)}
+.av.on::after{content:"";position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid #fff}
+.menu{position:absolute;right:0;top:calc(100% + 10px);width:250px;background:#fff;color:var(--ink);border-radius:20px;padding:16px;z-index:20;box-shadow:0 14px 40px rgba(30,27,75,.35),0 0 0 3px var(--ink);transform-origin:top right;animation:pop .3s cubic-bezier(.34,1.8,.64,1)}
+@keyframes pop{from{transform:scale(.7);opacity:0}}
+.menu[hidden]{display:none}
+.mh{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.mh .av{width:54px;height:54px}.mh .av .ini{font-size:24px}
+.mh b{display:block;font-size:16px}.mh small{display:block;color:#64748b;font-size:12.5px;word-break:break-all}
+.out{width:100%;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;font-weight:800;font-size:15px;padding:12px;border-radius:14px;background:linear-gradient(135deg,#fb7185,#e11d48);box-shadow:0 4px 0 #9f1239;transition:transform .15s,box-shadow .15s}
+.out:active{transform:translateY(3px);box-shadow:0 1px 0 #9f1239}
+.out svg{width:18px;height:18px}
+
+.hero{text-align:center;padding:22px 20px 0}
+.hero h1{font-size:clamp(36px,10vw,56px);font-weight:900;letter-spacing:-1.5px;line-height:1;text-shadow:0 4px 0 rgba(30,27,75,.35)}
+.hero p{margin-top:8px;font-size:16px;font-weight:500;opacity:.93}
+.say{display:flex;align-items:flex-end;justify-content:center;gap:14px;padding:18px 16px 0;position:relative;z-index:10;}
+
+/* MASKOT DIPERBESAR */
+.peek{flex:none;width:130px;height:auto;overflow:visible;position:relative;z-index:2;margin-bottom:12px;filter:drop-shadow(0 5px 5px rgba(30,27,75,.35))}
+.bubble{position:relative;flex:none;width:min(236px,calc(100vw - 160px));height:76px;margin-bottom:42px;background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:20px;padding:11px 14px;font-weight:800;font-size:15px;line-height:1.38;box-shadow:0 4px 0 rgba(30,27,75,.35);transform-origin:0 70%;display:flex;align-items:center;}
+.bubble.pop{animation:bpop .55s cubic-bezier(.34,1.6,.64,1)}
+@keyframes bpop{0%{transform:scale(.8) rotate(-3deg);opacity:0}60%{opacity:1}100%{transform:none}}
+#typed{display:block;transition:opacity .35s}
+#typed.fade{opacity:0}
+.w{display:inline-block;white-space:nowrap}
+.ch{display:inline-block;opacity:0;transform:translateY(3px);transition:opacity .2s ease,transform .2s ease}
+.ch.on{opacity:1;transform:none}
+.bubble::before{content:"";position:absolute;left:-11px;bottom:16px;width:16px;height:16px;background:#fff;border:3px solid var(--ink);border-top:0;border-right:0;transform:rotate(45deg)}
+.caret{display:inline-block;width:0;height:1.05em;position:relative;vertical-align:-3px}
+.caret::after{content:"";position:absolute;left:1px;top:0;width:2.5px;height:100%;border-radius:2px;background:#db2777;animation:cr .9s steps(1) infinite}
+@keyframes cr{50%{opacity:0}}
+.pk-eyes{transform-origin:60px 54px;animation:bl 4s infinite}
+@keyframes bl{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.m-open{opacity:0}
+.talking .m-open{animation:mo .3s steps(1) infinite}
+.talking .m-shut{animation:ms .3s steps(1) infinite}
+@keyframes mo{0%{opacity:1}50%{opacity:0}}
+@keyframes ms{0%{opacity:0}50%{opacity:1}}
+.pk-hand{transform-origin:94px 102px}
+.talking .pk-hand{animation:hg .7s ease-in-out infinite}
+@keyframes hg{50%{transform:rotate(4deg)}}
+@media (max-width:360px){.peek{width:100px}.bubble{font-size:13px;margin-bottom:34px}}
+
+/* === MENU CEPAT === */
+.container{max-width:1000px;margin:0 auto;padding:20px;}
+.quick-menu{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:500px;margin:-10px auto 30px;}
+.quick-item{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:inherit;cursor:pointer;}
+.quick-icon{width:64px;height:64px;background:#fff;border-radius:50%;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);transition:0.2s;}
+.quick-item:active .quick-icon{transform:scale(0.9);}
 .quick-icon iframe{width:100%;height:100%;border:none;border-radius:50%;pointer-events:none;}
-.quick-label{font-size:12px;font-weight:600}
+.quick-label{font-size:12px;font-weight:600;text-align:center;}
 
+/* === PRODUK === */
 .section-title{font-size:20px;font-weight:800;margin:0 0 16px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}@media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}@media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
 .card{background:#fff;border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;border:1px solid var(--border);text-decoration:none;color:inherit}
 .card-img{aspect-ratio:1;background:#f1f5f9;width:100%;display:flex;align-items:center;justify-content:center}.card-img img{width:100%;height:100%;object-fit:cover}
 .card-body{padding:14px;display:flex;flex-direction:column;flex:1}.card-title{font-size:14px;font-weight:700;line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card-price{font-size:15px;font-weight:800;color:var(--primary);margin-top:auto}
-.loading-spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:40px auto}@keyframes spin{to{transform:rotate(360deg)}}
 .empty-state{text-align:center;padding:60px 20px;color:var(--text-muted);grid-column:1/-1}
 
-/* === NAVIGASI 3D (LEBIH RAMPING & TEBAL) === */
-:root { --ink:#1e1b4b; }
+/* === NAVIGASI 3D BAWAH === */
+:root { --nav-ink:#1e1b4b; }
 .nav { position:fixed; left:12px; right:12px; bottom:16px; background:#fff; border-radius:34px; padding:10px 8px 10px; display:flex; justify-content:space-around; box-shadow:0 10px 30px rgba(76,29,149,.2), inset 0 -3px 0 rgba(30,27,75,.05); z-index: 100; }
 .item { position:relative; flex:1; border:0; background:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; font:900 11px inherit; color:#94a3b8; padding:0; text-decoration: none; outline: none; }
 .iw { position:relative; width:42px; height:42px; display:grid; place-items:center; }
@@ -60,17 +154,11 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);ba
 </head>
 <body>
 
-<div id="page-loader">
-  <div id="custom-loader-content" style="display:flex; flex-direction:column; align-items:center;">
-    <!-- Default Logo -->
-    <div style="width:80px;height:80px;animation:pulse 1.5s infinite;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%"><rect x="4" y="4" width="120" height="120" rx="30" fill="#0b1220"/><circle cx="64" cy="70" r="50" fill="#4f46e5" opacity=".28"/><g transform="rotate(-5 64 66)"><path d="M48 52V42Q48 26 64 26Q80 26 80 42V52" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/><path d="M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z" fill="#34d399" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/><path d="M35 48H93L93.7 57H34.3Z" fill="#10b981"/><circle cx="50" cy="52.5" r="3" fill="#0b1220"/><circle cx="78" cy="52.5" r="3" fill="#0b1220"/><g fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M53 69L43 80L53 91"/><path d="M75 69L85 80L75 91"/><path d="M68 67L60 93"/></g></g><path transform="translate(99 33) scale(.8)" fill="#ffe14d" d="M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z"/></svg></div>
-    <div style="width:160px;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:24px;"><div style="width:50%;height:100%;background:var(--primary);border-radius:4px;animation:loadBar 1s infinite ease-in-out alternate;"></div></div>
-  </div>
-</div>
-<style>@keyframes pulse{0%{transform:scale(0.95);opacity:0.8}50%{transform:scale(1.05);opacity:1}100%{transform:scale(0.95);opacity:0.8}} @keyframes loadBar{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}</style>
-
-<svg width="0" height="0" style="position:absolute">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <linearGradient id="lgBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset=".55" stop-color="#7c3aed"/><stop offset="1" stop-color="#db2777"/></linearGradient>
+    <linearGradient id="lgBag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ddd6fe"/></linearGradient>
+    <linearGradient id="lgCode" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#0d9488"/></linearGradient>
     <linearGradient id="gViolet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
     <linearGradient id="gYellow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#facc15"/></linearGradient>
     <linearGradient id="gPink"   x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
@@ -83,31 +171,127 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);ba
   <symbol id="mascot" viewBox="0 0 44 34"><g stroke="#1e1b4b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><circle cx="7" cy="30" r="4" fill="#ffe8d6"/><circle cx="37" cy="30" r="4" fill="#ffe8d6"/><ellipse cx="22" cy="21.5" rx="14.5" ry="10.5" fill="#ffe8d6"/><path d="M7 21C6 12 9 9 10 5l5 6 4-9 4 8 5-8 3 9 5-6c1 4 2 8 1 16-4-7-9-9-15-9S11 14 7 21Z" fill="#3b82f6"/></g><path d="M12 12c3-3 7-4 10-4" stroke="#fff" stroke-opacity=".6" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="15.5" cy="22.5" r="3.5" fill="#fbbf24" stroke="#1e1b4b" stroke-width="1.2"/><circle cx="28.5" cy="22.5" r="3.5" fill="#fbbf24" stroke="#1e1b4b" stroke-width="1.2"/><circle cx="15.8" cy="22.8" r="1.7" fill="#1e1b4b"/><circle cx="28.2" cy="22.8" r="1.7" fill="#1e1b4b"/><circle cx="14.8" cy="21.6" r=".8" fill="#fff"/><circle cx="27.2" cy="21.6" r=".8" fill="#fff"/><circle cx="10" cy="26.5" r="2" fill="#fda4af" opacity=".75"/><circle cx="34" cy="26.5" r="2" fill="#fda4af" opacity=".75"/><path d="M19.5 27.5q2.5 2.2 5 0" stroke="#be123c" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
 </svg>
 
-<header class="site">
-  <a href="index.html" class="brand" id="brandLogo">KodinganKita</a>
-  <div class="search-bar">
-    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input type="text" placeholder="Cari produk..." onkeydown="if(event.key==='Enter') window.location.href='katalog.html?q='+this.value">
+<!-- HEADER BARU -->
+<header class="cz-header">
+  <div class="cz-bg">
+    <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+    <span class="fl" style="--x:8%;--s:26px;--d:9s;--dl:0s;--r:25deg">&lt;/&gt;</span>
+    <span class="fl" style="--x:24%;--s:22px;--d:11s;--dl:2s;--r:-30deg">%</span>
+    <span class="fl" style="--x:40%;--s:20px;--d:8s;--dl:4s;--r:40deg">✦</span>
+    <span class="fl" style="--x:56%;--s:28px;--d:12s;--dl:1s;--r:-20deg">{ }</span>
+    <span class="fl" style="--x:70%;--s:24px;--d:10s;--dl:3s;--r:30deg">🛍️</span>
+    <span class="fl" style="--x:84%;--s:20px;--d:9s;--dl:5s;--r:-45deg">✦</span>
   </div>
-  <button id="authBtn" class="btn-login" onclick="handleAuth()">Masuk</button>
+
+  <div class="bar">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 64 64">
+        <defs><clipPath id="lgClip"><rect x="4" y="4" width="56" height="56" rx="18"/></clipPath></defs>
+        <rect x="4" y="9" width="56" height="56" rx="18" fill="#1e1b4b"/>
+        <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#lgBg)" stroke="#1e1b4b" stroke-width="3"/>
+        <g clip-path="url(#lgClip)"><g class="lshine"><rect x="-26" y="0" width="12" height="64" fill="#fff" opacity=".5" transform="skewX(-20)"/></g></g>
+        <path d="M22 24v-3a10 10 0 0 1 20 0v3" fill="none" stroke="#1e1b4b" stroke-width="3.6" stroke-linecap="round"/>
+        <path d="M14 25h36l-3 28a4 4 0 0 1-4 3.5H21a4 4 0 0 1-4-3.5z" fill="url(#lgBag)" stroke="#1e1b4b" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M27 35l-6 6 6 6M37 35l6 6-6 6M34 33l-4 16" fill="none" stroke="url(#lgCode)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13 17q4-8 14-9" stroke="#fff" stroke-opacity=".7" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="51" cy="14" r="9" fill="#fde047" stroke="#1e1b4b" stroke-width="2.6"/>
+        <text x="51" y="18" text-anchor="middle" font-size="12" font-weight="900" fill="#1e1b4b" font-family="Inter,sans-serif">%</text>
+      </svg>
+    </div>
+    <div class="name" id="brandName">Cazo <span class="shim">Market</span></div>
+
+    <div class="acct">
+      <!-- TOMBOL LOGIN -->
+      <button class="login" id="loginBtn" aria-label="Masuk dengan Google" onclick="handleAuth()">
+        <span>
+          <i class="g"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg></i>
+          Masuk
+        </span>
+      </button>
+
+      <!-- SUDAH LOGIN -->
+      <button class="user" id="userChip" aria-haspopup="true" aria-expanded="false" aria-label="Profil" hidden onclick="toggleMenu(event)"><span class="av on" id="av"></span></button>
+      <div class="menu" id="menu" hidden>
+        <div class="mh"><span class="av on" id="mav"></span><div><b id="mname"></b><small id="memail"></small></div></div>
+        <button class="out" onclick="handleAuth()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>
+          Keluar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>Cazo <span class="shim">Market</span></h1>
+    <p id="heroDesc">Marketplace Produk Digital Eksklusif.</p>
+  </div>
+
+  <div class="say" id="say">
+    <svg class="peek" viewBox="0 0 120 130" aria-hidden="true">
+      <defs>
+        <linearGradient id="pkJ" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+        <linearGradient id="pkH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#2563eb"/></linearGradient>
+      </defs>
+      <g stroke="#1e1b4b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M14 130C14 100 34 90 60 90S106 100 106 130Z" fill="url(#pkJ)"/>
+        <path d="M47 91 60 112 73 91Z" fill="#fff" stroke-width="2.5"/>
+        <path d="M26 102Q12 96 10 82" fill="none" stroke-width="17"/>
+        <path d="M26 102Q12 96 10 82" fill="none" stroke="#f472b6" stroke-width="11"/>
+        <path d="M4 88Q10 74 16 88" fill="none"/>
+        <rect x="-2" y="86" width="24" height="26" rx="6" fill="#fde047"/>
+        <text x="10" y="106" font-size="16" font-weight="900" text-anchor="middle" fill="#1e1b4b" stroke="none" font-family="Inter,sans-serif">%</text>
+        <circle cx="10" cy="82" r="7.5" fill="#ffe8d6" stroke-width="2.8"/>
+        <g class="pk-hand">
+          <path d="M94 102Q110 96 110 72" fill="none" stroke-width="17"/>
+          <path d="M94 102Q110 96 110 72" fill="none" stroke="#f472b6" stroke-width="11"/>
+          <ellipse cx="111" cy="63" rx="9.5" ry="10.5" fill="#ffe8d6" stroke-width="2.8"/>
+          <path d="M104 58q-5-4-2-9" fill="none" stroke-width="2.6"/>
+        </g>
+        <circle cx="26" cy="56" r="5" fill="#ffe8d6" stroke-width="2.5"/><circle cx="94" cy="56" r="5" fill="#ffe8d6" stroke-width="2.5"/>
+        <ellipse cx="60" cy="52" rx="34" ry="30" fill="#ffe8d6"/>
+        <path d="M57 15C52 3 62-3 68 3" fill="none"/>
+        <path d="M26 54C20 34 28 24 30 12L42 24 48 4 58 22 70 2 76 22 90 10V24C96 32 98 44 94 54 88 40 78 34 60 34S32 40 26 54Z" fill="url(#pkH)"/>
+      </g>
+      <path d="M34 30C38 22 44 18 50 16" fill="none" stroke="#fff" stroke-opacity=".65" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M38 41q7-6 14-1M68 40q7-5 14 1" fill="none" stroke="#1e1b4b" stroke-width="2.6" stroke-linecap="round"/>
+      <g class="pk-eyes">
+        <circle cx="46" cy="54" r="8.5" fill="#fbbf24" stroke="#1e1b4b" stroke-width="2.4"/><circle cx="74" cy="54" r="8.5" fill="#fbbf24" stroke="#1e1b4b" stroke-width="2.4"/>
+        <circle cx="48" cy="55" r="4.2" fill="#1e1b4b"/><circle cx="76" cy="55" r="4.2" fill="#1e1b4b"/>
+        <circle cx="45.5" cy="51.5" r="2" fill="#fff"/><circle cx="73.5" cy="51.5" r="2" fill="#fff"/>
+      </g>
+      <circle cx="32" cy="65" r="5" fill="#fda4af" opacity=".8"/><circle cx="88" cy="65" r="5" fill="#fda4af" opacity=".8"/>
+      <path class="m-shut" d="M50 68q10 9 20 0" fill="none" stroke="#1e1b4b" stroke-width="2.6" stroke-linecap="round"/>
+      <g class="m-open"><path d="M50 66Q60 83 70 66Z" fill="#be123c" stroke="#1e1b4b" stroke-width="2.5" stroke-linejoin="round"/><path d="M54 74q6-5 12 0" fill="#fb7185"/></g>
+    </svg>
+    <div class="bubble" aria-live="polite"><span id="typed">Buruan beli, nanti habis nyesel loh!</span><i class="caret"></i></div>
+  </div>
+
+  <div class="wave">
+    <svg class="w2" viewBox="0 0 2400 60" preserveAspectRatio="none"><path fill="#f8fafc" d="M0 34Q300 4 600 34T1200 34T1800 34T2400 34V60H0Z"/></svg>
+    <svg class="w1" viewBox="0 0 2400 60" preserveAspectRatio="none"><path fill="#f8fafc" d="M0 38Q300 10 600 38T1200 38T1800 38T2400 38V60H0Z"/></svg>
+  </div>
 </header>
 
+<!-- KONTEN UTAMA -->
 <main>
-  <div class="hero">
-    <h1 class="hero-title" id="heroTitle">Loading...</h1>
-    <p class="hero-desc" id="heroDesc">Memuat deskripsi...</p>
-    <div class="mascot-box" id="mascotBox"></div>
-    <div class="quick-menu" id="quickMenu"></div>
+  <!-- MENU CEPAT -->
+  <div class="quick-menu" id="quickMenu">
+    <!-- Akan dirender oleh JS -->
   </div>
+
+  <!-- PRODUK -->
   <div class="container">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <h2 class="section-title" style="margin:0">Produk Terbaru</h2>
       <a href="katalog.html" style="font-size:14px;font-weight:600;color:var(--primary)">Lihat Semua</a>
     </div>
-    <div class="grid" id="latestGrid"><div class="loading-spin"></div></div>
+    <div class="grid" id="latestGrid">
+      <div class="empty-state">Memuat produk...</div>
+    </div>
   </div>
 </main>
 
+<!-- NAVIGASI BAWAH (DOCK) -->
 <nav class="nav" id="nav">
   <a href="index.html" class="item active" style="--glow:#c4b5fd"><svg class="mascot"><use href="#mascot"/></svg><div class="iw"><svg class="icon" viewBox="0 0 56 56"><ellipse cx="28" cy="52" rx="17" ry="3" fill="#1e1b4b" opacity=".18"/><g stroke="#1e1b4b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><rect x="36" y="10" width="7" height="14" rx="2" fill="url(#gPink)"/><rect x="10" y="26" width="36" height="24" rx="5" fill="url(#gYellow)"/><path d="M5 30 28 7 51 30Z" fill="url(#gViolet)"/><circle cx="28" cy="22" r="4.5" fill="#bae6fd"/><path d="M23 50V40a5 5 0 0 1 10 0v10Z" fill="url(#gPink)"/><circle cx="30.5" cy="44.5" r="1" fill="#1e1b4b" stroke="none"/></g><path d="M12 28 26 14" stroke="#fff" stroke-opacity=".65" stroke-width="3" stroke-linecap="round"/><path d="M14 34v8" stroke="#fff" stroke-opacity=".7" stroke-width="2.6" stroke-linecap="round"/><use class="tw" href="#spark" x="43" y="1" width="10" height="10"/></svg></div>Beranda</a>
   <a href="katalog.html" class="item" style="--glow:#93c5fd"><svg class="mascot"><use href="#mascot"/></svg><div class="iw"><svg class="icon" viewBox="0 0 56 56"><ellipse cx="28" cy="52.5" rx="18" ry="3" fill="#1e1b4b" opacity=".18"/><g stroke="#1e1b4b" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="8" y="11" width="18" height="18" rx="6" fill="#1e1b4b"/><rect x="8" y="8" width="18" height="18" rx="6" fill="url(#gPink)"/><rect x="30" y="11" width="18" height="18" rx="6" fill="#1e1b4b"/><rect x="30" y="8" width="18" height="18" rx="6" fill="url(#gBlue)"/><rect x="8" y="33" width="18" height="18" rx="6" fill="#1e1b4b"/><rect x="8" y="30" width="18" height="18" rx="6" fill="url(#gYellow)"/><rect x="30" y="33" width="18" height="18" rx="6" fill="#1e1b4b"/><rect x="30" y="30" width="18" height="18" rx="6" fill="url(#gGreen)"/></g><g stroke="#fff" stroke-opacity=".75" stroke-width="2.4" fill="none" stroke-linecap="round"><path d="M12 17a5 5 0 0 1 5-5"/><path d="M34 17a5 5 0 0 1 5-5"/><path d="M12 39a5 5 0 0 1 5-5"/><path d="M34 39a5 5 0 0 1 5-5"/></g><use class="tw" href="#spark" x="42" y="1" width="10" height="10"/></svg></div>Katalog</a>
@@ -128,8 +312,7 @@ const DEFAULT_LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 1
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const rupiah = n => "Rp" + Number(n||0).toLocaleString("id-ID");
 
-let state = { user: null, settings: {}, products: {}, loaded: 0 };
-function checkLoaded() { state.loaded++; if(state.loaded >= 3) { setTimeout(() => { document.getElementById('page-loader').classList.add('hidden'); document.body.classList.add('loaded'); renderPage(); }, 300); } }
+let state = { user: null, settings: {}, products: {}, loaded: 0, showAllMenus: false };
 
 function createIframe(code, round, interactive=false) { 
   const i = document.createElement("iframe"); 
@@ -139,39 +322,122 @@ function createIframe(code, round, interactive=false) {
 }
 
 window.handleAuth = async () => { if (state.user) { if(confirm("Keluar?")) await signOut(auth); } else { try { await signInWithPopup(auth, provider); } catch(e){ alert(e.message); } } };
-onAuthStateChanged(auth, user => { state.user = user; const btn = document.getElementById('authBtn'); if(btn) btn.innerHTML = user ? `Keluar (${user.displayName.split(' ')[0]})` : 'Masuk'; });
+window.toggleMenu = (e) => { e.stopPropagation(); const m = document.getElementById('menu'); const c = document.getElementById('userChip'); const o = m.hidden; m.hidden = !o; c.setAttribute('aria-expanded', String(o)); };
+document.addEventListener('click', () => { const m = document.getElementById('menu'); if(m) m.hidden = true; });
 
-onValue(ref(db, "settings/marketplace"), s => { state.settings = s.val() || {}; 
-  if(state.settings.loadingCustomHTML) {
-    document.getElementById('custom-loader-content').innerHTML = state.settings.loadingCustomHTML;
+onAuthStateChanged(auth, user => { 
+  state.user = user; 
+  const loginBtn = document.getElementById('loginBtn');
+  const userChip = document.getElementById('userChip');
+  if(loginBtn && userChip) {
+    if(user) {
+      loginBtn.hidden = true; userChip.hidden = false;
+      document.getElementById('mname').textContent = user.displayName || "Pengguna";
+      document.getElementById('memail').textContent = user.email || "";
+      const ini = (user.displayName || "?").charAt(0).toUpperCase();
+      document.getElementById('av').innerHTML = user.photoURL ? `<img src="${user.photoURL}" referrerpolicy="no-referrer">` : `<span class="ini">${ini}</span>`;
+      document.getElementById('mav').innerHTML = user.photoURL ? `<img src="${user.photoURL}" referrerpolicy="no-referrer">` : `<span class="ini">${ini}</span>`;
+    } else {
+      loginBtn.hidden = false; userChip.hidden = true;
+    }
   }
-  checkLoaded(); 
 });
-onValue(ref(db, "products"), s => { state.products = s.val() || {}; checkLoaded(); });
-onValue(ref(db, "shops"), s => { checkLoaded(); });
 
-function renderPage() {
-  const s = state.settings;
-  document.getElementById('brandLogo').innerHTML = `<div style="width:34px;height:34px;display:inline-block;vertical-align:middle;margin-right:8px;">${DEFAULT_LOGO}</div> ${esc(s.name || "KodinganKita")}`;
-  document.getElementById('heroTitle').textContent = s.name || "KodinganKita";
-  document.getElementById('heroDesc').textContent = s.description || "Marketplace Produk Digital Eksklusif.";
+onValue(ref(db, "settings/marketplace"), s => { 
+  state.settings = s.val() || {}; 
+  const name = state.settings.name || "Cazo Market";
+  document.getElementById('brandName').innerHTML = `${name.split(' ')[0]} <span class="shim">${name.split(' ').slice(1).join(' ')}</span>`;
+  document.querySelector('.hero h1').innerHTML = `${name.split(' ')[0]} <span class="shim">${name.split(' ').slice(1).join(' ')}</span>`;
+  document.getElementById('heroDesc').textContent = state.settings.description || "Marketplace Produk Digital Eksklusif.";
+  renderQuickMenu();
+});
 
-  if(s.mascot?.code) document.getElementById('mascotBox').appendChild(createIframe(s.mascot.code, false, true));
+onValue(ref(db, "products"), s => { state.products = s.val() || {}; renderProducts(); });
 
+function renderQuickMenu() {
+  const container = document.getElementById('quickMenu');
   const defaultMenus = [
     { label: "Katalog", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`, action: "katalog.html" },
     { label: "Cari", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>`, action: "katalog.html" },
     { label: "Jual", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M12 4v16m8-8H4"/></svg>`, action: "profil.html" },
     { label: "Riwayat", code: `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/></svg>`, action: "riwayat.html" }
   ];
-  const menus = (s.menuItems && s.menuItems.length > 0) ? s.menuItems : defaultMenus;
-  document.getElementById('quickMenu').innerHTML = menus.slice(0,4).map((m, i) => `<a href="${esc(m.action)}" class="quick-item"><div class="quick-icon" id="menu-icon-${i}"></div><span class="quick-label">${esc(m.label)}</span></a>`).join("");
-  menus.slice(0,4).forEach((m, i) => { if(m.code) document.getElementById(`menu-icon-${i}`).appendChild(createIframe(m.code, true, false)); });
+  
+  const menus = (state.settings.menuItems && state.settings.menuItems.length > 0) ? state.settings.menuItems : defaultMenus;
+  const displayMenus = state.showAllMenus ? menus : menus.slice(0, 4);
+  
+  let html = displayMenus.map((m, i) => `
+    <a href="${esc(m.action)}" class="quick-item">
+      <div class="quick-icon" id="menu-icon-${i}"></div>
+      <span class="quick-label">${esc(m.label)}</span>
+    </a>
+  `).join("");
 
+  if (menus.length > 4 && !state.showAllMenus) {
+    html += `
+      <a href="javascript:void(0)" onclick="document.getElementById('quickMenu').style.maxWidth='100%'; state.showAllMenus=true; renderQuickMenu();" class="quick-item">
+        <div class="quick-icon" style="background:var(--bg-body); border:1px dashed var(--border);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        </div>
+        <span class="quick-label">Semua</span>
+      </a>
+    `;
+  }
+
+  container.innerHTML = html;
+  displayMenus.forEach((m, i) => { if(m.code) document.getElementById(`menu-icon-${i}`).appendChild(createIframe(m.code, true, false)); });
+}
+
+function renderProducts() {
+  if(!state.products) return;
   const latest = Object.entries(state.products).map(([id, p]) => ({id, ...p})).filter(p => p.status !== 'sold').sort((a,b) => (b.createdAt||0) - (a.createdAt||0)).slice(0, 8);
   const grid = document.getElementById('latestGrid');
-  grid.innerHTML = latest.length ? latest.map(p => `<a href="detail.html?id=${p.id}" class="card"><div class="card-img"><img src="${p.imageURLs?.[0] || 'https://placehold.co/400x400/f1f5f9/64748b?text=No+Image'}"></div><div class="card-body"><div class="card-title">${esc(p.title)}</div><div class="card-price">${rupiah(p.price)}</div></div></a>`).join("") : `<div class="empty-state">Belum ada produk.</div>`;
+  grid.innerHTML = latest.length ? latest.map(p => `
+    <a href="detail.html?id=${p.id}" class="card">
+      <div class="card-img"><img src="${p.imageURLs?.[0] || 'https://placehold.co/400x400/f1f5f9/64748b?text=No+Image'}"></div>
+      <div class="card-body">
+        <div class="card-title">${esc(p.title)}</div>
+        <div class="card-price">${rupiah(p.price)}</div>
+      </div>
+    </a>
+  `).join("") : `<div class="empty-state">Belum ada produk.</div>`;
 }
+
+// Efek mengetik maskot
+(function () {
+  var MESSAGES = ["Buruan beli, nanti habis nyesel loh!", "Cari produk digital? Cek menu Katalog ya.", "Punya produk? Yuk jualan di Cazo Market!"];
+  var typed = document.getElementById("typed"), say = document.getElementById("say"), bubble = document.querySelector(".bubble"), caret = document.querySelector(".caret");
+  var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  function build(text) {
+    typed.textContent = ""; typed.prepend(caret);
+    var spans = [];
+    text.split(" ").forEach(function (word, wi, arr) {
+      var w = document.createElement("span"); w.className = "w";
+      Array.from(word).forEach(function (c) {
+        var s = document.createElement("span"); s.className = "ch"; s.textContent = c;
+        w.appendChild(s); spans.push(s);
+      });
+      typed.appendChild(w);
+      if (wi < arr.length - 1) typed.appendChild(document.createTextNode(" "));
+    });
+    return spans;
+  }
+  (async function loop() {
+    for (var m = 0; ; m = (m + 1) % MESSAGES.length) {
+      var spans = build(MESSAGES[m]);
+      typed.classList.remove("fade"); bubble.classList.remove("pop"); void bubble.offsetWidth; bubble.classList.add("pop");
+      await sleep(450); say.classList.add("talking");
+      for (var i = 0; i < spans.length; i++) {
+        spans[i].classList.add("on"); spans[i].after(caret);
+        await sleep(/[,.!?]/.test(spans[i].textContent) ? 220 : 38);
+      }
+      say.classList.remove("talking"); await sleep(2400);
+      typed.classList.add("fade"); await sleep(400);
+    }
+  })();
+})();
+
+document.body.classList.add('loaded');
 </script>
 </body>
 </html>
