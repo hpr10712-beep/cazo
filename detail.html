@@ -6,86 +6,99 @@
 <title>Detail Produk — Cazo Market</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#4f46e5;--primary-light:#eef2ff;--ink:#1e1b4b;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--radius-sm:8px;--radius-md:14px;--radius-lg:24px;--shadow-sm:0 1px 3px rgba(0,0,0,.05);--font:'Inter',system-ui,sans-serif}
+:root{--primary:#4f46e5;--primary-light:#eef2ff;--ink:#1e1b4b;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--radius-md:14px;--radius-lg:24px;--font:'Inter',system-ui,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:var(--font);background:#f5f3ff;color:var(--text-main);padding-bottom:110px;opacity:0;transition:opacity .3s}
-body.loaded{opacity:1}
+body{margin:0;font-family:var(--font);background:linear-gradient(180deg,#f5f3ff,#eef2ff 55%,#fdf2f8) fixed;color:var(--text-main);padding-bottom:110px}
 a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{font-family:inherit;cursor:pointer;border:none;background:none}
 button,a{touch-action:manipulation}
 #page-loader{position:fixed;inset:0;background:#fff;z-index:99999;display:flex;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
 #page-loader.hidden{opacity:0;visibility:hidden}
 .ld{display:grid;justify-items:center;gap:12px;font-weight:900;font-size:20px;color:var(--primary)}
-.ld svg{width:84px;height:64px;animation:flt 1.4s ease-in-out infinite}
+.ld svg{width:84px;height:64px;animation:bob 1.4s ease-in-out infinite}
 .ld i{width:140px;height:6px;border-radius:9px;background:#e0e7ff;position:relative;overflow:hidden}
 .ld i::after{content:"";position:absolute;inset:0;width:40%;border-radius:9px;background:var(--primary);animation:ldb 1s ease-in-out infinite alternate}
 header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(15px);backdrop-filter:blur(15px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
-.brand .lg{width:34px;height:34px;display:inline-block;animation:wob 3s ease-in-out infinite}
-.brand b{background:linear-gradient(90deg,#4f46e5,#ec4899,#4f46e5);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 4s linear infinite}
-.btn-login{position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);padding:8px 16px;border-radius:999px;font-weight:600;font-size:14px}
-.btn-login.user{padding:4px 14px 4px 4px;border:0;color:#fff;font-weight:800;background:linear-gradient(120deg,#4f46e5,#ec4899,#f59e0b,#4f46e5);background-size:300% 100%;animation:flow 4s linear infinite;box-shadow:0 6px 18px rgba(79,70,229,.4)}
-.btn-login.user::after,.cta::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);animation:sheen 2.8s ease-in-out infinite}
-.btn-login:active,.cta:active,.lnk:active{transform:scale(.96)}
+.brand .lg{width:34px;height:34px;display:inline-block}
+.brand b{background:linear-gradient(90deg,#4f46e5,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn-login{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);padding:8px 16px;border-radius:999px;font-weight:600;font-size:14px}
+.btn-login.user{padding:4px 14px 4px 4px;border:0;color:#fff;font-weight:800;background:linear-gradient(120deg,#4f46e5,#ec4899);box-shadow:0 6px 18px rgba(79,70,229,.35)}
+.btn-login:active,.btn:active{transform:scale(.97)}
 .av{width:30px;height:30px;border-radius:50%;border:2px solid #fff;object-fit:cover;display:grid;place-items:center;background:var(--ink);font-size:13px}
 .un{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dot{width:9px;height:9px;border-radius:50%;background:#22c55e;animation:ping 1.6s infinite}
-.container{max-width:1000px;margin:0 auto;padding:20px;position:relative;z-index:1}
-.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(180deg,#f5f3ff,#eef2ff 50%,#fdf2f8)}
-.bg i{position:absolute;border-radius:50%;filter:blur(50px);opacity:.55;animation:drift 14s ease-in-out infinite alternate}
-.bg .b1{width:300px;height:300px;background:#c4b5fd;top:-80px;left:-80px}
-.bg .b2{width:260px;height:260px;background:#f9a8d4;top:35%;right:-90px;animation-delay:-4s}
-.bg .b3{width:280px;height:280px;background:#93c5fd;bottom:-80px;left:10%;animation-delay:-8s}
-.sp,.fm{position:fixed;z-index:0;pointer-events:none}
-.sp{animation:twk 3s ease-in-out infinite}
-.fm{width:54px;height:42px;opacity:.85;animation:flt 6s ease-in-out infinite}
-.rise{animation:rise .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0)*80ms)}
+.container{max-width:1000px;margin:0 auto;padding:18px 16px}
+.rise{animation:rise .5s cubic-bezier(.2,.9,.3,1.1) both;animation-delay:calc(var(--i,0)*90ms)}
 #app.seen .rise{animation:none}
-.glass{background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid #fff;border-radius:var(--radius-lg);box-shadow:0 10px 30px rgba(76,29,149,.12);padding:16px;margin-bottom:16px}
-.back{display:inline-block;margin-bottom:12px;font-size:14px;font-weight:800;color:var(--primary);background:#fff;padding:8px 14px;border-radius:99px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
-.mq{overflow:hidden;white-space:nowrap;border-radius:99px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:9px 0;margin-bottom:14px}
-.mq>div{display:inline-block;animation:mq 18s linear infinite}.mq span{display:inline-block;padding:0 22px}
-.hero{margin-top:36px}
-.stage{position:relative;padding:3px;border-radius:24px;background:linear-gradient(120deg,#4f46e5,#ec4899,#facc15,#22c55e,#3b82f6,#4f46e5);background-size:300% 100%;animation:flow 6s linear infinite;transition:transform .15s}
-.stage .in{background:#fff;border-radius:21px;overflow:hidden;display:grid;place-items:center;min-height:180px}
-.stage img{width:100%;max-height:420px;object-fit:contain;cursor:zoom-in}
-.chip{position:absolute;z-index:2;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:800;color:#fff;box-shadow:0 4px 10px rgba(0,0,0,.2)}
-.cat{top:12px;left:12px;background:var(--primary)}.stt{bottom:12px;left:12px}
-.ok{background:#16a34a;animation:pulse 1.6s infinite}.no{background:var(--danger)}.wait{background:#f59e0b}
-.peek{position:absolute;z-index:3;right:10px;top:-38px;cursor:pointer}
-.peek svg{width:64px;height:48px;display:block;animation:flt 3s ease-in-out infinite;filter:drop-shadow(0 4px 4px rgba(30,27,75,.3))}
-.bub{position:absolute;right:66px;top:2px;white-space:nowrap;background:#fff;color:var(--ink);font-size:11px;font-weight:800;padding:6px 10px;border-radius:12px;border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink)}
-.thumbs{display:flex;gap:8px;overflow-x:auto;padding:14px 2px 4px}
-.thumbs button{flex:0 0 62px;height:62px;padding:0;border-radius:14px;border:3px solid transparent;overflow:hidden;background:#fff;opacity:.7;transition:.2s}
-.thumbs button.on{border-color:var(--primary);opacity:1;transform:translateY(-3px) scale(1.05)}
+.glass{background:rgba(255,255,255,.85);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid #fff;border-radius:var(--radius-lg);box-shadow:0 10px 30px rgba(76,29,149,.12);padding:16px;margin-bottom:16px}
+
+/* ikon 3D: garis tepi navy + bayangan tebal ala ikon navigasi */
+.ic{width:24px;height:24px;flex:none;overflow:visible;stroke:#1e1b4b;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 1.6px 0 #1e1b4b) drop-shadow(0 4px 3px rgba(30,27,75,.2))}
+.btn .ic{width:28px;height:28px}
+
+/* halaman detail */
+.back{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;padding:4px 16px 4px 5px;border-radius:99px;background:#fff;border:1px solid var(--border);box-shadow:0 3px 0 #e0e7ff;font-size:13px;font-weight:800;color:var(--primary)}
+.back .ic{width:26px;height:26px}
+.stage{width:fit-content;max-width:100%;min-width:min(100%,200px);margin:0 auto;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--border);box-shadow:0 8px 24px rgba(30,27,75,.12)}
+.stage.ldg{min-height:150px;background:linear-gradient(110deg,#eef2ff 30%,#fff 50%,#eef2ff 70%) 0 0/200% 100%;animation:flow 1.4s linear infinite}
+.stage img{width:100%;height:auto;max-height:72vh;object-fit:contain;cursor:zoom-in}
+.thumbs{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 6px}
+.thumbs button{flex:0 0 58px;height:58px;padding:0;border-radius:14px;border:2px solid transparent;overflow:hidden;background:#fff;opacity:.65;transition:.2s}
+.thumbs button.on{border-color:var(--primary);opacity:1;box-shadow:0 3px 0 #c7d2fe}
 .thumbs img{width:100%;height:100%;object-fit:cover}
-.detail-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
-.detail-title{font-size:24px;font-weight:800;margin:0;line-height:1.3}
-.btn-icon{width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);flex-shrink:0;box-shadow:var(--shadow-sm)}
-.pricebar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 16px}.pricebar small{font-size:12px;font-weight:700;color:var(--text-muted)}
-.pr{font-size:32px;font-weight:900;background:linear-gradient(90deg,#4f46e5,#ec4899,#4f46e5);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 3s linear infinite}
-.hot{background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-weight:800;font-size:12px;padding:8px 12px;border-radius:99px;white-space:nowrap;animation:wob 1.2s ease-in-out infinite}
-.specs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.spec{background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px;box-shadow:var(--shadow-sm)}.spec small{display:block;font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:2px}.spec b{font-size:14px;word-break:break-word}
-.hashtags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
-.hashtag{display:inline-block;background:var(--primary-light);color:var(--primary);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:600;animation:flt 4s ease-in-out infinite}
-.desc-title{font-size:16px;font-weight:700;margin:0 0 12px}.desc-text{font-size:14px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
-.lnk{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;padding:14px;margin-bottom:10px;border-radius:18px;background:linear-gradient(120deg,#4f46e5,#7c3aed);color:#fff;font-weight:800;box-shadow:0 8px 20px rgba(79,70,229,.3);transition:.2s}
-.lnk>span{font-size:22px}.lnk small{display:block;opacity:.8;font-weight:600;font-size:11px}.lnk>i{margin-left:auto;font-style:normal;font-size:18px}
+.lbs{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.lb{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px 0 7px;border-radius:99px;font-size:12.5px;font-weight:800;color:var(--ink);background:#fff;border:1.5px solid #e0e7ff;box-shadow:0 3px 0 #e0e7ff}
+.lb .ic{width:28px;height:28px}
+.lb.ok{background:#f0fdf4;border-color:#bbf7d0;color:#166534;box-shadow:0 3px 0 #bbf7d0}
+.lb.wait{background:#fffbeb;border-color:#fde68a;color:#92400e;box-shadow:0 3px 0 #fde68a}
+.lb.no{background:#fef2f2;border-color:#fecaca;color:#991b1b;box-shadow:0 3px 0 #fecaca}
+.lb.hot{background:#fff7ed;border-color:#fed7aa;color:#9a3412;box-shadow:0 3px 0 #fed7aa}
+.tip{display:flex;align-items:center;gap:8px;margin:0 0 16px 4px;cursor:pointer}
+.tm{width:64px;height:48px;flex:none;animation:bob 2s ease-in-out infinite;filter:drop-shadow(0 4px 4px rgba(30,27,75,.25))}
+.bub{position:relative;flex:1;min-width:0;background:#fff;color:var(--ink);font-size:12.5px;font-weight:800;padding:9px 14px;border-radius:14px;border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink)}
+.bub::before{content:"";position:absolute;left:-8px;top:50%;width:12px;height:12px;background:#fff;border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:translateY(-50%) rotate(45deg)}
+.detail-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.detail-title{font-size:22px;font-weight:800;margin:0;line-height:1.3}
+.btn-icon{width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;border:1px solid var(--border);flex:none;box-shadow:0 3px 0 #e0e7ff}
+.btn-icon .ic{width:30px;height:30px}
+.buy{display:grid;gap:12px;margin-bottom:14px;padding:16px;border-radius:var(--radius-lg);background:#fff;border:1px solid #e0e7ff;box-shadow:0 10px 30px rgba(76,29,149,.12)}
+.buy small{font-size:12px;font-weight:700;color:var(--text-muted)}
+.pr{font-size:30px;font-weight:900;line-height:1.15;background:linear-gradient(90deg,#4f46e5,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.spec{display:flex;align-items:center;gap:10px;min-width:0;padding:11px 12px;border-radius:16px;background:#fff;border:1px solid var(--border);box-shadow:0 3px 0 #e0e7ff}
+.spec:last-child:nth-child(odd){grid-column:1/-1}
+.spec .ic{width:34px;height:34px}
+.spec small{display:block;font-size:11px;font-weight:700;color:var(--text-muted)}
+.spec b{font-size:14px;word-break:break-word}
+.hashtags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.hashtag{padding:5px 12px;border-radius:99px;background:var(--primary-light);color:var(--primary);font-size:12px;font-weight:700}
+.desc-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;margin:0 0 12px}
+.desc-text{font-size:14px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.lnk{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:12px;border-radius:18px;background:linear-gradient(120deg,#4f46e5,#7c3aed);color:#fff;font-weight:800;font-size:14px;box-shadow:0 4px 0 #3730a3,0 10px 20px rgba(79,70,229,.25)}
+.lnk:active{transform:translateY(2px)}
+.lnk .ti{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#fff;flex:none}
+.lnk .ti .ic{width:32px;height:32px}
+.lnk div{min-width:0;word-break:break-word}
+.lnk small{display:block;opacity:.8;font-weight:600;font-size:11px}
+.lnk>i{margin-left:auto;font-style:normal;font-size:18px}
+@media(min-width:880px){.pg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}.ca{position:sticky;top:84px}}
+
+/* tombol, pembayaran, modal */
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;border-radius:var(--radius-md);font-weight:700;font-size:15px;transition:.2s;width:100%}
 .btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
 .btn-outline{background:#fff;color:var(--text-main);border:1px solid var(--border)}
 .btn-disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed}
-.cta{position:relative;overflow:hidden;font-size:17px;padding:17px;color:#fff;background:linear-gradient(120deg,#4f46e5,#ec4899,#f59e0b,#4f46e5);background-size:300% 100%;animation:flow 4s linear infinite;box-shadow:0 10px 26px rgba(236,72,153,.4)}
-.pay{max-width:480px;margin:0 auto;text-align:center}.pm{width:90px;height:68px;animation:flt 2s ease-in-out infinite}
+.cta{font-size:17px;padding:14px;color:#fff;background:linear-gradient(120deg,#4f46e5,#ec4899,#f59e0b,#4f46e5);background-size:300% 100%;animation:flow 4s linear infinite;box-shadow:0 10px 26px rgba(236,72,153,.35)}
+.pay{max-width:480px;margin:0 auto;text-align:center}.pm{width:90px;height:68px;animation:bob 2s ease-in-out infinite}
 .timer{font-size:36px;font-weight:800;color:var(--danger);font-variant-numeric:tabular-nums;margin-bottom:10px}
 .bar{height:8px;border-radius:9px;background:#e0e7ff;overflow:hidden;margin-bottom:18px}.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#facc15);transition:width 1s linear}
 .warn .timer{animation:pulse .8s infinite}.warn .bar i{background:var(--danger)}
 .qris-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center}
-.qris-box img{width:100%;max-width:280px;margin:0 auto;border-radius:var(--radius-sm);border:1px solid var(--border);cursor:zoom-in}
+.qris-box img{width:100%;max-width:280px;margin:0 auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in}
 .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
 .modal-box{background:#fff;border-radius:24px;width:100%;max-width:400px;padding:30px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.2);position:relative}
 .modal-title{font-size:20px;font-weight:800;margin:0 0 10px}.modal-desc{font-size:14px;color:var(--text-muted);margin:0 0 24px;word-break:break-word}
-.mm{width:84px;height:64px;margin:-64px auto 8px}.mm svg{width:100%;height:100%;animation:flt 2s ease-in-out infinite}
+.mm{width:84px;height:64px;margin:-64px auto 8px}.mm svg{width:100%;height:100%;animation:bob 2s ease-in-out infinite}
 .pop,.bub.in{animation:pop .4s cubic-bezier(.34,1.8,.64,1) both}
 .toast{position:fixed;left:50%;bottom:118px;transform:translateX(-50%);max-width:90vw;text-align:center;background:var(--ink);color:#fff;padding:12px 18px;border-radius:99px;font-size:13px;font-weight:700;z-index:100000;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:toast 3s both}
 .cf{position:fixed;width:8px;height:12px;border-radius:2px;z-index:99998;pointer-events:none;animation:cf 1s ease-out forwards}
@@ -93,21 +106,16 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);-we
 .empty-state{text-align:center;padding:60px 20px;color:var(--text-muted)}
 @keyframes flow{to{background-position:150% 50%}}
 @keyframes pop{from{opacity:0;transform:scale(.7)}}
-@keyframes flt{50%{transform:translateY(-14px) rotate(5deg)}}
 @keyframes pulse{50%{transform:scale(1.07)}}
-@keyframes sheen{60%,100%{transform:translateX(120%)}}
-@keyframes rise{from{opacity:0;transform:translateY(26px) scale(.96)}}
-@keyframes drift{to{transform:translate(40px,60px) scale(1.25)}}
-@keyframes twk{50%{transform:scale(.4) rotate(60deg);opacity:.3}}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(34,197,94,.7)}70%,100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
-@keyframes wob{50%{transform:rotate(-4deg) scale(1.06)}}
 @keyframes ldb{to{transform:translateX(150%)}}
-@keyframes mq{to{transform:translateX(-50%)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes toast{0%{opacity:0;transform:translate(-50%,20px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
 @keyframes cf{to{transform:translate(var(--dx),calc(var(--dy) + 180px)) rotate(var(--r));opacity:0}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
-/* === NAVIGASI 3D === */
+
+/* navigasi 3D */
 .nav{position:fixed;left:12px;right:12px;bottom:16px;background:#fff;border-radius:34px;padding:10px 8px;display:flex;justify-content:space-around;box-shadow:0 10px 30px rgba(76,29,149,.2),inset 0 -3px 0 rgba(30,27,75,.05);z-index:100}
 .item{position:relative;flex:1;border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font:900 11px var(--font);color:#94a3b8;padding:0;text-decoration:none;outline:none}
 .iw{position:relative;width:42px;height:42px;display:grid;place-items:center}
@@ -125,22 +133,40 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);-we
 </head>
 <body>
 
-<div class="bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
-<div id="fx" aria-hidden="true"></div>
 <div id="page-loader"><div class="ld"><svg><use href="#mascot"/></svg><b>Cazo Market</b><i></i></div></div>
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
-    <linearGradient id="gViolet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
-    <linearGradient id="gYellow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#facc15"/></linearGradient>
-    <linearGradient id="gPink"   x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
-    <linearGradient id="gBlue"   x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#93c5fd"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
-    <linearGradient id="gGreen"  x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86efac"/><stop offset="1" stop-color="#22c55e"/></linearGradient>
-    <linearGradient id="gTeal"   x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
-    <linearGradient id="gOrange" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdba74"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+    <linearGradient id="gViolet" x2="0" y2="1"><stop offset="0" stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+    <linearGradient id="gYellow" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#facc15"/></linearGradient>
+    <linearGradient id="gPink" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+    <linearGradient id="gBlue" x2="0" y2="1"><stop offset="0" stop-color="#93c5fd"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
+    <linearGradient id="gGreen" x2="0" y2="1"><stop offset="0" stop-color="#86efac"/><stop offset="1" stop-color="#22c55e"/></linearGradient>
+    <linearGradient id="gTeal" x2="0" y2="1"><stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+    <linearGradient id="gOrange" x2="0" y2="1"><stop offset="0" stop-color="#fdba74"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+    <linearGradient id="gRed" x2="0" y2="1"><stop offset="0" stop-color="#fca5a5"/><stop offset="1" stop-color="#ef4444"/></linearGradient>
+    <symbol id="spark" viewBox="0 0 10 10"><path d="M5 0.3 6.2 3.8 9.7 5 6.2 6.2 5 9.7 3.8 6.2 0.3 5 3.8 3.8z" fill="#fff" stroke="#1e1b4b" stroke-width=".9" stroke-linejoin="round"/></symbol>
+
+    <!-- maskot Cazo: tas belanja hijau sesuai logo -->
+    <symbol id="mascot" viewBox="0 0 44 34"><g stroke="#1e1b4b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M15.5 10V8.5a6.5 6.5 0 0 1 13 0V10" fill="none" stroke-width="4.4"/><path d="M15.5 10V8.5a6.5 6.5 0 0 1 13 0V10" fill="none" stroke="#a5b4fc" stroke-width="1.8"/><circle cx="4.5" cy="23" r="3" fill="#34d399"/><circle cx="39.5" cy="23" r="3" fill="#34d399"/><path d="M9 10h26l3.2 19.8q.4 3.2-3 3.2H8.8q-3.4 0-3-3.2Z" fill="#34d399"/><path d="M9 10h26l.7 4.6H8.3Z" fill="#10b981"/><circle cx="16.5" cy="21.5" r="3.6" fill="#fff" stroke-width="1.2"/><circle cx="27.5" cy="21.5" r="3.6" fill="#fff" stroke-width="1.2"/></g><circle cx="17" cy="22" r="1.9" fill="#1e1b4b"/><circle cx="27" cy="22" r="1.9" fill="#1e1b4b"/><circle cx="16.2" cy="20.9" r=".8" fill="#fff"/><circle cx="26.2" cy="20.9" r=".8" fill="#fff"/><circle cx="11.5" cy="27" r="2" fill="#fda4af" opacity=".8"/><circle cx="32.5" cy="27" r="2" fill="#fda4af" opacity=".8"/><path d="M19.5 27q2.5 2.8 5 0" stroke="#be123c" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M10.5 17l-1 10" stroke="#fff" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round"/><path d="M38 1.5l1.1 3 3 1.1-3 1.1-1.1 3-1.1-3-3-1.1 3-1.1Z" fill="#facc15" stroke="#1e1b4b" stroke-width=".9" stroke-linejoin="round"/></symbol>
+
+    <!-- ikon 3D -->
+    <path id="gl" d="M12 22a17 17 0 0 1 10-9" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3"/>
+    <symbol id="i-ok" viewBox="0 0 56 56"><circle cx="28" cy="27" r="21" fill="url(#gGreen)"/><path d="M17.5 28l7.5 7.5L39 20" fill="none" stroke="#fff" stroke-width="6"/><use href="#gl"/></symbol>
+    <symbol id="i-wait" viewBox="0 0 56 56"><circle cx="28" cy="27" r="21" fill="url(#gOrange)"/><path d="M28 15v13l9 6" fill="none" stroke="#fff" stroke-width="5.5"/><use href="#gl"/></symbol>
+    <symbol id="i-no" viewBox="0 0 56 56"><circle cx="28" cy="27" r="21" fill="url(#gRed)"/><path d="M19 18l18 18M37 18L19 36" fill="none" stroke="#fff" stroke-width="5.5"/><use href="#gl"/></symbol>
+    <symbol id="i-back" viewBox="0 0 56 56"><circle cx="28" cy="27" r="21" fill="url(#gViolet)"/><path d="M32 16 21 27l11 11" fill="none" stroke="#fff" stroke-width="5.5"/><use href="#gl"/></symbol>
+    <symbol id="i-link" viewBox="0 0 56 56"><circle cx="28" cy="27" r="21" fill="url(#gTeal)"/><path d="M26 22.5l2-2a6 6 0 0 1 8.5 8.5l-2 2M30 33.5l-2 2a6 6 0 0 1-8.5-8.5l2-2M25.5 30.5l5-5" fill="none" stroke="#fff" stroke-width="4.5"/><use href="#gl"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 56 56"><path d="M7 16a4 4 0 0 1 4-4h12l5 6h17a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4Z" fill="url(#gYellow)"/><path d="M7 27h42v17a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4Z" fill="url(#gOrange)"/><path d="M12 17h9" stroke="#fff" stroke-opacity=".8" stroke-width="3"/></symbol>
+    <symbol id="i-box" viewBox="0 0 56 56"><path d="M28 6 48 17v22L28 50 8 39V17Z" fill="url(#gBlue)"/><path d="M28 6 48 17 28 28 8 17Z" fill="#bfdbfe"/><path d="M28 28v22" fill="none"/></symbol>
+    <symbol id="i-fire" viewBox="0 0 56 56"><path d="M28 5c1 10 14 14 14 29a14 14 0 0 1-28 0c0-7 4-11 8-14 0 4 1 7 4 8-1-7-1-15 2-23Z" fill="url(#gOrange)"/><path d="M28 47.5a7 7 0 0 1-7-7c0-5 5-8 7-13 2 5 7 8 7 13a7 7 0 0 1-7 7Z" fill="url(#gYellow)"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 56 56"><path d="M10 20h36l3 28H7Z" fill="url(#gPink)"/><path d="M19 22v-5a9 9 0 0 1 18 0v5" fill="none"/><circle cx="19" cy="26" r="2" fill="#1e1b4b" stroke="none"/><circle cx="37" cy="26" r="2" fill="#1e1b4b" stroke="none"/><path d="M14 31l-1 11" stroke="#fff" stroke-opacity=".75" stroke-width="3"/></symbol>
+    <symbol id="i-star" viewBox="0 0 56 56"><path d="M28 5l7.2 14.6 16 2.3-11.6 11.3 2.7 16L28 41.6 13.7 49.2l2.7-16L4.8 21.9l16-2.3Z" fill="url(#gYellow)"/><path d="M21 20l3-6" stroke="#fff" stroke-opacity=".85" stroke-width="3"/></symbol>
+    <symbol id="i-user" viewBox="0 0 56 56"><path d="M9 50C9 40 17 36 28 36S47 40 47 50Z" fill="url(#gOrange)"/><circle cx="28" cy="22" r="12" fill="#ffe8d6"/><path d="M16 22C14 9 22 6 28 8c7-2 14 3 12 14-3-6-7-8-12-8s-9 2-12 8Z" fill="url(#gBlue)"/><circle cx="23" cy="26" r="1.8" fill="#1e1b4b" stroke="none"/><circle cx="33" cy="26" r="1.8" fill="#1e1b4b" stroke="none"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 56 56"><rect x="11" y="6" width="34" height="43" rx="6" fill="url(#gBlue)"/><path d="M19 19h18M19 28h18M19 37h10" fill="none" stroke="#fff" stroke-width="4"/></symbol>
+    <symbol id="i-demo" viewBox="0 0 56 56"><rect x="5" y="9" width="46" height="32" rx="7" fill="url(#gViolet)"/><rect x="10" y="14" width="36" height="22" rx="3.5" fill="#eef2ff" stroke-width="2"/><path d="M25 18.5v13l11-6.5Z" fill="url(#gPink)" stroke-width="2"/><path d="M20 47h16M28 41v6" fill="none" stroke-width="3.2"/></symbol>
+    <symbol id="i-play" viewBox="0 0 56 56"><rect x="5" y="11" width="46" height="34" rx="10" fill="url(#gPink)"/><path d="M23 20v16l14-8Z" fill="#fff"/></symbol>
   </defs>
-  <symbol id="spark" viewBox="0 0 10 10"><path d="M5 0.3 6.2 3.8 9.7 5 6.2 6.2 5 9.7 3.8 6.2 0.3 5 3.8 3.8z" fill="#fff" stroke="#1e1b4b" stroke-width=".9" stroke-linejoin="round"/></symbol>
-  <symbol id="mascot" viewBox="0 0 44 34"><g stroke="#1e1b4b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><circle cx="7" cy="30" r="4" fill="#ffe8d6"/><circle cx="37" cy="30" r="4" fill="#ffe8d6"/><ellipse cx="22" cy="21.5" rx="14.5" ry="10.5" fill="#ffe8d6"/><path d="M7 21C6 12 9 9 10 5l5 6 4-9 4 8 5-8 3 9 5-6c1 4 2 8 1 16-4-7-9-9-15-9S11 14 7 21Z" fill="#3b82f6"/></g><path d="M12 12c3-3 7-4 10-4" stroke="#fff" stroke-opacity=".6" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="15.5" cy="22.5" r="3.5" fill="#fbbf24" stroke="#1e1b4b" stroke-width="1.2"/><circle cx="28.5" cy="22.5" r="3.5" fill="#fbbf24" stroke="#1e1b4b" stroke-width="1.2"/><circle cx="15.8" cy="22.8" r="1.7" fill="#1e1b4b"/><circle cx="28.2" cy="22.8" r="1.7" fill="#1e1b4b"/><circle cx="14.8" cy="21.6" r=".8" fill="#fff"/><circle cx="27.2" cy="21.6" r=".8" fill="#fff"/><circle cx="10" cy="26.5" r="2" fill="#fda4af" opacity=".75"/><circle cx="34" cy="26.5" r="2" fill="#fda4af" opacity=".75"/><path d="M19.5 27.5q2.5 2.2 5 0" stroke="#be123c" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
 </svg>
 
 <header class="site">
@@ -180,8 +206,8 @@ const toArr = v => !v ? [] : Array.isArray(v) ? v.filter(Boolean) : typeof v ===
 const fixUrl = u => { u = String(u || "").trim(); return !u ? "" : /^https?:\/\//i.test(u) ? u : "https://" + u.replace(/^\/+/, ""); };
 const host = u => { try { return new URL(u).host.replace(/^www\./, ""); } catch { return u; } };
 const linkify = s => esc(s).replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;word-break:break-all">${u}</a>`);
-const MQ = ["⚡ Bayar mudah via QRIS", "🔒 Produk dikunci 3 menit saat checkout", "✅ Diverifikasi Admin", "🎁 Produk siap pakai"].map(t => `<span>${t}</span>`).join("");
-const ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`;
+function IC(n) { return `<svg class="ic" aria-hidden="true"><use href="#${n}"/></svg>`; }
+const payBtn = () => IC("i-ok") + "Saya Sudah Bayar";
 
 let state = { user: null, products: {}, settings: {}, orderTimer: null, bub: null, paying: false, imgs: [], sig: "" };
 const productId = new URLSearchParams(location.search).get("id");
@@ -211,12 +237,6 @@ function ask(title, text, ok = "Lanjut", cancel = "Batal", onOk) {
     r.firstChild.onclick = e => { if (e.target === r.firstChild) done(false); };
   });
 }
-function decor() {
-  let h = "";
-  for (let i = 0; i < 14; i++) { const z = 10 + Math.random() * 14; h += `<svg class="sp" style="left:${Math.random() * 96}%;top:${Math.random() * 94}%;width:${z}px;height:${z}px;animation-delay:-${Math.random() * 3}s"><use href="#spark"/></svg>`; }
-  [[3, 24], [88, 52], [6, 74]].forEach(([x, y], i) => h += `<svg class="fm" style="left:${x}%;top:${y}%;animation-delay:-${i * 2}s"><use href="#mascot"/></svg>`);
-  $("fx").innerHTML = h;
-}
 
 /* ---------- Auth ---------- */
 function paintAuth() {
@@ -230,7 +250,7 @@ window.handleAuth = async () => {
   const u = state.user;
   if (u) {
     const n = (u.displayName || u.email || "Kamu").split(" ")[0];
-    if (await ask(`Halo, ${n}! 👋`, u.email || "Kamu sudah masuk dengan Google.", "Keluar akun", "Tutup")) { await signOut(auth); toast("Sampai jumpa lagi! 👋"); }
+    if (await ask(`Halo, ${n}!`, u.email || "Kamu sudah masuk dengan Google.", "Keluar akun", "Tutup")) { await signOut(auth); toast("Sampai jumpa lagi!"); }
     return;
   }
   try { await signInWithPopup(auth, provider); }
@@ -253,16 +273,16 @@ listen("settings", "settings/marketplace"); listen("products", "products");
 setTimeout(() => tryStart(true), 6000);
 
 function start() {
-  $("page-loader").classList.add("hidden"); document.body.classList.add("loaded");
+  $("page-loader").classList.add("hidden");
   $("brandLogo").innerHTML = `<span class="lg">${DEFAULT_LOGO}</span><b>${BRAND}</b>`;
-  decor(); renderProduct();
+  renderProduct();
 }
 
 /* ---------- Halaman detail ---------- */
 function renderProduct() {
   const root = $("app"), p = state.products[productId];
   clearInterval(state.bub); state.sig = JSON.stringify(p || null);
-  if (!p) { root.innerHTML = `<div class="empty-state"><svg style="width:90px;height:68px;margin:0 auto 12px"><use href="#mascot"/></svg><p>Produk tidak ditemukan 😢</p><a href="katalog.html" class="btn btn-primary" style="max-width:240px;margin:0 auto">Ke Katalog</a></div>`; return; }
+  if (!p) { root.innerHTML = `<div class="empty-state"><svg style="width:90px;height:68px;margin:0 auto 12px"><use href="#mascot"/></svg><p>Produk tidak ditemukan</p><a href="katalog.html" class="btn btn-primary" style="max-width:240px;margin:0 auto">Ke Katalog</a></div>`; return; }
 
   const st = p.status, isAvail = st !== "sold" && st !== "reserved", isLimited = p.productType === "limited_html";
   const imgs = [...toArr(p.imageURLs), ...toArr(p.imageURL || p.image || p.thumbnail)].map(x => typeof x === "object" ? x.url : x).map(fixUrl).filter((u, i, a) => u && a.indexOf(u) === i);
@@ -270,66 +290,67 @@ function renderProduct() {
 
   const links = [];
   const add = (u, t, ic) => { u = fixUrl(u); if (u && !links.some(l => l.u === u)) links.push({ u, t, ic }); };
-  add(p.demoURL, "Lihat Proyek (Live Preview)", "🚀"); add(p.previewURL, "Pratinjau Produk", "👀"); add(p.videoURL, "Video Demo", "🎬"); add(p.link || p.linkURL || p.url, "Buka Link Produk", "🔗");
-  toArr(p.links).forEach(l => typeof l === "object" ? add(l.url || l.href, l.label || l.title || "Buka Link", "🔗") : add(l, "Buka Link", "🔗"));
+  add(p.demoURL, "Lihat Proyek (Live Preview)", "i-demo"); add(p.previewURL, "Pratinjau Produk", "i-demo"); add(p.videoURL, "Video Demo", "i-play"); add(p.link || p.linkURL || p.url, "Buka Link Produk", "i-link");
+  toArr(p.links).forEach(l => typeof l === "object" ? add(l.url || l.href, l.label || l.title || "Buka Link", "i-link") : add(l, "Buka Link", "i-link"));
 
-  const stText = isAvail ? (isLimited ? "Tersedia (Sisa 1)" : "Tersedia") : st === "reserved" ? "Sedang Dipesan" : "Sudah Terjual";
-  const stCls = isAvail ? "ok" : st === "reserved" ? "wait" : "no";
+  const S = isAvail ? ["ok", "i-ok", "Tersedia"] : st === "reserved" ? ["wait", "i-wait", "Sedang Dipesan"] : ["no", "i-no", "Sudah Terjual"];
+  const labels = `<span class="lb ${S[0]}">${IC(S[1])}${S[2]}</span>` + (isLimited ? `<span class="lb hot">${IC("i-fire")}Limited &middot; 1 pcs</span>` : `<span class="lb">${IC("i-box")}Produk Digital</span>`);
   const tags = (Array.isArray(p.hashtags) ? p.hashtags : String(p.hashtags || "").split(",")).map(h => String(h).trim().replace(/^#/, "")).filter(Boolean);
-  const specs = [["📂 Kategori", p.category || "-"], ["📦 Tipe", isLimited ? "Limited (1 pcs)" : "Produk Digital"], ["🏷️ Status", stText]];
-  if (!isLimited) specs.push(["🛒 Terjual", p.totalSold || 0], ["⭐ Rating", Number(p.ratingAvg) ? Number(p.ratingAvg).toFixed(1) : "Belum ada"]);
-  if (p.sellerName) specs.push(["👤 Penjual", p.sellerName]);
-  const msgs = isAvail ? ["Halo! Aku Cazo 👋", "Produknya keren banget! ✨", isLimited ? "Stok tinggal 1, buruan! 🔥" : "Banyak yang suka lho! 💖", "Bayar pakai QRIS, gampang!"] : ["Yah, lagi nggak tersedia 😢", "Cek produk lain yuk! 👀"];
+  const specs = [["i-folder", "Kategori", p.category || "-"]];
+  if (!isLimited) specs.push(["i-cart", "Terjual", p.totalSold || 0], ["i-star", "Rating", Number(p.ratingAvg) ? Number(p.ratingAvg).toFixed(1) : "Belum ada"]);
+  if (p.sellerName) specs.push(["i-user", "Penjual", p.sellerName]);
+  const msgs = isAvail ? ["Halo, aku Cazo!", "Produknya keren banget, lho.", isLimited ? "Stok tinggal 1, buruan!" : "Banyak yang suka produk ini.", "Bayar pakai QRIS, gampang!"] : ["Yah, produk ini lagi tidak tersedia.", "Yuk cek produk lain di katalog."];
 
   const seen = root.dataset.v === productId; root.dataset.v = productId; root.classList.toggle("seen", seen);
   document.title = `${p.title || "Detail Produk"} — ${BRAND}`;
 
   root.innerHTML = `
-    <a href="katalog.html" class="back rise" style="--i:0">&larr; Kembali</a>
-    <div class="mq rise" style="--i:1"><div>${MQ}${MQ}</div></div>
-    <section class="glass hero rise" style="--i:2">
-      <div class="stage" id="stage">
-        <div class="in"><img id="mainImg" src="${esc(state.imgs[0])}" alt="${esc(p.title)}" onclick="zoom(this.src)" onerror="this.onerror=null;this.src='${PH}'"></div>
-        <span class="chip cat">${esc(p.category || "Produk")}</span>
-        <span class="chip stt ${stCls}">${stText}</span>
-        <div class="peek" onclick="hop(event)"><div class="bub in" id="bub">${msgs[0]}</div><svg><use href="#mascot"/></svg></div>
+    <a href="katalog.html" class="back">${IC("i-back")}Kembali</a>
+    <div class="pg">
+      <div class="ca rise">
+        <section class="glass hero">
+          <div class="stage ldg" id="stage"><img id="mainImg" src="${esc(state.imgs[0])}" alt="${esc(p.title)}" onload="this.parentNode.classList.remove('ldg')" onclick="zoom(this.src)" onerror="this.onerror=null;this.src='${PH}'"></div>
+          ${state.imgs.length > 1 ? `<div class="thumbs">${state.imgs.map((u, i) => `<button class="${i ? "" : "on"}" onclick="setImg(${i})" aria-label="Foto ${i + 1}"><img src="${esc(u)}" loading="lazy" alt=""></button>`).join("")}</div>` : ""}
+          <div class="lbs">${labels}</div>
+        </section>
+        <div class="tip" onclick="hop(event)"><svg class="tm"><use href="#mascot"/></svg><div class="bub in" id="bub">${msgs[0]}</div></div>
       </div>
-      ${state.imgs.length > 1 ? `<div class="thumbs">${state.imgs.map((u, i) => `<button class="${i ? "" : "on"}" onclick="setImg(${i})" aria-label="Foto ${i + 1}"><img src="${esc(u)}" loading="lazy" alt=""></button>`).join("")}</div>` : ""}
-    </section>
-    <div class="detail-header rise" style="--i:3">
-      <h1 class="detail-title">${esc(p.title)}</h1>
-      <button class="btn-icon" onclick="share(event)" title="Salin Link" aria-label="Salin link">${ICON}</button>
-    </div>
-    <div class="pricebar rise" style="--i:4"><div><small>Harga</small><div class="pr">${rupiah(p.price)}</div></div>${isAvail && isLimited ? `<span class="hot">🔥 Limited 1 pcs</span>` : ""}</div>
-    <div class="specs rise" style="--i:5">${specs.map(([a, b]) => `<div class="spec"><small>${a}</small><b>${esc(b)}</b></div>`).join("")}</div>
-    ${tags.length ? `<div class="hashtags rise" style="--i:6">${tags.map((h, i) => `<span class="hashtag" style="animation-delay:-${i * 0.5}s">#${esc(h)}</span>`).join("")}</div>` : `<div style="height:16px"></div>`}
-    <div class="glass rise" style="--i:7"><h3 class="desc-title">📝 Deskripsi Lengkap</h3><div class="desc-text">${linkify(p.description || "Tidak ada deskripsi.")}</div></div>
-    ${links.length ? `<div class="rise" style="--i:8;margin-bottom:16px"><h3 class="desc-title">🔗 Link dari Penjual</h3>${links.map(l => `<a class="lnk" href="${esc(l.u)}" target="_blank" rel="noopener noreferrer"><span>${l.ic}</span><div>${esc(l.t)}<small>${esc(host(l.u))}</small></div><i>↗</i></a>`).join("")}</div>` : ""}
-    <div class="rise" style="--i:9">${isAvail ? `<button id="buyBtn" class="btn cta" onclick="buyFlow()">🛒 Beli Sekarang</button>` : `<button class="btn btn-disabled" disabled>${st === "reserved" ? "⏳ Sedang Dipesan Pembeli Lain" : "Maaf, Produk Sudah Terjual"}</button>`}</div>`;
+      <div class="cb rise" style="--i:1">
+        <div class="detail-header">
+          <h1 class="detail-title">${esc(p.title)}</h1>
+          <button class="btn-icon" onclick="share(event)" title="Salin Link" aria-label="Salin link">${IC("i-link")}</button>
+        </div>
+        <div class="buy">
+          <div><small>Harga</small><div class="pr">${rupiah(p.price)}</div></div>
+          ${isAvail ? `<button id="buyBtn" class="btn cta" onclick="buyFlow()">${IC("i-cart")}Beli Sekarang</button>` : `<button class="btn btn-disabled" disabled>${IC(st === "reserved" ? "i-wait" : "i-no")}${st === "reserved" ? "Sedang Dipesan Pembeli Lain" : "Maaf, Produk Sudah Terjual"}</button>`}
+        </div>
+        <div class="specs">${specs.map(([ic, a, b]) => `<div class="spec">${IC(ic)}<div><small>${a}</small><b>${esc(b)}</b></div></div>`).join("")}</div>
+        ${tags.length ? `<div class="hashtags">${tags.map(h => `<span class="hashtag">#${esc(h)}</span>`).join("")}</div>` : ""}
+        <div class="glass"><h3 class="desc-title">${IC("i-doc")}Deskripsi Lengkap</h3><div class="desc-text">${linkify(p.description || "Tidak ada deskripsi.")}</div></div>
+        ${links.length ? `<h3 class="desc-title">${IC("i-link")}Link dari Penjual</h3>${links.map(l => `<a class="lnk" href="${esc(l.u)}" target="_blank" rel="noopener noreferrer"><span class="ti">${IC(l.ic)}</span><div>${esc(l.t)}<small>${esc(host(l.u))}</small></div><i>↗</i></a>`).join("")}` : ""}
+      </div>
+    </div>`;
 
-  const stg = $("stage");
-  stg.onpointermove = e => { const r = stg.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; stg.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`; };
-  stg.onpointerleave = () => { stg.style.transform = ""; };
   let k = 0;
   state.bub = setInterval(() => { const b = $("bub"); if (!b) return clearInterval(state.bub); b.textContent = msgs[++k % msgs.length]; b.classList.remove("in"); void b.offsetWidth; b.classList.add("in"); }, 3200);
 }
 
-window.setImg = i => { $("mainImg").src = state.imgs[i]; document.querySelectorAll(".thumbs button").forEach((b, j) => b.classList.toggle("on", i === j)); };
+window.setImg = i => { $("stage").classList.add("ldg"); $("mainImg").src = state.imgs[i]; document.querySelectorAll(".thumbs button").forEach((b, j) => b.classList.toggle("on", i === j)); };
 window.zoom = src => { if (src) $("modal-root").innerHTML = `<div class="modal-overlay" onclick="this.parentNode.innerHTML=''"><img src="${esc(src)}" alt="" style="max-height:85vh;max-width:100%;border-radius:18px;background:#fff;animation:pop .35s both"></div>`; };
-window.hop = e => { const r = e.currentTarget.getBoundingClientRect(); boom(r.left + r.width / 2, r.top + r.height / 2); toast("Hehe, geli! 🤭"); };
+window.hop = e => { const r = e.currentTarget.querySelector("svg").getBoundingClientRect(); boom(r.left + r.width / 2, r.top + r.height / 2); toast("Hehe, geli!"); };
 window.share = async e => {
   const url = location.href, x = e.clientX, y = e.clientY;
   try { await navigator.clipboard.writeText(url); }
   catch { const t = document.createElement("textarea"); t.value = url; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); } catch {} t.remove(); }
-  boom(x, y); toast("Link disalin! 🔗");
+  boom(x, y); toast("Link disalin");
 };
 
 /* ---------- Beli & bayar ---------- */
 const release = id => runTransaction(ref(db, `products/${productId}`), p => p && p.reservationOrderId === id ? { ...p, status: "available", availability: "available", reservedBy: null, reservedUntil: null, reservationOrderId: null } : p);
 
 window.buyFlow = async () => {
-  if (!state.user) { ask("Harap masuk 🔐", "Silakan masuk dengan Google untuk melanjutkan pembelian.", "Masuk Google", "Batal", window.handleAuth); return; }
-  const btn = $("buyBtn"); if (btn) { btn.disabled = true; btn.textContent = "⏳ Memproses..."; }
+  if (!state.user) { ask("Harap masuk", "Silakan masuk dengan Google untuk melanjutkan pembelian.", "Masuk Google", "Batal", window.handleAuth); return; }
+  const btn = $("buyBtn"); if (btn) { btn.disabled = true; btn.textContent = "Memproses..."; }
   let orderId;
   try {
     const orderRef = push(ref(db, "orders")); orderId = orderRef.key;
@@ -339,7 +360,7 @@ window.buyFlow = async () => {
       if (p.status === "sold" || p.status === "reserved") return; // undefined = batalkan (jangan return null: itu MENGHAPUS produk)
       return { ...p, status: "reserved", availability: "reserved", reservedBy: state.user.uid, reservedUntil: expiresAt, reservationOrderId: orderId };
     });
-    if (!res.committed) { toast("Maaf, produk baru saja diambil orang lain 😢"); renderProduct(); return; }
+    if (!res.committed) { toast("Maaf, produk baru saja diambil orang lain"); renderProduct(); return; }
     const p = res.snapshot.val(); if (!p) throw new Error("Produk tidak ditemukan");
     const price = Number(p.price) || 0, rate = Number(state.settings.commissionRate) || 0.10;
     state.paying = true;
@@ -365,7 +386,7 @@ function renderPayment(orderId, price, expiresAt) {
         <div class="timer" id="timerDisplay">03:00</div><div class="bar"><i id="bar"></i></div>
         <div class="qris-box"><img src="${QRIS_IMG}" alt="QRIS" onclick="zoom(this.src)"><p style="font-size:13px;color:var(--text-muted);margin:14px 0 0">Total: <b class="pr" style="font-size:22px">${rupiah(price)}</b></p><small style="color:var(--text-muted)">Tap QRIS untuk memperbesar</small></div>
       </div>
-      <button class="btn cta rise" style="--i:3;margin:14px 0 10px" onclick="confirmPayment('${orderId}', this)">✅ Saya Sudah Bayar</button>
+      <button class="btn cta rise" style="--i:3;margin:14px 0 10px" onclick="confirmPayment('${orderId}', this)">${payBtn()}</button>
       <button class="btn btn-outline rise" style="--i:4" onclick="cancelOrder('${orderId}')">Batalkan Pesanan</button>
     </div>`;
   const tick = () => {
@@ -383,9 +404,9 @@ window.confirmPayment = async (orderId, btn) => {
   if (!await ask("Sudah transfer?", "Pastikan dana sudah terkirim sesuai nominal. Admin akan memverifikasi pembayaranmu.", "Ya, sudah bayar", "Belum")) return;
   btn.disabled = true; btn.textContent = "Memproses...";
   try { await update(ref(db, `orders/${orderId}`), { paymentStatus: "awaiting_verification" }); }
-  catch (e) { btn.disabled = false; btn.textContent = "✅ Saya Sudah Bayar"; return toast("Gagal mengirim konfirmasi: " + e.message); }
+  catch (e) { btn.disabled = false; btn.innerHTML = payBtn(); return toast("Gagal mengirim konfirmasi: " + e.message); }
   clearInterval(state.orderTimer); boom(innerWidth / 2, innerHeight / 3);
-  await ask("Konfirmasi terkirim 🎉", "Menunggu verifikasi Admin. Pantau statusnya di Riwayat.", "Ke Riwayat", null);
+  await ask("Konfirmasi terkirim", "Menunggu verifikasi Admin. Pantau statusnya di Riwayat.", "Ke Riwayat", null);
   location.href = "riwayat.html";
 };
 
@@ -400,7 +421,7 @@ async function expireOrder(orderId) {
   clearInterval(state.orderTimer);
   try { await release(orderId); await update(ref(db, `orders/${orderId}`), { paymentStatus: "expired", orderStatus: "expired" }); } catch {}
   state.paying = false;
-  await ask("Waktu habis ⏰", "Pesanan dibatalkan otomatis.", "Oke", null);
+  await ask("Waktu habis", "Pesanan dibatalkan otomatis.", "Oke", null);
   renderProduct();
 }
 </script>
