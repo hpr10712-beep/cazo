@@ -9,7 +9,7 @@
 :root{--ink:#1e1b4b;--muted:#64748b;--bg:#f8fafc;--c1:#4c1d95;--c2:#7c3aed;--c3:#db2777;--c4:#2563eb}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
-body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:#0f172a;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;background-color:#f3f5fb;background-image:linear-gradient(rgba(79,70,229,.10) 2px,transparent 2px),linear-gradient(90deg,rgba(79,70,229,.10) 2px,transparent 2px);background-size:32px 32px;color:#0f172a;overflow:hidden}
 [hidden]{display:none!important}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
 a{color:inherit;text-decoration:none}
@@ -28,7 +28,7 @@ a{color:inherit;text-decoration:none}
 .who .t{min-width:0}
 .who b{display:block;font-size:17px;font-weight:900;text-shadow:0 2px 0 rgba(30,27,75,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .who small{display:block;font-size:12px;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.csico{width:42px;height:42px;flex:none;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:2px;box-shadow:0 3px 0 rgba(30,27,75,.35)}
+.csico{display:block;width:42px;height:42px;flex:none;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:2px;box-shadow:0 3px 0 rgba(30,27,75,.35)}
 .csico svg{width:100%;height:100%;display:block}
 
 /* ===== avatar ===== */
@@ -40,6 +40,7 @@ a{color:inherit;text-decoration:none}
 
 /* ===== pesan ===== */
 .msgs{flex:1;min-height:0;overflow-y:auto;padding:16px 12px 8px;display:flex;flex-direction:column;gap:6px;overscroll-behavior:contain}
+.msgs>*{flex-shrink:0}
 .row{display:flex;gap:8px;align-items:flex-end;animation:rin .25s ease}
 .row.me{justify-content:flex-end}
 @keyframes rin{from{opacity:0;transform:translateY(8px)}}
@@ -154,7 +155,7 @@ a{color:inherit;text-decoration:none}
   </section>
 </div>
 
-<div class="gate" id="gate"><div class="center" id="gateBody"></div></div>
+<div class="gate" id="gate"><div class="center" id="gateBody"><div><h2>Memuat…</h2></div></div></div>
 
 <script type="module">
 /* ===== Firebase + fungsi bantu ===== */
@@ -178,8 +179,6 @@ const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
-const login = () => signInWithPopup(auth, provider);
-const logout = () => signOut(auth);
 
 const $ = (s, r = document) => r.querySelector(s);
 
@@ -280,21 +279,44 @@ const CANNED = [
 const appEl = $("#app"), chatp = $("#chatp"), listEl = $("#threads"), msgs = $("#msgs"), ta = $("#ta"), sendBtn = $("#send");
 let admin = null, threads = {}, cur = null, filter = "all", stops = [], stopMsgs = [];
 
-/* ---------- gerbang akses ---------- */
+/* ---------- SISTEM KEAMANAN ADMIN (SAMA SEPERTI ADMIN.HTML) ---------- */
 function gate(kind, user) {
   const g = $("#gate"), body = $("#gateBody");
   g.hidden = kind === "ok";
   if (kind === "ok") return;
   const ico = '<span class="csico"><svg viewBox="0 0 56 56"><use href="#cs-ic"/></svg></span>';
-  if (kind === "check") body.innerHTML = '<div>' + ico + '<h2>Memeriksa akses…</h2></div>';
+  
+  if (kind === "check") {
+    body.innerHTML = '<div>' + ico + '<h2>Memeriksa akses…</h2></div>';
+  }
+  
   if (kind === "login") {
     body.innerHTML = '<div>' + ico + '<h2>CS Admin</h2><p>Masuk dengan akun Google admin untuk membalas pesan pelanggan.</p><button class="gbtn" id="gl">' + G_SVG + 'Masuk dengan Google</button></div>';
-    $("#gl").onclick = async () => { try { await login(); } catch (e) { if (e.code !== "auth/popup-closed-by-user") toast("Gagal masuk: " + e.code); } };
+    $("#gl").onclick = async () => { 
+      try { 
+        await signInWithPopup(auth, provider); 
+      } catch (e) { 
+        if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") {
+          toast("Gagal masuk: " + (e.code || e.message)); 
+        }
+      } 
+    };
   }
+  
   if (kind === "denied") {
     body.innerHTML = '<div>' + ico + '<h2>Akses ditolak</h2><p>Akun ini belum terdaftar sebagai admin CS. Di Firebase Console → Realtime Database, tambahkan node berikut dengan nilai <b>true</b>:</p><code class="uid"></code><button class="gbtn" id="lo">Keluar</button></div>';
-    body.querySelector(".uid").textContent = "cs/admins/" + user.uid;
-    $("#lo").onclick = () => logout();
+    body.querySelector(".uid").textContent = "admins/" + user.uid;
+    $("#lo").onclick = () => signOut(auth);
+  }
+}
+
+// Fungsi pengecekan admin
+async function isAdmin(uid) {
+  try { 
+    const snap = await get(ref(db, `admins/${uid}`)); 
+    return snap.val() === true; 
+  } catch { 
+    return false; 
   }
 }
 
@@ -302,14 +324,18 @@ onAuthStateChanged(auth, async user => {
   stops.forEach(f => f()); stops = []; closeThread(); admin = null; threads = {};
   if (!user) return gate("login");
   gate("check");
-  try {
-    const s = await get(ref(db, "cs/admins/" + user.uid));
-    if (s.val() !== true) return gate("denied", user);
-  } catch (e) { return gate("denied", user); }
+  
+  const ok = await isAdmin(user.uid);
+  if (!ok) return gate("denied", user);
+  
   admin = user; gate("ok");
   setAvatar($("#aav"), { name: user.displayName, photo: user.photoURL });
-  stops.push(onValue(ref(db, "cs/threads"), snap => { threads = snap.val() || {}; renderList(); syncHeader(); },
-    () => toast("Gagal memuat percakapan. Periksa aturan database.")));
+  
+  stops.push(onValue(ref(db, "cs/threads"), snap => { 
+    threads = snap.val() || {}; 
+    renderList(); 
+    syncHeader(); 
+  }, () => toast("Gagal memuat percakapan. Periksa aturan database.")));
 });
 
 /* ---------- daftar percakapan ---------- */
