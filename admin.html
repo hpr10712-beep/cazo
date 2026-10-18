@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel — KodinganKita</title>
+<title>Admin Panel — Cazo Market</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -469,6 +469,8 @@ async function viewProducts() {
         <div class="field"><label>Kategori</label><input class="input" name="category" value="${esc(data.category||'')}" required placeholder="Cth: Template HTML"></div>
         <div class="field"><label>Harga (Rp)</label><input class="input" name="price" type="number" value="${data.price||''}" required></div>
       </div>
+      
+      <!-- TIPE PRODUK -->
       <div class="field">
         <label>Tipe Produk</label>
         <select class="select" name="productType" id="prodType" onchange="document.getElementById('limitedFields').style.display = this.value === 'limited_html' ? 'block' : 'none'">
@@ -476,29 +478,50 @@ async function viewProducts() {
           <option value="limited_html" ${data.productType === 'limited_html' ? 'selected' : ''}>Produk Limited (HTML Code)</option>
         </select>
       </div>
+      
+      <!-- FIELD UNTUK LIMITED HTML -->
       <div id="limitedFields" style="display:${data.productType === 'limited_html' ? 'block' : 'none'}; background:var(--bg-body); padding:12px; border-radius:8px; margin-bottom:16px;">
         <div class="field"><label>URL Demo (Live Preview)</label><input class="input" name="demoURL" value="${esc(data.demoURL||'')}" placeholder="https://..."></div>
         <div class="field"><label>Hashtag (Pisahkan dengan koma)</label><input class="input" name="hashtags" value="${esc(data.hashtags||'')}" placeholder="html, css, toko-online"></div>
       </div>
+
+      <!-- TOKO PENJUAL -->
       <div class="field">
         <label>Toko Penjual</label>
-        <select class="select" name="shopId" id="shopSelect" required><option value="">-- Pilih Toko --</option></select>
+        <select class="select" name="shopId" id="shopSelect" required>
+          <option value="lewanofficial">Lewan Official (Admin)</option>
+        </select>
       </div>
+      
       <div class="field"><label>Deskripsi</label><textarea class="textarea" name="description" required>${esc(data.description||'')}</textarea></div>
       <div class="field"><label>URL Gambar</label><input class="input" name="imageURL" value="${esc(data.imageURLs?.[0] || '')}" required></div>
       <div class="field"><label>URL File Unduhan (Setelah Lunas)</label><input class="input" name="fileDownloadURL" value="${esc(data.fileDownloadURL||'')}" placeholder="https://drive.google.com/..."></div>
+      
+      <div class="field">
+        <label>Status Awal</label>
+        <select class="select" name="status">
+          <option value="available" ${data.status === 'available' ? 'selected' : ''}>Langsung Tersedia (Available)</option>
+          <option value="pending_review" ${data.status === 'pending_review' ? 'selected' : ''}>Butuh Peninjauan (Pending Review)</option>
+        </select>
+      </div>
     </form>
   `;
 
   const loadShopOptions = async (selectedShopId = '') => {
     const shopsSnap = await get(ref(db,"shops"));
     const shops = shopsSnap.val() || {};
+    
+    // "Lewan Official" jadi default untuk admin
+    let opts = `<option value="lewanofficial" ${selectedShopId === 'lewanofficial' || !selectedShopId ? 'selected' : ''}>Lewan Official (Admin)</option>`;
+    
+    Object.entries(shops).forEach(([id, s]) => {
+      if(s.name !== "Lewan Official") {
+        opts += `<option value="${id}" ${id === selectedShopId ? 'selected' : ''}>${esc(s.name)}</option>`;
+      }
+    });
+
     const select = $("#shopSelect");
-    if(select) {
-      select.innerHTML = `<option value="">-- Pilih Toko --</option>` + Object.entries(shops).map(([id, s]) => 
-        `<option value="${id}" ${id === selectedShopId ? 'selected' : ''}>${esc(s.name)}</option>`
-      ).join("");
-    }
+    if(select) select.innerHTML = opts;
   };
 
   window.openAddProduct = async () => {
@@ -509,14 +532,18 @@ async function viewProducts() {
       if(!price || price < 1000) throw new Error("Harga minimal Rp 1.000");
       if(!fd.get("shopId")) throw new Error("Pilih toko penjual");
 
-      const shopOwnerSnap = await get(ref(db, `shops/${fd.get("shopId")}/ownerId`));
-      const sellerId = shopOwnerSnap.val() || adminUser.uid; 
+      let sellerId = adminUser.uid;
+      if(fd.get("shopId") !== 'lewanofficial') {
+         const shopOwnerSnap = await get(ref(db, `shops/${fd.get("shopId")}/ownerId`));
+         sellerId = shopOwnerSnap.val() || adminUser.uid;
+      }
 
       const prRef = push(ref(db,"products"));
       await set(prRef, {
         title: fd.get("title"), category: fd.get("category"), price: price,
         shopId: fd.get("shopId"), sellerId: sellerId, description: fd.get("description"),
-        imageURLs: [fd.get("imageURL")], status: "available", availability: "available",
+        imageURLs: [fd.get("imageURL")], status: fd.get("status"), 
+        availability: fd.get("status") === "available" ? "available" : "unavailable",
         productType: fd.get("productType"),
         demoURL: fd.get("demoURL") || "",
         hashtags: fd.get("hashtags") || "",
@@ -540,7 +567,9 @@ async function viewProducts() {
         shopId: fd.get("shopId"), description: fd.get("description"),
         imageURLs: [fd.get("imageURL")], productType: fd.get("productType"),
         demoURL: fd.get("demoURL") || "", hashtags: fd.get("hashtags") || "",
-        fileDownloadURL: fd.get("fileDownloadURL") || "", updatedAt: Date.now()
+        fileDownloadURL: fd.get("fileDownloadURL") || "", status: fd.get("status"),
+        availability: fd.get("status") === "available" ? "available" : "unavailable",
+        updatedAt: Date.now()
       });
       toast("Produk diperbarui.", "success");
       route();
@@ -653,7 +682,7 @@ async function viewSettings() {
       <h3 class="card-title">Informasi Dasar</h3>
       <form id="generalForm">
         <div class="row">
-          <div class="field"><label>Nama Toko</label><input class="input" name="name" value="${esc(s.name||'KodinganKita')}"></div>
+          <div class="field"><label>Nama Toko</label><input class="input" name="name" value="${esc(s.name||'Cazo Market')}"></div>
           <div class="field"><label>Deskripsi</label><input class="input" name="description" value="${esc(s.description||'Marketplace Produk Digital Eksklusif')}"></div>
         </div>
         <button class="btn btn-primary" type="submit">Simpan Info</button>
