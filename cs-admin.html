@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>CS Admin — Cazo Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1e1b4b;--muted:#64748b;--bg:#f8fafc;--c1:#4c1d95;--c2:#7c3aed;--c3:#db2777;--c4:#2563eb}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:#0f172a;overflow:hidden}
+[hidden]{display:none!important}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+a{color:inherit;text-decoration:none}
+.page{display:flex;flex-direction:column;height:100dvh}
+
+/* ===== header animasi ringkas ===== */
+.hd{position:relative;flex:none;display:flex;align-items:center;gap:10px;color:#fff;isolation:isolate;overflow:hidden;
+  padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 14px;border-radius:0 0 26px 26px;box-shadow:0 8px 24px rgba(76,29,149,.25);
+  background:linear-gradient(120deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c1));background-size:300% 300%;animation:flow 14s ease-in-out infinite}
+.hd::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.5;background-image:linear-gradient(rgba(255,255,255,.25) 2.5px,transparent 2.5px),linear-gradient(90deg,rgba(255,255,255,.25) 2.5px,transparent 2.5px);background-size:30px 30px;animation:grid 6s linear infinite}
+@keyframes flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes grid{to{background-position:30px 30px}}
+.back{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);color:#fff}
+.back svg{width:20px;height:20px}
+.who{flex:1;min-width:0;display:flex;align-items:center;gap:10px}
+.who .t{min-width:0}
+.who b{display:block;font-size:17px;font-weight:900;text-shadow:0 2px 0 rgba(30,27,75,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who small{display:block;font-size:12px;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.csico{width:42px;height:42px;flex:none;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:2px;box-shadow:0 3px 0 rgba(30,27,75,.35)}
+.csico svg{width:100%;height:100%;display:block}
+
+/* ===== avatar ===== */
+.av{width:36px;height:36px;border-radius:50%;flex:none;overflow:hidden;display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(135deg,#7c3aed,#db2777)}
+.av img{width:100%;height:100%;object-fit:cover}
+.av.cs{background:#fff;border:2px solid var(--ink);padding:3px}
+.av.cs svg{width:100%;height:100%}
+.hd .av{border:2px solid #fff}
+
+/* ===== pesan ===== */
+.msgs{flex:1;min-height:0;overflow-y:auto;padding:16px 12px 8px;display:flex;flex-direction:column;gap:6px;overscroll-behavior:contain}
+.row{display:flex;gap:8px;align-items:flex-end;animation:rin .25s ease}
+.row.me{justify-content:flex-end}
+@keyframes rin{from{opacity:0;transform:translateY(8px)}}
+.bub{max-width:78%;padding:9px 13px 6px;border-radius:18px;font-size:15px;line-height:1.4;word-break:break-word;white-space:pre-wrap;box-shadow:0 2px 0 rgba(30,27,75,.12)}
+.row.me .bub{background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;border-bottom-right-radius:6px}
+.row.them .bub{background:#fff;border:1px solid #e2e8f0;border-bottom-left-radius:6px}
+.bub time{display:block;font-size:10.5px;opacity:.65;margin-top:2px;text-align:right}
+.day{align-self:center;font-size:11px;font-weight:700;color:var(--muted);background:#e2e8f0;padding:3px 10px;border-radius:999px;margin:8px 0}
+.welcome{align-self:center;text-align:center;max-width:300px;margin:34px 0 10px;padding:0 16px 14px;background:#fff;border:2px solid var(--ink);border-radius:20px;box-shadow:0 4px 0 rgba(30,27,75,.2)}
+.welcome .csico{width:58px;height:58px;border-radius:18px;margin:-30px auto 8px}
+.welcome b{display:block;font-size:16px}
+.welcome p{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.45}
+
+/* ===== composer ===== */
+.chips{flex:none;display:flex;gap:8px;overflow-x:auto;padding:4px 12px 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 14px;border-radius:999px;background:#fff;border:2px solid var(--ink);font-weight:700;font-size:13px;color:var(--ink);box-shadow:0 3px 0 rgba(30,27,75,.2);transition:transform .12s,box-shadow .12s}
+.chip:active{transform:translateY(3px);box-shadow:0 0 0 rgba(30,27,75,.2)}
+.comp{flex:none;padding:4px 10px calc(env(safe-area-inset-bottom,0px) + 10px)}
+.box{display:flex;align-items:flex-end;gap:8px;background:#fff;border:2px solid var(--ink);border-radius:26px;padding:6px 6px 6px 16px;box-shadow:0 4px 0 rgba(30,27,75,.18)}
+.box textarea{flex:1;min-width:0;border:0;outline:0;resize:none;background:none;font-family:inherit;font-size:15px;line-height:1.4;max-height:110px;padding:8px 0;color:#0f172a}
+.send{width:42px;height:42px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#7c3aed,#db2777);box-shadow:0 3px 0 #4c1d95;transition:transform .12s,box-shadow .12s}
+.send:active{transform:translateY(3px);box-shadow:0 0 0 #4c1d95}
+.send:disabled{opacity:.5}
+.send svg{width:20px;height:20px}
+
+/* ===== layar tengah (login / ditolak) ===== */
+.center{flex:1;display:grid;place-items:center;padding:24px;text-align:center}
+.center .csico{width:96px;height:96px;border-radius:30px;margin:0 auto 16px}
+.center h2{font-size:20px;font-weight:900}
+.center p{margin:8px auto 20px;max-width:320px;font-size:14px;color:var(--muted);line-height:1.55}
+.gbtn{display:inline-flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:11px 22px 11px 14px;font-weight:800;font-size:15px;box-shadow:0 4px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+.gbtn:active{transform:translateY(4px);box-shadow:0 0 0 var(--ink)}
+.gbtn svg{width:22px;height:22px}
+.uid{display:block;margin:0 auto 16px;max-width:320px;padding:10px 12px;background:#fff;border:2px dashed #cbd5e1;border-radius:12px;font:600 12px/1.4 ui-monospace,Menlo,monospace;word-break:break-all;color:var(--ink)}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);max-width:88vw;text-align:center;background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;font-size:14px;z-index:99;box-shadow:0 8px 24px rgba(30,27,75,.4);animation:rin .3s ease}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* ===== khusus admin ===== */
+.app{display:flex;height:100dvh}
+.pane{flex:1;min-width:0;display:flex;flex-direction:column}
+.chatp{display:none}
+.app.in-chat .list{display:none}
+.app.in-chat .chatp{display:flex}
+.tabs{flex:none;display:flex;gap:8px;padding:12px 12px 6px}
+.tab{padding:7px 14px;border-radius:999px;font-weight:800;font-size:13px;background:#fff;border:2px solid var(--ink);color:var(--ink)}
+.tab.on{background:var(--ink);color:#fff}
+.tab i{font-style:normal;background:#ef4444;color:#fff;border-radius:999px;padding:1px 7px;margin-left:5px;font-size:11px}
+.tab i:empty{display:none}
+.threads{flex:1;min-height:0;overflow-y:auto;padding:6px 12px 16px;display:flex;flex-direction:column;gap:8px}
+.thread{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 12px;background:#fff;border:2px solid #e2e8f0;border-radius:18px;transition:transform .12s,border-color .12s}
+.thread:active{transform:scale(.98)}
+.thread.sel{border-color:var(--c2);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.thread .av{width:46px;height:46px;font-size:18px}
+.thread .mid{flex:1;min-width:0}
+.thread .nm{display:flex;justify-content:space-between;gap:8px;font-weight:800;font-size:15px}
+.thread .nm span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thread .nm time{font-size:11px;font-weight:600;color:var(--muted);flex:none}
+.thread .lt{display:flex;align-items:center;gap:8px;margin-top:3px;font-size:13px;color:var(--muted)}
+.thread .lt span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thread.un .lt span{color:#0f172a;font-weight:700}
+.badge{flex:none;background:#ef4444;color:#fff;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 8px}
+.tag{flex:none;background:#e2e8f0;color:var(--muted);font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 8px}
+.none{margin:auto;text-align:center;color:var(--muted);font-size:14px;padding:40px 20px;line-height:1.6}
+.done{flex:none;padding:8px 14px;border-radius:999px;font-weight:800;font-size:13px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.6);color:#fff}
+.empty{margin:auto;text-align:center;color:var(--muted);padding:30px}
+.chatp:not(.has)>:not(.empty){display:none}
+.chatp.has .empty{display:none}
+.gate{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column}
+@media(min-width:900px){
+  .list{flex:none;width:370px;border-right:2px solid #e2e8f0;display:flex!important}
+  .chatp{display:flex!important}
+  #toList{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <section class="pane list">
+    <header class="hd">
+      <a class="back" href="index.html" id="homeBtn" aria-label="Beranda"></a>
+      <div class="who">
+        <span class="csico"><svg viewBox="0 0 56 56"><use href="#cs-ic"/></svg></span>
+        <div class="t"><b>CS Admin</b><small id="tot">Memuat…</small></div>
+      </div>
+      <span class="av" id="aav"></span>
+    </header>
+    <div class="tabs">
+      <button class="tab on" data-f="all">Semua</button>
+      <button class="tab" data-f="unread">Belum dibaca <i id="ub"></i></button>
+    </div>
+    <div class="threads" id="threads"></div>
+  </section>
+
+  <section class="pane chatp" id="chatp">
+    <header class="hd">
+      <button class="back" id="toList" aria-label="Daftar"></button>
+      <div class="who"><span class="av" id="cav"></span><div class="t"><b id="cname"></b><small id="cmail"></small></div></div>
+      <button class="done" id="doneBtn">Selesai</button>
+    </header>
+    <div class="msgs" id="msgs"></div>
+    <div class="chips" id="canned"></div>
+    <div class="comp">
+      <div class="box">
+        <textarea id="ta" rows="1" maxlength="1000" placeholder="Tulis balasan…"></textarea>
+        <button class="send" id="send" aria-label="Kirim"></button>
+      </div>
+    </div>
+    <div class="empty">Pilih percakapan di daftar untuk mulai membalas.</div>
+  </section>
+</div>
+
+<div class="gate" id="gate"><div class="center" id="gateBody"></div></div>
+
+<script type="module">
+/* ===== Firebase + fungsi bantu ===== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, update, get, onValue, onChildAdded, onChildRemoved, query, orderByChild, limitToLast, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCHr0eemIkfHNFDUkSaFDklp_c1OgmSnl8",
+  authDomain: "mybro-9ba5f.firebaseapp.com",
+  databaseURL: "https://mybro-9ba5f-default-rtdb.firebaseio.com",
+  projectId: "mybro-9ba5f",
+  storageBucket: "mybro-9ba5f.firebasestorage.app",
+  messagingSenderId: "820948893264",
+  appId: "1:820948893264:web:e564509a8fdc4c56335b55"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+const login = () => signInWithPopup(auth, provider);
+const logout = () => signOut(auth);
+
+const $ = (s, r = document) => r.querySelector(s);
+
+function toast(msg) {
+  const t = document.createElement("div");
+  t.className = "toast"; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 4500);
+}
+
+/* ---------- waktu ---------- */
+const pad = n => String(n).padStart(2, "0");
+const fmtTime = ts => { const d = new Date(ts); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+const dayKey = ts => new Date(ts).toDateString();
+function dayLabel(ts) {
+  const d = new Date(ts), t = new Date(), y = new Date(); y.setDate(t.getDate() - 1);
+  if (d.toDateString() === t.toDateString()) return "Hari ini";
+  if (d.toDateString() === y.toDateString()) return "Kemarin";
+  return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+}
+
+/* ---------- avatar ---------- */
+function setAvatar(el, who) {
+  el.innerHTML = "";
+  if (who.cs) { el.classList.add("cs"); el.innerHTML = '<svg viewBox="0 0 56 56"><use href="#cs-ic"/></svg>'; return; }
+  const ini = () => { el.innerHTML = ""; el.textContent = (who.name || "?").trim().charAt(0).toUpperCase(); };
+  if (who.photo && /^https:\/\//.test(who.photo)) {
+    const img = new Image();
+    img.referrerPolicy = "no-referrer"; img.alt = "";
+    img.onerror = ini;
+    img.src = who.photo;
+    el.appendChild(img);
+  } else ini();
+}
+
+/* ---------- gelembung chat ---------- */
+function addMsg(box, key, m, mine, who) {
+  const at = typeof m.at === "number" ? m.at : Date.now();
+  const k = dayKey(at);
+  if (box.dataset.day !== k) {
+    box.dataset.day = k;
+    const d = document.createElement("div"); d.className = "day"; d.textContent = dayLabel(at);
+    box.appendChild(d);
+  }
+  const row = document.createElement("div");
+  row.className = "row " + (mine ? "me" : "them"); row.dataset.k = key;
+  if (!mine) { const a = document.createElement("span"); a.className = "av"; setAvatar(a, who); row.appendChild(a); }
+  const b = document.createElement("div"); b.className = "bub"; b.textContent = m.text || "";
+  const t = document.createElement("time"); t.textContent = fmtTime(at); b.appendChild(t);
+  row.appendChild(b);
+  const near = box.scrollHeight - box.scrollTop - box.clientHeight < 140;
+  box.appendChild(row);
+  if (mine || near) box.scrollTop = box.scrollHeight;
+}
+const removeMsg = (box, key) => { const r = box.querySelector('[data-k="' + key + '"]'); if (r) r.remove(); };
+
+/* ---------- ikon (headset 3D + Google) ---------- */
+const G_SVG = '<svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+const SEND_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>';
+const BACK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 9 12l6-6"/></svg>';
+
+function mountIcons() {
+  document.body.insertAdjacentHTML("beforeend", `<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="cs-violet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+  <linearGradient id="cs-yellow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#facc15"/></linearGradient>
+  <linearGradient id="cs-pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+</defs>
+<symbol id="cs-ic" viewBox="0 0 56 56">
+  <ellipse cx="28" cy="54" rx="15" ry="2" fill="#1e1b4b" opacity=".18"/>
+  <g stroke="#1e1b4b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M10 31C10 15 18 8 28 8S46 15 46 31" fill="none" stroke-width="9.5"/>
+    <path d="M10 31C10 15 18 8 28 8S46 15 46 31" fill="none" stroke="#8b5cf6" stroke-width="5"/>
+    <rect x="6" y="29" width="12" height="20" rx="6" fill="#1e1b4b"/><rect x="6" y="26" width="12" height="20" rx="6" fill="url(#cs-violet)"/>
+    <rect x="38" y="29" width="12" height="20" rx="6" fill="#1e1b4b"/><rect x="38" y="26" width="12" height="20" rx="6" fill="url(#cs-violet)"/>
+    <rect x="9" y="31" width="6" height="10" rx="3" fill="#ddd6fe" stroke-width="1.8"/><rect x="41" y="31" width="6" height="10" rx="3" fill="#ddd6fe" stroke-width="1.8"/>
+    <path d="M44 45Q44 52 32 52" fill="none" stroke-width="5.5"/><path d="M44 45Q44 52 32 52" fill="none" stroke="#f472b6" stroke-width="2.2"/>
+    <rect x="22" y="48.5" width="11" height="7" rx="3.5" fill="url(#cs-pink)"/>
+    <path d="M40 1.5h8a7.5 7.5 0 0 1 7.5 7.5v1a7.5 7.5 0 0 1-7.5 7.5h-5.5l-5.5 4.5 1-5.8A7.5 7.5 0 0 1 32.5 10V9A7.5 7.5 0 0 1 40 1.5Z" fill="url(#cs-yellow)"/>
+  </g>
+  <g fill="#1e1b4b"><circle cx="38" cy="9.5" r="1.7"/><circle cx="44" cy="9.5" r="1.7"/><circle cx="50" cy="9.5" r="1.7"/></g>
+  <path d="M14 27C14 19 18 13 25 11" fill="none" stroke="#fff" stroke-opacity=".65" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M10.5 33v6M42.5 33v6" stroke="#fff" stroke-opacity=".7" stroke-width="2.2" stroke-linecap="round"/>
+</symbol></svg>`);
+}
+
+/* ===== logika halaman ===== */
+mountIcons();
+$("#homeBtn").innerHTML = BACK_SVG; $("#toList").innerHTML = BACK_SVG; $("#send").innerHTML = SEND_SVG;
+
+const CANNED = [
+  "Terima kasih sudah menghubungi Cazo Market.",
+  "Mohon tunggu sebentar ya, kami cek dulu.",
+  "Boleh dikirim ID pesanan atau bukti pembayarannya?",
+  "Sudah kami bantu ya. Ada lagi yang bisa dibantu?"
+];
+
+const appEl = $("#app"), chatp = $("#chatp"), listEl = $("#threads"), msgs = $("#msgs"), ta = $("#ta"), sendBtn = $("#send");
+let admin = null, threads = {}, cur = null, filter = "all", stops = [], stopMsgs = [];
+
+/* ---------- gerbang akses ---------- */
+function gate(kind, user) {
+  const g = $("#gate"), body = $("#gateBody");
+  g.hidden = kind === "ok";
+  if (kind === "ok") return;
+  const ico = '<span class="csico"><svg viewBox="0 0 56 56"><use href="#cs-ic"/></svg></span>';
+  if (kind === "check") body.innerHTML = '<div>' + ico + '<h2>Memeriksa akses…</h2></div>';
+  if (kind === "login") {
+    body.innerHTML = '<div>' + ico + '<h2>CS Admin</h2><p>Masuk dengan akun Google admin untuk membalas pesan pelanggan.</p><button class="gbtn" id="gl">' + G_SVG + 'Masuk dengan Google</button></div>';
+    $("#gl").onclick = async () => { try { await login(); } catch (e) { if (e.code !== "auth/popup-closed-by-user") toast("Gagal masuk: " + e.code); } };
+  }
+  if (kind === "denied") {
+    body.innerHTML = '<div>' + ico + '<h2>Akses ditolak</h2><p>Akun ini belum terdaftar sebagai admin CS. Di Firebase Console → Realtime Database, tambahkan node berikut dengan nilai <b>true</b>:</p><code class="uid"></code><button class="gbtn" id="lo">Keluar</button></div>';
+    body.querySelector(".uid").textContent = "cs/admins/" + user.uid;
+    $("#lo").onclick = () => logout();
+  }
+}
+
+onAuthStateChanged(auth, async user => {
+  stops.forEach(f => f()); stops = []; closeThread(); admin = null; threads = {};
+  if (!user) return gate("login");
+  gate("check");
+  try {
+    const s = await get(ref(db, "cs/admins/" + user.uid));
+    if (s.val() !== true) return gate("denied", user);
+  } catch (e) { return gate("denied", user); }
+  admin = user; gate("ok");
+  setAvatar($("#aav"), { name: user.displayName, photo: user.photoURL });
+  stops.push(onValue(ref(db, "cs/threads"), snap => { threads = snap.val() || {}; renderList(); syncHeader(); },
+    () => toast("Gagal memuat percakapan. Periksa aturan database.")));
+});
+
+/* ---------- daftar percakapan ---------- */
+const isUnread = t => t.lastFrom === "user" && (t.lastAt || 0) > (t.adminSeenAt || 0);
+function shortTime(ts) {
+  const d = new Date(ts), n = new Date();
+  return d.toDateString() === n.toDateString() ? fmtTime(ts) : d.getDate() + "/" + (d.getMonth() + 1);
+}
+function renderList() {
+  const all = Object.entries(threads).map(([uid, t]) => ({ uid, ...t })).sort((a, b) => (b.lastAt || 0) - (a.lastAt || 0));
+  const un = all.filter(isUnread).length;
+  $("#tot").textContent = all.length ? all.length + " percakapan" + (un ? " · " + un + " belum dibaca" : "") : "Belum ada percakapan";
+  $("#ub").textContent = un || "";
+  document.title = (un ? "(" + un + ") " : "") + "CS Admin — Cazo Market";
+  const items = filter === "unread" ? all.filter(isUnread) : all;
+  listEl.innerHTML = "";
+  if (!items.length) { listEl.innerHTML = '<div class="none"></div>'; listEl.firstChild.textContent = filter === "unread" ? "Tidak ada pesan yang belum dibaca." : "Belum ada pelanggan yang menghubungi CS."; return; }
+  items.forEach(t => {
+    const b = document.createElement("button");
+    b.className = "thread" + (isUnread(t) ? " un" : "") + (t.uid === cur ? " sel" : "");
+    b.innerHTML = '<span class="av"></span><div class="mid"><div class="nm"><span></span><time></time></div><div class="lt"><span></span></div></div>';
+    setAvatar(b.querySelector(".av"), { name: t.name, photo: t.photo });
+    b.querySelector(".nm span").textContent = t.name || "Pengguna";
+    b.querySelector("time").textContent = t.lastAt ? shortTime(t.lastAt) : "";
+    b.querySelector(".lt span").textContent = (t.lastFrom === "admin" ? "Kamu: " : "") + (t.lastText || "");
+    const lt = b.querySelector(".lt");
+    if (isUnread(t)) lt.insertAdjacentHTML("beforeend", '<em class="badge" style="font-style:normal">Baru</em>');
+    else if (t.status === "closed") lt.insertAdjacentHTML("beforeend", '<em class="tag" style="font-style:normal">Selesai</em>');
+    b.onclick = () => openThread(t.uid);
+    listEl.appendChild(b);
+  });
+}
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+  filter = b.dataset.f;
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === b));
+  renderList();
+});
+
+/* ---------- percakapan ---------- */
+function markSeen(uid) { update(ref(db, "cs/threads/" + uid), { adminSeenAt: serverTimestamp() }).catch(() => {}); }
+function closeThread() {
+  stopMsgs.forEach(f => f()); stopMsgs = [];
+  cur = null; msgs.innerHTML = ""; delete msgs.dataset.day;
+  chatp.classList.remove("has"); appEl.classList.remove("in-chat");
+}
+function syncHeader() {
+  const t = threads[cur]; if (!t) return;
+  $("#cname").textContent = t.name || "Pengguna";
+  $("#cmail").textContent = t.email || "";
+  $("#doneBtn").textContent = t.status === "closed" ? "Buka lagi" : "Selesai";
+}
+function openThread(uid) {
+  closeThread();
+  cur = uid;
+  const t = threads[uid] || {};
+  setAvatar($("#cav"), { name: t.name, photo: t.photo });
+  chatp.classList.add("has"); appEl.classList.add("in-chat");
+  syncHeader(); renderList(); markSeen(uid);
+  const q = query(ref(db, "cs/messages/" + uid), orderByChild("at"), limitToLast(200));
+  stopMsgs.push(onChildAdded(q, snap => {
+    const m = snap.val(); if (!m) return;
+    const th = threads[uid] || {};
+    addMsg(msgs, snap.key, m, m.from === "admin", { name: th.name, photo: th.photo });
+    if (m.from === "user" && !document.hidden) markSeen(uid);
+  }, () => toast("Gagal memuat pesan.")));
+  stopMsgs.push(onChildRemoved(q, snap => removeMsg(msgs, snap.key)));
+}
+$("#toList").onclick = closeThread;
+$("#doneBtn").onclick = () => {
+  const t = threads[cur]; if (!t) return;
+  update(ref(db, "cs/threads/" + cur), { status: t.status === "closed" ? "open" : "closed" }).catch(() => toast("Gagal mengubah status."));
+};
+
+/* ---------- balas ---------- */
+CANNED.forEach(c => { const b = document.createElement("button"); b.className = "chip"; b.textContent = c; b.onclick = () => { ta.value = c; grow(); ta.focus(); }; $("#canned").appendChild(b); });
+
+async function send() {
+  const t = ta.value.trim().slice(0, 1000);
+  if (!t || !cur || !admin) return;
+  const uid = cur, key = push(ref(db, "cs/messages/" + uid)).key, th = "cs/threads/" + uid + "/";
+  sendBtn.disabled = true; ta.value = ""; grow();
+  try {
+    await update(ref(db), {
+      ["cs/messages/" + uid + "/" + key]: { from: "admin", text: t, at: serverTimestamp(), name: "CS" },
+      [th + "lastText"]: t.slice(0, 80), [th + "lastFrom"]: "admin", [th + "lastAt"]: serverTimestamp(),
+      [th + "adminSeenAt"]: serverTimestamp(), [th + "status"]: "open"
+    });
+  } catch (e) { toast("Balasan gagal terkirim."); ta.value = t; grow(); }
+  sendBtn.disabled = false; ta.focus();
+}
+function grow() { ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 110) + "px"; }
+ta.addEventListener("input", grow);
+ta.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && matchMedia("(pointer:fine)").matches) { e.preventDefault(); send(); } });
+sendBtn.onclick = send;
+</script>
+</body>
+</html>
