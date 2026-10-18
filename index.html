@@ -56,6 +56,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .shim{background:linear-gradient(90deg,#fde047,#f9a8d4,#a5f3fc,#fde047);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 4s linear infinite;text-shadow:none;filter:drop-shadow(0 2px 0 rgba(30,27,75,.45))}
 @keyframes sh{to{background-position:-200% 0}}
 
+/* pill putih untuk logo + nama toko (seperti kartu akun Google) */
+.brandpill{display:flex;align-items:center;gap:9px;flex:0 1 auto;min-width:0;margin-right:auto;overflow:hidden;padding:4px 18px 4px 4px;border-radius:999px;background:rgba(255,255,255,.95);box-shadow:0 3px 0 rgba(30,27,75,.25)}
+.brandpill .logo{width:38px;height:38px;filter:drop-shadow(0 2px 2px rgba(30,27,75,.3))}
+.brandpill .logo::before{inset:-1px;opacity:.45;filter:blur(7px)}
+.brandpill .name{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:19px;color:var(--ink);text-shadow:none}
+.brandpill .shim{background:linear-gradient(90deg,var(--c2),var(--c3),var(--c4),var(--c2));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:none}
+@media(max-width:380px){.brandpill{padding-right:12px}.brandpill .name{font-size:16px}}
+
 .login{position:relative;border:0;padding:2.5px;border-radius:999px;cursor:pointer;overflow:hidden;background:none;transition:transform .2s;z-index:20}
 .login:active{transform:scale(.95)}
 .login::before{content:"";position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;translate:-50% -50%;background:conic-gradient(#fde047,#f472b6,#22d3ee,#4ade80,#fde047);animation:rot 3s linear infinite}
@@ -137,31 +145,35 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .section-title{font-size:20px;font-weight:800;margin:0 0 16px}
 .empty-state{text-align:center;padding:60px 20px;color:var(--text-muted);grid-column:1/-1}
 
-/* ===== KARTU PRODUK 3D ===== */
+/* ===== KARTU PRODUK: bingkai gradien tema + pita atas + maskot bergelantung ===== */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px 16px;padding-bottom:8px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
-.card{position:relative;display:flex;flex-direction:column;overflow:hidden;color:inherit;
-  background:linear-gradient(180deg,#fff 40%,#f3efff);
-  border:3px solid var(--ink);border-radius:22px;
-  box-shadow:0 6px 0 var(--ink),0 16px 22px -6px rgba(76,29,149,.35),inset 0 3px 0 rgba(255,255,255,.95);
+.card{--czw:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 46'%3E%3Cpath d='M0 0L46.0 0.0M0 0L42.5 17.6M0 0L32.5 32.5M0 0L17.6 42.5M0 0L0.0 46.0M13.0 0.0Q11.0 2.2 12.0 5.0M12.0 5.0Q9.3 6.2 9.2 9.2M9.2 9.2Q6.2 9.3 5.0 12.0M5.0 12.0Q2.2 11.0 0.0 13.0M24.0 0.0Q20.2 4.0 22.2 9.2M22.2 9.2Q17.2 11.5 17.0 17.0M17.0 17.0Q11.5 17.2 9.2 22.2M9.2 22.2Q4.0 20.2 0.0 24.0M35.0 0.0Q29.5 5.9 32.3 13.4M32.3 13.4Q25.0 16.7 24.7 24.7M24.7 24.7Q16.7 25.0 13.4 32.3M13.4 32.3Q5.9 29.5 0.0 35.0M45.0 0.0Q38.0 7.5 41.6 17.2M41.6 17.2Q32.2 21.5 31.8 31.8M31.8 31.8Q21.5 32.2 17.2 41.6M17.2 41.6Q7.5 38.0 0.0 45.0' fill='none' stroke='%23fff' stroke-opacity='.5' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E");--czh:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -44 240 324'%3E%3Cdefs%3E%3ClinearGradient id='b' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23FFA24D'/%3E%3Cstop offset='1' stop-color='%23FF7A1A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M120 -44V37' stroke='%23fff' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M78 90C70 20 170 20 162 90' fill='none' stroke='%23FFD166' stroke-width='11' stroke-linecap='round'/%3E%3Cellipse cx='88' cy='256' rx='20' ry='10' fill='%23E85D04'/%3E%3Cellipse cx='152' cy='256' rx='20' ry='10' fill='%23E85D04'/%3E%3Cg transform='rotate(62 44 164)'%3E%3Cpath d='M44 164Q20 166 16 192' stroke='%23E85D04' stroke-width='13' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='194' r='9.5' fill='%23FFD166'/%3E%3C/g%3E%3Cg transform='rotate(-62 196 164)'%3E%3Cpath d='M196 164Q220 166 224 192' stroke='%23E85D04' stroke-width='13' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='224' cy='194' r='9.5' fill='%23FFD166'/%3E%3C/g%3E%3Cpath d='M60 82H180Q190 82 191 93L204 232Q206 254 184 254H56Q34 254 36 232L49 93Q50 82 60 82Z' fill='url(%23b)'/%3E%3Cpath d='M49 93Q50 82 60 82H180Q190 82 191 93L192 106H48Z' fill='%23E85D04'/%3E%3Cpath d='M62 95H178' stroke='%23fff' stroke-opacity='.55' stroke-width='2.5' stroke-dasharray='7 6' stroke-linecap='round'/%3E%3Ccircle cx='120' cy='234' r='14' fill='%23FFD166'/%3E%3Cpath d='M126.9 228.2A9 9 0 1 0 126.9 239.8' fill='none' stroke='%23E85D04' stroke-width='4.5' stroke-linecap='round'/%3E%3Cellipse cx='72' cy='174' rx='10' ry='6.5' fill='%23FF5E7E' opacity='.8'/%3E%3Cellipse cx='168' cy='174' rx='10' ry='6.5' fill='%23FF5E7E' opacity='.8'/%3E%3Cellipse cx='96' cy='150' rx='14' ry='16' fill='%23fff'/%3E%3Ccircle cx='96' cy='154' r='8' fill='%232b1a3a'/%3E%3Ccircle cx='99' cy='150' r='3' fill='%23fff'/%3E%3Cellipse cx='144' cy='150' rx='14' ry='16' fill='%23fff'/%3E%3Ccircle cx='144' cy='154' r='8' fill='%232b1a3a'/%3E%3Ccircle cx='147' cy='150' r='3' fill='%23fff'/%3E%3Cpath d='M82 128Q96 120 110 126M130 126Q144 120 158 128' fill='none' stroke='%238a3200' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M106 176Q120 188 136 174' fill='none' stroke='%235a1a1a' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");position:relative;display:flex;flex-direction:column;overflow:hidden;color:inherit;padding-top:46px;
+  border:3px solid transparent;border-radius:22px;
+  background:linear-gradient(180deg,#fff 55%,#f4efff) padding-box,linear-gradient(135deg,var(--c2),var(--c3),var(--c4)) border-box;
+  box-shadow:0 5px 0 rgba(30,27,75,.3),0 18px 26px -10px rgba(124,58,237,.5),inset 0 2px 0 rgba(255,255,255,.9);
   transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;
   animation:cardIn .5s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(var(--i,0)*70ms)}
-.card:hover{transform:translateY(-5px);box-shadow:0 11px 0 var(--ink),0 22px 28px -6px rgba(76,29,149,.4),inset 0 3px 0 rgba(255,255,255,.95)}
-.card:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ink),0 6px 10px -4px rgba(76,29,149,.3),inset 0 3px 0 rgba(255,255,255,.95)}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 0 rgba(30,27,75,.3),0 24px 32px -10px rgba(219,39,119,.45),inset 0 2px 0 rgba(255,255,255,.9)}
+.card:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(30,27,75,.3),0 6px 10px -4px rgba(124,58,237,.4),inset 0 2px 0 rgba(255,255,255,.9)}
 @keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(.92)}}
-.card-img{position:relative;margin:8px 8px 0;aspect-ratio:1;overflow:hidden;background:#ede9fe;border:3px solid var(--ink);border-radius:15px;box-shadow:0 3px 0 var(--ink)}
+.card::before{content:"";position:absolute;left:0;right:0;top:0;height:46px;
+  background:var(--czw) 0 0/46px 46px no-repeat,linear-gradient(rgba(255,255,255,.2) 1.5px,transparent 1.5px) 0 0/15px 15px,linear-gradient(90deg,rgba(255,255,255,.2) 1.5px,transparent 1.5px) 0 0/15px 15px,linear-gradient(120deg,var(--c1),var(--c2),var(--c3),var(--c4))}
+.card::after{content:"";position:absolute;top:0;right:11px;width:44px;height:59px;z-index:3;pointer-events:none;background:var(--czh) center top/contain no-repeat;transform-origin:50% 0;filter:drop-shadow(0 3px 3px rgba(30,27,75,.35));animation:czSwing 2.8s ease-in-out infinite alternate;animation-delay:calc(var(--i,0)*-.5s)}
+@keyframes czSwing{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+.card-img{position:relative;margin:8px 8px 0;aspect-ratio:1;overflow:hidden;background:#ede9fe;border:2.5px solid #fff;border-radius:16px;box-shadow:0 0 0 1.5px rgba(124,58,237,.45),0 6px 12px -4px rgba(76,29,149,.35)}
 .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
 .card:hover .card-img img{transform:scale(1.08)}
 .card-img::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-70%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);transition:left .6s ease}
 .card:hover .card-img::after{left:130%}
-.card-badge{position:absolute;top:8px;left:8px;z-index:2;background:#fde047;color:var(--ink);font-size:10px;font-weight:900;letter-spacing:.3px;text-transform:uppercase;padding:3px 9px;border:2.5px solid var(--ink);border-radius:999px;box-shadow:0 2px 0 var(--ink);transform:rotate(-5deg)}
-.card-badge.ltd{background:#f472b6;color:#fff}
+.card-badge{position:absolute;top:9px;left:9px;z-index:2;background:linear-gradient(135deg,#fde047,#f59e0b);color:var(--ink);font-size:10px;font-weight:900;letter-spacing:.3px;text-transform:uppercase;padding:4px 10px;border:0;border-radius:999px;box-shadow:0 2px 0 rgba(30,27,75,.35),inset 0 1.5px 0 rgba(255,255,255,.7);transform:rotate(-5deg)}
+.card-badge.ltd{background:linear-gradient(135deg,#f472b6,#db2777);color:#fff}
 .card-body{padding:12px 12px 14px;display:flex;flex-direction:column;flex:1;gap:5px}
-.card-cat{font-size:10px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px}
+.card-cat{position:absolute;top:13px;left:11px;z-index:2;max-width:calc(100% - 80px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:3px 10px;border-radius:99px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 2px 0 rgba(30,27,75,.25)}
 .card-title{font-size:14px;font-weight:800;line-height:1.35;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:38px;margin-bottom:6px}
-.card-price{align-self:flex-start;margin-top:auto;font-size:15px;font-weight:900;letter-spacing:-.2px;color:#fff;background:linear-gradient(135deg,#8b5cf6,#db2777);border:2.5px solid var(--ink);border-radius:999px;padding:3px 12px;box-shadow:0 3px 0 var(--ink);text-shadow:0 1px 0 rgba(30,27,75,.4)}
-@media (prefers-reduced-motion:reduce){.card,.cm-hop,.cm-ar,.cm-al,.cm-peek,.cm-eye{animation:none}}
+.card-price{align-self:flex-start;margin-top:auto;font-size:15px;font-weight:900;letter-spacing:-.2px;color:#fff;background:linear-gradient(120deg,var(--c2),var(--c3),var(--c4),var(--c2));background-size:300% 100%;animation:flow 6s ease-in-out infinite;border:0;border-radius:999px;padding:5px 14px;box-shadow:0 3px 0 rgba(30,27,75,.35),inset 0 2px 0 rgba(255,255,255,.35);text-shadow:0 1px 0 rgba(30,27,75,.4)}
+@media (prefers-reduced-motion:reduce){.card,.card::after,.card-price,.cm-hop,.cm-ar,.cm-al,.cm-peek,.cm-eye{animation:none}}
 
 /* ===== NAV BAWAH ===== */
 .nav{position:fixed;left:12px;right:12px;bottom:16px;background:#fff;border-radius:34px;padding:10px 8px;display:flex;justify-content:space-around;box-shadow:0 10px 30px rgba(76,29,149,.2),inset 0 -3px 0 rgba(30,27,75,.05);z-index:100}
@@ -313,21 +325,23 @@ body.is-loading{overflow:hidden}
   </div>
 
   <div class="bar">
-    <div class="logo" aria-hidden="true">
-      <svg viewBox="0 0 64 64">
-        <defs><clipPath id="lgClip"><rect x="4" y="4" width="56" height="56" rx="18"/></clipPath></defs>
-        <rect x="4" y="9" width="56" height="56" rx="18" fill="#1e1b4b"/>
-        <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#lgBg)" stroke="#1e1b4b" stroke-width="3"/>
-        <g clip-path="url(#lgClip)"><g class="lshine"><rect x="-26" y="0" width="12" height="64" fill="#fff" opacity=".5" transform="skewX(-20)"/></g></g>
-        <path d="M22 24v-3a10 10 0 0 1 20 0v3" fill="none" stroke="#1e1b4b" stroke-width="3.6" stroke-linecap="round"/>
-        <path d="M14 25h36l-3 28a4 4 0 0 1-4 3.5H21a4 4 0 0 1-4-3.5z" fill="url(#lgBag)" stroke="#1e1b4b" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M27 35l-6 6 6 6M37 35l6 6-6 6M34 33l-4 16" fill="none" stroke="url(#lgCode)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M13 17q4-8 14-9" stroke="#fff" stroke-opacity=".7" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <circle cx="51" cy="14" r="9" fill="#fde047" stroke="#1e1b4b" stroke-width="2.6"/>
-        <text x="51" y="18" text-anchor="middle" font-size="12" font-weight="900" fill="#1e1b4b" font-family="Inter,sans-serif">%</text>
-      </svg>
+    <div class="brandpill">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64">
+          <defs><clipPath id="lgClip"><rect x="4" y="4" width="56" height="56" rx="18"/></clipPath></defs>
+          <rect x="4" y="9" width="56" height="56" rx="18" fill="#1e1b4b"/>
+          <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#lgBg)" stroke="#1e1b4b" stroke-width="3"/>
+          <g clip-path="url(#lgClip)"><g class="lshine"><rect x="-26" y="0" width="12" height="64" fill="#fff" opacity=".5" transform="skewX(-20)"/></g></g>
+          <path d="M22 24v-3a10 10 0 0 1 20 0v3" fill="none" stroke="#1e1b4b" stroke-width="3.6" stroke-linecap="round"/>
+          <path d="M14 25h36l-3 28a4 4 0 0 1-4 3.5H21a4 4 0 0 1-4-3.5z" fill="url(#lgBag)" stroke="#1e1b4b" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M27 35l-6 6 6 6M37 35l6 6-6 6M34 33l-4 16" fill="none" stroke="url(#lgCode)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M13 17q4-8 14-9" stroke="#fff" stroke-opacity=".7" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="51" cy="14" r="9" fill="#fde047" stroke="#1e1b4b" stroke-width="2.6"/>
+          <text x="51" y="18" text-anchor="middle" font-size="12" font-weight="900" fill="#1e1b4b" font-family="Inter,sans-serif">%</text>
+        </svg>
+      </div>
+      <div class="name" id="brandName">Cazo <span class="shim">Market</span></div>
     </div>
-    <div class="name" id="brandName">Cazo <span class="shim">Market</span></div>
 
     <div class="acct">
       <button class="login" id="loginBtn" onclick="handleLogin()">
