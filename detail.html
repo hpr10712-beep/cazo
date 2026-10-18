@@ -3,65 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Detail Produk — KodinganKita</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><rect x='4' y='4' width='120' height='120' rx='30' fill='%230b1220'/><circle cx='64' cy='70' r='50' fill='%234f46e5' opacity='.28'/><g transform='rotate(-5 64 66)'><path d='M48 52V42Q48 26 64 26Q80 26 80 42V52' fill='none' stroke='%23a5b4fc' stroke-width='6' stroke-linecap='round'/><path d='M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z' fill='%2334d399' stroke='%2334d399' stroke-width='2' stroke-linejoin='round'/><path d='M35 48H93L93.7 57H34.3Z' fill='%2310b981'/><circle cx='50' cy='52.5' r='3' fill='%230b1220'/><circle cx='78' cy='52.5' r='3' fill='%230b1220'/><g fill='none' stroke='%230b1220' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'><path d='M53 69L43 80L53 91'/><path d='M75 69L85 80L75 91'/><path d='M68 67L60 93'/></g></g><path transform='translate(99 33) scale(.8)' fill='%23ffe14d' d='M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z'/></svg>">
+<title>Detail Produk — Cazo Market</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#4f46e5;--primary-hover:#4338ca;--primary-light:#eef2ff;--bg-body:#f8fafc;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--success:#10b981;--radius-sm:8px;--radius-md:14px;--radius-lg:24px;--radius-full:999px;--shadow-sm:0 1px 3px rgba(0,0,0,0.05);--shadow-md:0 4px 12px rgba(0,0,0,0.08);--font:'Inter',system-ui,sans-serif;}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{margin:0;font-family:var(--font);background:var(--bg-body);color:var(--text-main);padding-bottom:110px;opacity:0;transition:opacity 0.3s ease;}
-body.loaded{opacity:1;}
+:root{--primary:#4f46e5;--primary-light:#eef2ff;--ink:#1e1b4b;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--radius-sm:8px;--radius-md:14px;--radius-lg:24px;--shadow-sm:0 1px 3px rgba(0,0,0,.05);--font:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:var(--font);background:#f5f3ff;color:var(--text-main);padding-bottom:110px;opacity:0;transition:opacity .3s}
+body.loaded{opacity:1}
 a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{font-family:inherit;cursor:pointer;border:none;background:none}
-#page-loader{position:fixed;inset:0;background:#fff;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s ease, visibility 0.5s;}
-#page-loader.hidden{opacity:0;visibility:hidden;}
-header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);backdrop-filter:blur(15px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}.brand svg{width:34px;height:34px;border-radius:8px}
-.btn-login{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);padding:8px 16px;border-radius:var(--radius-full);font-weight:600;font-size:14px}
-.container{max-width:1000px;margin:0 auto;padding:20px}
-.detail-img{width:100%;max-height:450px;background:#fff;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);margin-bottom:24px}
-.detail-img img{max-width:100%;max-height:450px;object-fit:contain}
-.detail-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+button,a{touch-action:manipulation}
+#page-loader{position:fixed;inset:0;background:#fff;z-index:99999;display:flex;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+#page-loader.hidden{opacity:0;visibility:hidden}
+.ld{display:grid;justify-items:center;gap:12px;font-weight:900;font-size:20px;color:var(--primary)}
+.ld svg{width:84px;height:64px;animation:flt 1.4s ease-in-out infinite}
+.ld i{width:140px;height:6px;border-radius:9px;background:#e0e7ff;position:relative;overflow:hidden}
+.ld i::after{content:"";position:absolute;inset:0;width:40%;border-radius:9px;background:var(--primary);animation:ldb 1s ease-in-out infinite alternate}
+header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(15px);backdrop-filter:blur(15px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+.brand .lg{width:34px;height:34px;display:inline-block;animation:wob 3s ease-in-out infinite}
+.brand b{background:linear-gradient(90deg,#4f46e5,#ec4899,#4f46e5);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 4s linear infinite}
+.btn-login{position:relative;overflow:hidden;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);padding:8px 16px;border-radius:999px;font-weight:600;font-size:14px}
+.btn-login.user{padding:4px 14px 4px 4px;border:0;color:#fff;font-weight:800;background:linear-gradient(120deg,#4f46e5,#ec4899,#f59e0b,#4f46e5);background-size:300% 100%;animation:flow 4s linear infinite;box-shadow:0 6px 18px rgba(79,70,229,.4)}
+.btn-login.user::after,.cta::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);animation:sheen 2.8s ease-in-out infinite}
+.btn-login:active,.cta:active,.lnk:active{transform:scale(.96)}
+.av{width:30px;height:30px;border-radius:50%;border:2px solid #fff;object-fit:cover;display:grid;place-items:center;background:var(--ink);font-size:13px}
+.un{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:50%;background:#22c55e;animation:ping 1.6s infinite}
+.container{max-width:1000px;margin:0 auto;padding:20px;position:relative;z-index:1}
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(180deg,#f5f3ff,#eef2ff 50%,#fdf2f8)}
+.bg i{position:absolute;border-radius:50%;filter:blur(50px);opacity:.55;animation:drift 14s ease-in-out infinite alternate}
+.bg .b1{width:300px;height:300px;background:#c4b5fd;top:-80px;left:-80px}
+.bg .b2{width:260px;height:260px;background:#f9a8d4;top:35%;right:-90px;animation-delay:-4s}
+.bg .b3{width:280px;height:280px;background:#93c5fd;bottom:-80px;left:10%;animation-delay:-8s}
+.sp,.fm{position:fixed;z-index:0;pointer-events:none}
+.sp{animation:twk 3s ease-in-out infinite}
+.fm{width:54px;height:42px;opacity:.85;animation:flt 6s ease-in-out infinite}
+.rise{animation:rise .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0)*80ms)}
+#app.seen .rise{animation:none}
+.glass{background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid #fff;border-radius:var(--radius-lg);box-shadow:0 10px 30px rgba(76,29,149,.12);padding:16px;margin-bottom:16px}
+.back{display:inline-block;margin-bottom:12px;font-size:14px;font-weight:800;color:var(--primary);background:#fff;padding:8px 14px;border-radius:99px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.mq{overflow:hidden;white-space:nowrap;border-radius:99px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:9px 0;margin-bottom:14px}
+.mq>div{display:inline-block;animation:mq 18s linear infinite}.mq span{display:inline-block;padding:0 22px}
+.hero{margin-top:36px}
+.stage{position:relative;padding:3px;border-radius:24px;background:linear-gradient(120deg,#4f46e5,#ec4899,#facc15,#22c55e,#3b82f6,#4f46e5);background-size:300% 100%;animation:flow 6s linear infinite;transition:transform .15s}
+.stage .in{background:#fff;border-radius:21px;overflow:hidden;display:grid;place-items:center;min-height:180px}
+.stage img{width:100%;max-height:420px;object-fit:contain;cursor:zoom-in}
+.chip{position:absolute;z-index:2;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:800;color:#fff;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.cat{top:12px;left:12px;background:var(--primary)}.stt{bottom:12px;left:12px}
+.ok{background:#16a34a;animation:pulse 1.6s infinite}.no{background:var(--danger)}.wait{background:#f59e0b}
+.peek{position:absolute;z-index:3;right:10px;top:-38px;cursor:pointer}
+.peek svg{width:64px;height:48px;display:block;animation:flt 3s ease-in-out infinite;filter:drop-shadow(0 4px 4px rgba(30,27,75,.3))}
+.bub{position:absolute;right:66px;top:2px;white-space:nowrap;background:#fff;color:var(--ink);font-size:11px;font-weight:800;padding:6px 10px;border-radius:12px;border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink)}
+.thumbs{display:flex;gap:8px;overflow-x:auto;padding:14px 2px 4px}
+.thumbs button{flex:0 0 62px;height:62px;padding:0;border-radius:14px;border:3px solid transparent;overflow:hidden;background:#fff;opacity:.7;transition:.2s}
+.thumbs button.on{border-color:var(--primary);opacity:1;transform:translateY(-3px) scale(1.05)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.detail-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
 .detail-title{font-size:24px;font-weight:800;margin:0;line-height:1.3}
-.btn-icon{width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);cursor:pointer;flex-shrink:0;box-shadow:var(--shadow-sm);transition:0.2s}
-.btn-icon:active{background:var(--bg-body)}
-.price-box{font-size:28px;font-weight:800;color:var(--primary);margin-bottom:20px}
-.meta-info{display:flex;gap:16px;font-size:13px;color:var(--text-muted);margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.hashtags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}.hashtag{background:var(--primary-light);color:var(--primary);padding:4px 12px;border-radius:var(--radius-full);font-size:12px;font-weight:600}
-.desc-title{font-size:16px;font-weight:700;margin:0 0 12px}.desc-text{font-size:14px;line-height:1.7;color:var(--text-main);white-space:pre-wrap;margin-bottom:30px}
-.timer{font-size:36px;font-weight:800;color:var(--danger);font-variant-numeric:tabular-nums;text-align:center;margin-bottom:20px}
-.qris-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;margin-bottom:24px}
-.qris-box img{width:100%;max-width:280px;margin:0 auto;border-radius:var(--radius-sm);border:1px solid var(--border)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;border-radius:var(--radius-md);font-weight:700;font-size:15px;transition:0.2s;width:100%;cursor:pointer;text-decoration:none}
-.btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,0.3)}
+.btn-icon{width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);flex-shrink:0;box-shadow:var(--shadow-sm)}
+.pricebar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 16px}.pricebar small{font-size:12px;font-weight:700;color:var(--text-muted)}
+.pr{font-size:32px;font-weight:900;background:linear-gradient(90deg,#4f46e5,#ec4899,#4f46e5);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 3s linear infinite}
+.hot{background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;font-weight:800;font-size:12px;padding:8px 12px;border-radius:99px;white-space:nowrap;animation:wob 1.2s ease-in-out infinite}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.spec{background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px;box-shadow:var(--shadow-sm)}.spec small{display:block;font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:2px}.spec b{font-size:14px;word-break:break-word}
+.hashtags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.hashtag{display:inline-block;background:var(--primary-light);color:var(--primary);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:600;animation:flt 4s ease-in-out infinite}
+.desc-title{font-size:16px;font-weight:700;margin:0 0 12px}.desc-text{font-size:14px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.lnk{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;padding:14px;margin-bottom:10px;border-radius:18px;background:linear-gradient(120deg,#4f46e5,#7c3aed);color:#fff;font-weight:800;box-shadow:0 8px 20px rgba(79,70,229,.3);transition:.2s}
+.lnk>span{font-size:22px}.lnk small{display:block;opacity:.8;font-weight:600;font-size:11px}.lnk>i{margin-left:auto;font-style:normal;font-size:18px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;border-radius:var(--radius-md);font-weight:700;font-size:15px;transition:.2s;width:100%}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
 .btn-outline{background:#fff;color:var(--text-main);border:1px solid var(--border)}
 .btn-disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed}
-.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(5px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
-.modal-box{background:#fff;border-radius:24px;width:100%;max-width:400px;padding:30px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.2);position:relative}
-.modal-icon{width:60px;height:60px;background:var(--primary-light);color:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
-.modal-title{font-size:20px;font-weight:800;margin:0 0 10px}.modal-desc{font-size:14px;color:var(--text-muted);margin-bottom:24px}
-.close-btn{position:absolute;top:16px;right:16px;width:32px;height:32px;background:var(--bg-body);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;color:var(--text-muted)}
-.loading-spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:40px auto}@keyframes spin{to{transform:rotate(360deg)}}
-.empty-state{text-align:center;padding:60px 20px;color:var(--text-muted);grid-column:1/-1}
+.cta{position:relative;overflow:hidden;font-size:17px;padding:17px;color:#fff;background:linear-gradient(120deg,#4f46e5,#ec4899,#f59e0b,#4f46e5);background-size:300% 100%;animation:flow 4s linear infinite;box-shadow:0 10px 26px rgba(236,72,153,.4)}
+.pay{max-width:480px;margin:0 auto;text-align:center}.pm{width:90px;height:68px;animation:flt 2s ease-in-out infinite}
+.timer{font-size:36px;font-weight:800;color:var(--danger);font-variant-numeric:tabular-nums;margin-bottom:10px}
+.bar{height:8px;border-radius:9px;background:#e0e7ff;overflow:hidden;margin-bottom:18px}.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#facc15);transition:width 1s linear}
+.warn .timer{animation:pulse .8s infinite}.warn .bar i{background:var(--danger)}
+.qris-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center}
+.qris-box img{width:100%;max-width:280px;margin:0 auto;border-radius:var(--radius-sm);border:1px solid var(--border);cursor:zoom-in}
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-box{background:#fff;border-radius:24px;width:100%;max-width:400px;padding:30px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.2);position:relative}
+.modal-title{font-size:20px;font-weight:800;margin:0 0 10px}.modal-desc{font-size:14px;color:var(--text-muted);margin:0 0 24px;word-break:break-word}
+.mm{width:84px;height:64px;margin:-64px auto 8px}.mm svg{width:100%;height:100%;animation:flt 2s ease-in-out infinite}
+.pop,.bub.in{animation:pop .4s cubic-bezier(.34,1.8,.64,1) both}
+.toast{position:fixed;left:50%;bottom:118px;transform:translateX(-50%);max-width:90vw;text-align:center;background:var(--ink);color:#fff;padding:12px 18px;border-radius:99px;font-size:13px;font-weight:700;z-index:100000;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:toast 3s both}
+.cf{position:fixed;width:8px;height:12px;border-radius:2px;z-index:99998;pointer-events:none;animation:cf 1s ease-out forwards}
+.loading-spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:40px auto}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-muted)}
+@keyframes flow{to{background-position:150% 50%}}
+@keyframes pop{from{opacity:0;transform:scale(.7)}}
+@keyframes flt{50%{transform:translateY(-14px) rotate(5deg)}}
+@keyframes pulse{50%{transform:scale(1.07)}}
+@keyframes sheen{60%,100%{transform:translateX(120%)}}
+@keyframes rise{from{opacity:0;transform:translateY(26px) scale(.96)}}
+@keyframes drift{to{transform:translate(40px,60px) scale(1.25)}}
+@keyframes twk{50%{transform:scale(.4) rotate(60deg);opacity:.3}}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(34,197,94,.7)}70%,100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
+@keyframes wob{50%{transform:rotate(-4deg) scale(1.06)}}
+@keyframes ldb{to{transform:translateX(150%)}}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes toast{0%{opacity:0;transform:translate(-50%,20px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
+@keyframes cf{to{transform:translate(var(--dx),calc(var(--dy) + 180px)) rotate(var(--r));opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 /* === NAVIGASI 3D === */
-:root { --ink:#1e1b4b; }
-.nav { position:fixed; left:12px; right:12px; bottom:16px; background:#fff; border-radius:34px; padding:10px 8px 10px; display:flex; justify-content:space-around; box-shadow:0 10px 30px rgba(76,29,149,.2), inset 0 -3px 0 rgba(30,27,75,.05); z-index: 100; }
-.item { position:relative; flex:1; border:0; background:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; font:900 11px inherit; color:#94a3b8; padding:0; text-decoration: none; outline: none; }
-.iw { position:relative; width:42px; height:42px; display:grid; place-items:center; }
-.iw::before { content:""; position:absolute; inset:-2px; border-radius:50%; background:radial-gradient(circle at 50% 40%, var(--glow) 0%, transparent 70%); opacity:0; transform:scale(.5); transition:.3s; }
-.icon { position:relative; width:38px; height:38px; overflow:visible; filter:grayscale(1) opacity(.5); transition:transform .35s cubic-bezier(.34,1.8,.64,1), filter .3s; }
-.item.active { color:#4f46e5; }
-.item.active .iw::before { opacity:.55; transform:scale(1.15); }
-.item.active .icon { transform:translateY(-4px) scale(1.15); filter:drop-shadow(0 4px 3px rgba(30,27,75,.28)); }
-.mascot { position:absolute; top:-30px; width:42px; height:32px; overflow:visible; opacity:0; transform:translateY(14px) scale(.7); transition:.35s cubic-bezier(.34,1.8,.64,1); pointer-events:none; }
-.item.active .mascot { opacity:1; transform:none; animation:bob 1.8s ease-in-out infinite; }
-@keyframes bob { 50% { transform:translateY(-3px) rotate(-3deg); } }
-.item.active .tw { animation:tw 1.4s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
-@keyframes tw { 50% { transform:scale(.4) rotate(45deg); opacity:.5; } }
+.nav{position:fixed;left:12px;right:12px;bottom:16px;background:#fff;border-radius:34px;padding:10px 8px;display:flex;justify-content:space-around;box-shadow:0 10px 30px rgba(76,29,149,.2),inset 0 -3px 0 rgba(30,27,75,.05);z-index:100}
+.item{position:relative;flex:1;border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font:900 11px var(--font);color:#94a3b8;padding:0;text-decoration:none;outline:none}
+.iw{position:relative;width:42px;height:42px;display:grid;place-items:center}
+.iw::before{content:"";position:absolute;inset:-2px;border-radius:50%;background:radial-gradient(circle at 50% 40%,var(--glow) 0%,transparent 70%);opacity:0;transform:scale(.5);transition:.3s}
+.icon{position:relative;width:38px;height:38px;overflow:visible;filter:grayscale(1) opacity(.5);transition:transform .35s cubic-bezier(.34,1.8,.64,1),filter .3s}
+.item.active{color:#4f46e5}
+.item.active .iw::before{opacity:.55;transform:scale(1.15)}
+.item.active .icon{transform:translateY(-4px) scale(1.15);filter:drop-shadow(0 4px 3px rgba(30,27,75,.28))}
+.mascot{position:absolute;top:-30px;width:42px;height:32px;overflow:visible;opacity:0;transform:translateY(14px) scale(.7);transition:.35s cubic-bezier(.34,1.8,.64,1);pointer-events:none}
+.item.active .mascot{opacity:1;transform:none;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px) rotate(-3deg)}}
+.item.active .tw{animation:tw 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes tw{50%{transform:scale(.4) rotate(45deg);opacity:.5}}
 </style>
 </head>
 <body>
 
-<div id="page-loader"><div id="custom-loader-content"></div></div>
+<div class="bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+<div id="fx" aria-hidden="true"></div>
+<div id="page-loader"><div class="ld"><svg><use href="#mascot"/></svg><b>Cazo Market</b><i></i></div></div>
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
@@ -78,13 +144,11 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);ba
 </svg>
 
 <header class="site">
-  <a href="index.html" class="brand" id="brandLogo">KodinganKita</a>
+  <a href="index.html" class="brand" id="brandLogo">Cazo Market</a>
   <button id="authBtn" class="btn-login" onclick="handleAuth()">Masuk</button>
 </header>
 
-<main class="container" id="app">
-  <div class="loading-spin"></div>
-</main>
+<main class="container" id="app"><div class="loading-spin"></div></main>
 <div id="modal-root"></div>
 
 <nav class="nav" id="nav">
@@ -96,162 +160,248 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);ba
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, get, onValue, set, push, runTransaction, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getDatabase, ref, onValue, set, push, runTransaction, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = { apiKey: "AIzaSyCHr0eemIkfHNFDUkSaFDklp_c1OgmSnl8", authDomain: "mybro-9ba5f.firebaseapp.com", databaseURL: "https://mybro-9ba5f-default-rtdb.firebaseio.com", projectId: "mybro-9ba5f", storageBucket: "mybro-9ba5f.firebasestorage.app", messagingSenderId: "820948893264", appId: "1:820948893264:web:e564509a8fdc4c56335b55" };
-const app = initializeApp(firebaseConfig); const db = getDatabase(app); const auth = getAuth(app); const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
+const fbApp = initializeApp(firebaseConfig), db = getDatabase(fbApp), auth = getAuth(fbApp), provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
 
-const DEFAULT_LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%"><rect x="4" y="4" width="120" height="120" rx="30" fill="#0b1220"/><circle cx="64" cy="70" r="50" fill="#4f46e5" opacity=".28"/><g transform="rotate(-5 64 66)"><path d="M48 52V42Q48 26 64 26Q80 26 80 42V52" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/><path d="M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z" fill="#34d399" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/><path d="M35 48H93L93.7 57H34.3Z" fill="#10b981"/><circle cx="50" cy="52.5" r="3" fill="#0b1220"/><circle cx="78" cy="52.5" r="3" fill="#0b1220"/><g fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M53 69L43 80L53 91"/><path d="M75 69L85 80L75 91"/><path d="M68 67L60 93"/></g></g><path transform="translate(99 33) scale(.8)" fill="#ffe14d" d="M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z"/></svg>`;
-const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const rupiah = n => "Rp" + Number(n||0).toLocaleString("id-ID");
+const BRAND = "Cazo Market";
 const QRIS_IMG = "https://i.ibb.co.com/FLF6Wz07/IMG-20261012-160202.jpg";
+const PH = "https://placehold.co/800x450/eef2ff/4f46e5?text=Cazo+Market";
+const DEFAULT_LOGO = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%"><rect x="4" y="4" width="120" height="120" rx="30" fill="#0b1220"/><circle cx="64" cy="70" r="50" fill="#4f46e5" opacity=".28"/><g transform="rotate(-5 64 66)"><path d="M48 52V42Q48 26 64 26Q80 26 80 42V52" fill="none" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/><path d="M35 48H93L98 99Q99 106 92 106H36Q29 106 30 99Z" fill="#34d399" stroke="#34d399" stroke-width="2" stroke-linejoin="round"/><path d="M35 48H93L93.7 57H34.3Z" fill="#10b981"/><circle cx="50" cy="52.5" r="3" fill="#0b1220"/><circle cx="78" cy="52.5" r="3" fill="#0b1220"/><g fill="none" stroke="#0b1220" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M53 69L43 80L53 91"/><path d="M75 69L85 80L75 91"/><path d="M68 67L60 93"/></g></g><path transform="translate(99 33) scale(.8)" fill="#ffe14d" d="M0-12L3.5-3.5L12 0L3.5 3.5L0 12L-3.5 3.5L-12 0L-3.5-3.5Z"/></svg>`;
+document.head.insertAdjacentHTML("beforeend", `<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(DEFAULT_LOGO)}">`);
 
-let state = { user: null, products: {}, settings: {}, loaded: 0, orderTimer: null };
-const productId = new URLSearchParams(window.location.search).get('id');
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const rupiah = n => "Rp" + Number(n || 0).toLocaleString("id-ID");
+const $ = id => document.getElementById(id);
+const toArr = v => !v ? [] : Array.isArray(v) ? v.filter(Boolean) : typeof v === "object" ? Object.values(v).filter(Boolean) : [v];
+const fixUrl = u => { u = String(u || "").trim(); return !u ? "" : /^https?:\/\//i.test(u) ? u : "https://" + u.replace(/^\/+/, ""); };
+const host = u => { try { return new URL(u).host.replace(/^www\./, ""); } catch { return u; } };
+const linkify = s => esc(s).replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;word-break:break-all">${u}</a>`);
+const MQ = ["⚡ Bayar mudah via QRIS", "🔒 Produk dikunci 3 menit saat checkout", "✅ Diverifikasi Admin", "🎁 Produk siap pakai"].map(t => `<span>${t}</span>`).join("");
+const ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`;
 
-function checkLoaded() { state.loaded++; if(state.loaded >= 2) { setTimeout(() => { document.getElementById('page-loader').classList.add('hidden'); document.body.classList.add('loaded'); initPage(); }, 300); } }
-window.handleAuth = async () => { if (state.user) { if(confirm("Keluar?")) await signOut(auth); } else { try { await signInWithPopup(auth, provider); } catch(e){ alert(e.message); } } };
-onAuthStateChanged(auth, user => { state.user = user; const btn = document.getElementById('authBtn'); if(btn) btn.innerHTML = user ? `Keluar (${user.displayName.split(' ')[0]})` : 'Masuk'; });
-onValue(ref(db, "settings/marketplace"), s => { state.settings = s.val() || {}; checkLoaded(); });
-onValue(ref(db, "products"), s => { state.products = s.val() || {}; checkLoaded(); });
+let state = { user: null, products: {}, settings: {}, orderTimer: null, bub: null, paying: false, imgs: [], sig: "" };
+const productId = new URLSearchParams(location.search).get("id");
 
-function initPage() {
-  document.getElementById('brandLogo').innerHTML = `<div style="width:34px;height:34px;display:inline-block;vertical-align:middle;margin-right:8px;">${DEFAULT_LOGO}</div> ${esc(state.settings.name || "KodinganKita")}`;
-  renderProduct();
+/* ---------- UI helpers (pengganti alert/confirm yang sering diblokir browser in-app) ---------- */
+function toast(m) {
+  document.querySelectorAll(".toast").forEach(t => t.remove());
+  const t = document.createElement("div"); t.className = "toast"; t.textContent = m;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 3000);
+}
+function boom(x, y) {
+  const c = ["#4f46e5", "#ec4899", "#facc15", "#22c55e", "#3b82f6", "#f97316"];
+  for (let i = 0; i < 28; i++) {
+    const e = document.createElement("i"), a = Math.random() * 6.28, d = 60 + Math.random() * 120;
+    e.className = "cf";
+    e.style.cssText = `left:${x}px;top:${y}px;background:${c[i % 6]};--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d - 60}px;--r:${Math.random() * 720}deg`;
+    document.body.appendChild(e); setTimeout(() => e.remove(), 1100);
+  }
+}
+function ask(title, text, ok = "Lanjut", cancel = "Batal", onOk) {
+  return new Promise(res => {
+    const r = $("modal-root");
+    r.innerHTML = `<div class="modal-overlay"><div class="modal-box pop"><div class="mm"><svg><use href="#mascot"/></svg></div><h3 class="modal-title">${esc(title)}</h3><p class="modal-desc">${esc(text)}</p><button class="btn btn-primary" id="dOk">${esc(ok)}</button>${cancel ? `<button class="btn btn-outline" id="dNo" style="margin-top:10px">${esc(cancel)}</button>` : ""}</div></div>`;
+    const done = v => { r.innerHTML = ""; res(v); };
+    $("dOk").onclick = () => { if (onOk) onOk(); done(true); };
+    if (cancel) $("dNo").onclick = () => done(false);
+    r.firstChild.onclick = e => { if (e.target === r.firstChild) done(false); };
+  });
+}
+function decor() {
+  let h = "";
+  for (let i = 0; i < 14; i++) { const z = 10 + Math.random() * 14; h += `<svg class="sp" style="left:${Math.random() * 96}%;top:${Math.random() * 94}%;width:${z}px;height:${z}px;animation-delay:-${Math.random() * 3}s"><use href="#spark"/></svg>`; }
+  [[3, 24], [88, 52], [6, 74]].forEach(([x, y], i) => h += `<svg class="fm" style="left:${x}%;top:${y}%;animation-delay:-${i * 2}s"><use href="#mascot"/></svg>`);
+  $("fx").innerHTML = h;
 }
 
-function renderProduct() {
-  const p = state.products[productId];
-  if(!p) return document.getElementById('app').innerHTML = `<div class="empty-state">Produk tidak ditemukan.</div>`;
-  
-  const isAvail = p.status !== 'sold' && p.status !== 'reserved';
-  const isLimited = p.productType === 'limited_html';
-
-  document.getElementById('app').innerHTML = `
-    <a href="katalog.html" style="display:inline-block;margin-bottom:16px;font-size:14px;font-weight:600;color:var(--text-muted)">&larr; Kembali</a>
-    <div class="detail-img"><img src="${p.imageURLs?.[0] || 'https://placehold.co/800x450/f1f5f9/64748b?text=No+Image'}"></div>
-    <div class="detail-header">
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;margin-bottom:4px">${esc(p.category)}</div>
-        <h1 class="detail-title">${esc(p.title)}</h1>
-      </div>
-      <button class="btn-icon" onclick="navigator.clipboard.writeText(window.location.href).then(()=>alert('Link disalin!'))" title="Salin Link">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-      </button>
-    </div>
-    <div class="price-box">${rupiah(p.price)}</div>
-    ${isLimited ? `
-      <div class="meta-info"><span style="color:${isAvail ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">${isAvail ? 'Tersedia (Sisa 1)' : 'Sudah Terjual'}</span></div>
-      ${p.hashtags ? `<div class="hashtags">${p.hashtags.split(',').map(h => `<span class="hashtag">#${esc(h.trim())}</span>`).join('')}</div>` : ''}
-    ` : `
-      <div class="meta-info"><span>Total Terjual: <b>${p.totalSold || 0}</b></span><span>Rating: <b>${p.ratingAvg ? p.ratingAvg.toFixed(1) : '0.0'}</b></span></div>
-    `}
-    <h3 class="desc-title">Deskripsi Lengkap</h3>
-    <div class="desc-text">${esc(p.description || "Tidak ada deskripsi.")}</div>
-    ${isLimited && p.demoURL ? `<a href="${p.demoURL}" target="_blank" class="btn btn-outline" style="margin-bottom:12px">Lihat Proyek (Live Preview)</a>` : ''}
-    ${!isAvail ? `<button class="btn btn-disabled" disabled>Maaf, Produk Sudah Terjual</button>` : `<button class="btn btn-primary" onclick="buyFlow('${p.id}')">Beli Sekarang</button>`}
-  `;
+/* ---------- Auth ---------- */
+function paintAuth() {
+  const u = state.user, b = $("authBtn");
+  if (!u) { b.className = "btn-login"; b.textContent = "Masuk"; return; }
+  const n = (u.displayName || u.email || "User").split(" ")[0];
+  b.className = "btn-login user";
+  b.innerHTML = `${u.photoURL ? `<img class="av" src="${esc(u.photoURL)}" referrerpolicy="no-referrer" alt="">` : `<span class="av">${esc(n[0] || "U").toUpperCase()}</span>`}<span class="un">${esc(n)}</span><i class="dot"></i>`;
 }
-
-window.buyFlow = async (pid) => {
-  if(!state.user) {
-    document.getElementById("modal-root").innerHTML = `
-      <div class="modal-overlay" onclick="if(event.target===this)document.getElementById('modal-root').innerHTML=''">
-        <div class="modal-box">
-          <button class="close-btn" onclick="document.getElementById('modal-root').innerHTML=''">&times;</button>
-          <div class="modal-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg></div>
-          <h3 class="modal-title">Harap Masuk</h3>
-          <p class="modal-desc">Silakan masuk dengan Google untuk melanjutkan.</p>
-          <button class="btn btn-primary" onclick="handleAuth(); document.getElementById('modal-root').innerHTML='';" style="margin-bottom:10px"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" style="width:18px"> Masuk Google</button>
-          <button class="btn btn-outline" onclick="document.getElementById('modal-root').innerHTML=''">Batal</button>
-        </div>
-      </div>`;
+window.handleAuth = async () => {
+  const u = state.user;
+  if (u) {
+    const n = (u.displayName || u.email || "Kamu").split(" ")[0];
+    if (await ask(`Halo, ${n}! 👋`, u.email || "Kamu sudah masuk dengan Google.", "Keluar akun", "Tutup")) { await signOut(auth); toast("Sampai jumpa lagi! 👋"); }
     return;
   }
+  try { await signInWithPopup(auth, provider); }
+  catch (e) {
+    if (["auth/popup-blocked", "auth/operation-not-supported-in-this-environment", "auth/web-storage-unsupported"].includes(e.code)) return signInWithRedirect(auth, provider);
+    if (!["auth/popup-closed-by-user", "auth/cancelled-popup-request"].includes(e.code)) toast("Gagal masuk: " + e.message);
+  }
+};
+onAuthStateChanged(auth, u => { state.user = u; paintAuth(); });
 
+/* ---------- Data (dimuat sekali, lalu update hanya jika produk ini berubah) ---------- */
+let ready = false; const got = {};
+const tryStart = force => { if (ready || (!force && !(got.settings && got.products))) return; ready = true; start(); };
+const listen = (k, path) => onValue(ref(db, path), s => {
+  state[k] = s.val() || {}; got[k] = 1;
+  if (!ready) return tryStart();
+  if (k === "products" && !state.paying && JSON.stringify(state.products[productId] || null) !== state.sig) renderProduct();
+}, () => { got[k] = 1; tryStart(); });
+listen("settings", "settings/marketplace"); listen("products", "products");
+setTimeout(() => tryStart(true), 6000);
+
+function start() {
+  $("page-loader").classList.add("hidden"); document.body.classList.add("loaded");
+  $("brandLogo").innerHTML = `<span class="lg">${DEFAULT_LOGO}</span><b>${BRAND}</b>`;
+  decor(); renderProduct();
+}
+
+/* ---------- Halaman detail ---------- */
+function renderProduct() {
+  const root = $("app"), p = state.products[productId];
+  clearInterval(state.bub); state.sig = JSON.stringify(p || null);
+  if (!p) { root.innerHTML = `<div class="empty-state"><svg style="width:90px;height:68px;margin:0 auto 12px"><use href="#mascot"/></svg><p>Produk tidak ditemukan 😢</p><a href="katalog.html" class="btn btn-primary" style="max-width:240px;margin:0 auto">Ke Katalog</a></div>`; return; }
+
+  const st = p.status, isAvail = st !== "sold" && st !== "reserved", isLimited = p.productType === "limited_html";
+  const imgs = [...toArr(p.imageURLs), ...toArr(p.imageURL || p.image || p.thumbnail)].map(x => typeof x === "object" ? x.url : x).map(fixUrl).filter((u, i, a) => u && a.indexOf(u) === i);
+  state.imgs = imgs.length ? imgs : [PH];
+
+  const links = [];
+  const add = (u, t, ic) => { u = fixUrl(u); if (u && !links.some(l => l.u === u)) links.push({ u, t, ic }); };
+  add(p.demoURL, "Lihat Proyek (Live Preview)", "🚀"); add(p.previewURL, "Pratinjau Produk", "👀"); add(p.videoURL, "Video Demo", "🎬"); add(p.link || p.linkURL || p.url, "Buka Link Produk", "🔗");
+  toArr(p.links).forEach(l => typeof l === "object" ? add(l.url || l.href, l.label || l.title || "Buka Link", "🔗") : add(l, "Buka Link", "🔗"));
+
+  const stText = isAvail ? (isLimited ? "Tersedia (Sisa 1)" : "Tersedia") : st === "reserved" ? "Sedang Dipesan" : "Sudah Terjual";
+  const stCls = isAvail ? "ok" : st === "reserved" ? "wait" : "no";
+  const tags = (Array.isArray(p.hashtags) ? p.hashtags : String(p.hashtags || "").split(",")).map(h => String(h).trim().replace(/^#/, "")).filter(Boolean);
+  const specs = [["📂 Kategori", p.category || "-"], ["📦 Tipe", isLimited ? "Limited (1 pcs)" : "Produk Digital"], ["🏷️ Status", stText]];
+  if (!isLimited) specs.push(["🛒 Terjual", p.totalSold || 0], ["⭐ Rating", Number(p.ratingAvg) ? Number(p.ratingAvg).toFixed(1) : "Belum ada"]);
+  if (p.sellerName) specs.push(["👤 Penjual", p.sellerName]);
+  const msgs = isAvail ? ["Halo! Aku Cazo 👋", "Produknya keren banget! ✨", isLimited ? "Stok tinggal 1, buruan! 🔥" : "Banyak yang suka lho! 💖", "Bayar pakai QRIS, gampang!"] : ["Yah, lagi nggak tersedia 😢", "Cek produk lain yuk! 👀"];
+
+  const seen = root.dataset.v === productId; root.dataset.v = productId; root.classList.toggle("seen", seen);
+  document.title = `${p.title || "Detail Produk"} — ${BRAND}`;
+
+  root.innerHTML = `
+    <a href="katalog.html" class="back rise" style="--i:0">&larr; Kembali</a>
+    <div class="mq rise" style="--i:1"><div>${MQ}${MQ}</div></div>
+    <section class="glass hero rise" style="--i:2">
+      <div class="stage" id="stage">
+        <div class="in"><img id="mainImg" src="${esc(state.imgs[0])}" alt="${esc(p.title)}" onclick="zoom(this.src)" onerror="this.onerror=null;this.src='${PH}'"></div>
+        <span class="chip cat">${esc(p.category || "Produk")}</span>
+        <span class="chip stt ${stCls}">${stText}</span>
+        <div class="peek" onclick="hop(event)"><div class="bub in" id="bub">${msgs[0]}</div><svg><use href="#mascot"/></svg></div>
+      </div>
+      ${state.imgs.length > 1 ? `<div class="thumbs">${state.imgs.map((u, i) => `<button class="${i ? "" : "on"}" onclick="setImg(${i})" aria-label="Foto ${i + 1}"><img src="${esc(u)}" loading="lazy" alt=""></button>`).join("")}</div>` : ""}
+    </section>
+    <div class="detail-header rise" style="--i:3">
+      <h1 class="detail-title">${esc(p.title)}</h1>
+      <button class="btn-icon" onclick="share(event)" title="Salin Link" aria-label="Salin link">${ICON}</button>
+    </div>
+    <div class="pricebar rise" style="--i:4"><div><small>Harga</small><div class="pr">${rupiah(p.price)}</div></div>${isAvail && isLimited ? `<span class="hot">🔥 Limited 1 pcs</span>` : ""}</div>
+    <div class="specs rise" style="--i:5">${specs.map(([a, b]) => `<div class="spec"><small>${a}</small><b>${esc(b)}</b></div>`).join("")}</div>
+    ${tags.length ? `<div class="hashtags rise" style="--i:6">${tags.map((h, i) => `<span class="hashtag" style="animation-delay:-${i * 0.5}s">#${esc(h)}</span>`).join("")}</div>` : `<div style="height:16px"></div>`}
+    <div class="glass rise" style="--i:7"><h3 class="desc-title">📝 Deskripsi Lengkap</h3><div class="desc-text">${linkify(p.description || "Tidak ada deskripsi.")}</div></div>
+    ${links.length ? `<div class="rise" style="--i:8;margin-bottom:16px"><h3 class="desc-title">🔗 Link dari Penjual</h3>${links.map(l => `<a class="lnk" href="${esc(l.u)}" target="_blank" rel="noopener noreferrer"><span>${l.ic}</span><div>${esc(l.t)}<small>${esc(host(l.u))}</small></div><i>↗</i></a>`).join("")}</div>` : ""}
+    <div class="rise" style="--i:9">${isAvail ? `<button id="buyBtn" class="btn cta" onclick="buyFlow()">🛒 Beli Sekarang</button>` : `<button class="btn btn-disabled" disabled>${st === "reserved" ? "⏳ Sedang Dipesan Pembeli Lain" : "Maaf, Produk Sudah Terjual"}</button>`}</div>`;
+
+  const stg = $("stage");
+  stg.onpointermove = e => { const r = stg.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; stg.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`; };
+  stg.onpointerleave = () => { stg.style.transform = ""; };
+  let k = 0;
+  state.bub = setInterval(() => { const b = $("bub"); if (!b) return clearInterval(state.bub); b.textContent = msgs[++k % msgs.length]; b.classList.remove("in"); void b.offsetWidth; b.classList.add("in"); }, 3200);
+}
+
+window.setImg = i => { $("mainImg").src = state.imgs[i]; document.querySelectorAll(".thumbs button").forEach((b, j) => b.classList.toggle("on", i === j)); };
+window.zoom = src => { if (src) $("modal-root").innerHTML = `<div class="modal-overlay" onclick="this.parentNode.innerHTML=''"><img src="${esc(src)}" alt="" style="max-height:85vh;max-width:100%;border-radius:18px;background:#fff;animation:pop .35s both"></div>`; };
+window.hop = e => { const r = e.currentTarget.getBoundingClientRect(); boom(r.left + r.width / 2, r.top + r.height / 2); toast("Hehe, geli! 🤭"); };
+window.share = async e => {
+  const url = location.href, x = e.clientX, y = e.clientY;
+  try { await navigator.clipboard.writeText(url); }
+  catch { const t = document.createElement("textarea"); t.value = url; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); } catch {} t.remove(); }
+  boom(x, y); toast("Link disalin! 🔗");
+};
+
+/* ---------- Beli & bayar ---------- */
+const release = id => runTransaction(ref(db, `products/${productId}`), p => p && p.reservationOrderId === id ? { ...p, status: "available", availability: "available", reservedBy: null, reservedUntil: null, reservationOrderId: null } : p);
+
+window.buyFlow = async () => {
+  if (!state.user) { ask("Harap masuk 🔐", "Silakan masuk dengan Google untuk melanjutkan pembelian.", "Masuk Google", "Batal", window.handleAuth); return; }
+  const btn = $("buyBtn"); if (btn) { btn.disabled = true; btn.textContent = "⏳ Memproses..."; }
+  let orderId;
   try {
-    const orderRef = push(ref(db, 'orders'));
-    const orderId = orderRef.key;
-    const now = Date.now();
-    const expiresAt = now + (3 * 60 * 1000); 
-
-    const result = await runTransaction(ref(db, `products/${pid}`), (p) => {
-      if (!p) return null;
-      if (p.status === 'sold' || p.status === 'reserved') return null;
-      return { ...p, status: 'reserved', availability: 'reserved', reservedBy: state.user.uid, reservedUntil: expiresAt, reservationOrderId: orderId };
+    const orderRef = push(ref(db, "orders")); orderId = orderRef.key;
+    const now = Date.now(), expiresAt = now + 180000;
+    const res = await runTransaction(ref(db, `products/${productId}`), p => {
+      if (p === null) return null;
+      if (p.status === "sold" || p.status === "reserved") return; // undefined = batalkan (jangan return null: itu MENGHAPUS produk)
+      return { ...p, status: "reserved", availability: "reserved", reservedBy: state.user.uid, reservedUntil: expiresAt, reservationOrderId: orderId };
     });
-
-    if (!result.committed) return alert("Maaf, produk baru saja diambil orang lain.");
-
-    const commRate = state.settings.commissionRate || 0.10;
-    const price = Number(state.products[pid].price);
-    await set(orderRef, {
-      buyerId: state.user.uid, buyerName: state.user.displayName, sellerId: state.products[pid].sellerId || 'admin', productId: pid,
-      productTitleSnapshot: state.products[pid].title, priceSnapshot: price, commissionSnapshot: price * commRate, sellerAmountSnapshot: price - (price * commRate),
-      paymentStatus: 'pending', orderStatus: 'reserved', createdAt: now, expiresAt: expiresAt
-    });
-
+    if (!res.committed) { toast("Maaf, produk baru saja diambil orang lain 😢"); renderProduct(); return; }
+    const p = res.snapshot.val(); if (!p) throw new Error("Produk tidak ditemukan");
+    const price = Number(p.price) || 0, rate = Number(state.settings.commissionRate) || 0.10;
+    state.paying = true;
+    await set(orderRef, { buyerId: state.user.uid, buyerName: state.user.displayName || state.user.email || "Pembeli", sellerId: p.sellerId || "admin", productId, productTitleSnapshot: p.title || "", priceSnapshot: price, commissionSnapshot: price * rate, sellerAmountSnapshot: price - price * rate, paymentStatus: "pending", orderStatus: "reserved", createdAt: now, expiresAt });
+    boom(innerWidth / 2, innerHeight / 3);
     renderPayment(orderId, price, expiresAt);
-  } catch(e) { alert("Gagal membuat pesanan: " + e.message); }
+  } catch (e) {
+    state.paying = false;
+    if (orderId) { try { await release(orderId); } catch {} }
+    toast("Gagal membuat pesanan: " + e.message); renderProduct();
+  }
 };
 
 function renderPayment(orderId, price, expiresAt) {
-  document.getElementById('app').innerHTML = `
-    <div style="max-width:480px;margin:0 auto;text-align:center;padding-top:20px">
-      <h2 style="margin-bottom:20px">Selesaikan Pembayaran</h2>
-      <div class="timer" id="timerDisplay">03:00</div>
-      <div class="qris-box">
-        <img src="${QRIS_IMG}">
-        <p style="font-size:13px;color:var(--text-muted);margin-top:16px">Total: <b style="color:var(--primary);font-size:18px">${rupiah(price)}</b></p>
+  state.paying = true; clearInterval(state.bub); clearInterval(state.orderTimer);
+  const root = $("app"); root.classList.remove("seen");
+  root.innerHTML = `
+    <div class="pay">
+      <div class="rise"><svg class="pm"><use href="#mascot"/></svg></div>
+      <h2 class="rise" style="--i:1;margin:0 0 6px">Selesaikan Pembayaran</h2>
+      <p class="rise" style="--i:1;color:var(--text-muted);font-size:13px;margin:0 0 14px">Scan QRIS, transfer sesuai nominal, lalu tekan “Saya Sudah Bayar”.</p>
+      <div class="glass rise" id="payBox" style="--i:2">
+        <div class="timer" id="timerDisplay">03:00</div><div class="bar"><i id="bar"></i></div>
+        <div class="qris-box"><img src="${QRIS_IMG}" alt="QRIS" onclick="zoom(this.src)"><p style="font-size:13px;color:var(--text-muted);margin:14px 0 0">Total: <b class="pr" style="font-size:22px">${rupiah(price)}</b></p><small style="color:var(--text-muted)">Tap QRIS untuk memperbesar</small></div>
       </div>
-      <button class="btn btn-primary" style="margin-bottom:12px" onclick="confirmPayment('${orderId}', '${productId}', this)">Saya Sudah Bayar</button>
-      <button class="btn btn-outline" onclick="cancelOrder('${orderId}', '${productId}')">Batalkan Pesanan</button>
-    </div>
-  `;
-
-  if(state.orderTimer) clearInterval(state.orderTimer);
+      <button class="btn cta rise" style="--i:3;margin:14px 0 10px" onclick="confirmPayment('${orderId}', this)">✅ Saya Sudah Bayar</button>
+      <button class="btn btn-outline rise" style="--i:4" onclick="cancelOrder('${orderId}')">Batalkan Pesanan</button>
+    </div>`;
   const tick = () => {
     const r = expiresAt - Date.now();
-    if(r <= 0) { clearInterval(state.orderTimer); expireOrder(orderId, productId); return; }
-    const m = Math.floor(r / 60000), s = Math.floor((r % 60000) / 1000);
-    const el = document.getElementById("timerDisplay");
-    if(el) el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if (r <= 0) { expireOrder(orderId); return; }
+    const t = $("timerDisplay"), b = $("bar"), box = $("payBox");
+    if (t) t.textContent = `${String(Math.floor(r / 60000)).padStart(2, "0")}:${String(Math.floor(r % 60000 / 1000)).padStart(2, "0")}`;
+    if (b) b.style.width = (r / 180000 * 100) + "%";
+    if (box) box.classList.toggle("warn", r < 60000);
   };
-  tick();
-  state.orderTimer = setInterval(tick, 1000);
+  tick(); state.orderTimer = setInterval(tick, 1000);
 }
 
-window.confirmPayment = async (orderId, pid, btn) => {
-  if(!confirm("Pastikan Anda sudah mentransfer dana. Lanjutkan?")) return;
-  btn.textContent = "Memproses..."; btn.disabled = true;
-  await update(ref(db, `orders/${orderId}`), { paymentStatus: 'awaiting_verification' });
-  clearInterval(state.orderTimer);
-  alert("Konfirmasi terkirim. Menunggu verifikasi Admin.");
-  window.location.href = "riwayat.html";
+window.confirmPayment = async (orderId, btn) => {
+  if (!await ask("Sudah transfer?", "Pastikan dana sudah terkirim sesuai nominal. Admin akan memverifikasi pembayaranmu.", "Ya, sudah bayar", "Belum")) return;
+  btn.disabled = true; btn.textContent = "Memproses...";
+  try { await update(ref(db, `orders/${orderId}`), { paymentStatus: "awaiting_verification" }); }
+  catch (e) { btn.disabled = false; btn.textContent = "✅ Saya Sudah Bayar"; return toast("Gagal mengirim konfirmasi: " + e.message); }
+  clearInterval(state.orderTimer); boom(innerWidth / 2, innerHeight / 3);
+  await ask("Konfirmasi terkirim 🎉", "Menunggu verifikasi Admin. Pantau statusnya di Riwayat.", "Ke Riwayat", null);
+  location.href = "riwayat.html";
 };
 
-window.cancelOrder = async (orderId, pid) => {
-  if(!confirm("Batalkan pesanan ini?")) return;
-  await runTransaction(ref(db, `products/${pid}`), (p) => {
-    if(!p || p.reservationOrderId !== orderId) return p;
-    return { ...p, status: 'available', availability: 'available', reservedBy: null, reservationOrderId: null };
-  });
-  await update(ref(db, `orders/${orderId}`), { paymentStatus: 'cancelled', orderStatus: 'cancelled' });
+window.cancelOrder = async orderId => {
+  if (!await ask("Batalkan pesanan?", "Produk akan dilepas kembali ke katalog.", "Ya, batalkan", "Kembali")) return;
   clearInterval(state.orderTimer);
-  window.location.href = "katalog.html";
+  try { await release(orderId); await update(ref(db, `orders/${orderId}`), { paymentStatus: "cancelled", orderStatus: "cancelled" }); } catch {}
+  location.href = "katalog.html";
 };
 
-async function expireOrder(orderId, pid) {
-  await runTransaction(ref(db, `products/${pid}`), (p) => {
-    if(!p || p.reservationOrderId !== orderId) return p;
-    return { ...p, status: 'available', availability: 'available', reservedBy: null, reservationOrderId: null };
-  });
-  await update(ref(db, `orders/${orderId}`), { paymentStatus: 'expired', orderStatus: 'expired' });
+async function expireOrder(orderId) {
   clearInterval(state.orderTimer);
-  alert("Waktu habis. Pesanan dibatalkan.");
-  renderProduct(); 
+  try { await release(orderId); await update(ref(db, `orders/${orderId}`), { paymentStatus: "expired", orderStatus: "expired" }); } catch {}
+  state.paying = false;
+  await ask("Waktu habis ⏰", "Pesanan dibatalkan otomatis.", "Oke", null);
+  renderProduct();
 }
 </script>
 </body>
