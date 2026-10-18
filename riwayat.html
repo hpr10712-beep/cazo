@@ -120,9 +120,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .sh{text-align:center;margin:4px 0 18px}
 .sh h2{margin:0;font-size:23px;font-weight:900;letter-spacing:-.5px;color:var(--ink)}
 .sh p{margin:6px 0 0;font-size:14px;color:var(--text-muted);font-weight:500}
-.tabs{display:flex;gap:6px;max-width:360px;margin:0 auto 16px;padding:5px;background:#fff;border:1px solid #e0e7ff;border-radius:999px;box-shadow:0 4px 0 #e0e7ff}
-.tabs button{flex:1;padding:10px;border-radius:999px;font-weight:900;font-size:14px;color:var(--text-muted);transition:.2s}
-.tabs button.on{color:#fff;background:linear-gradient(120deg,var(--c2),var(--c3));box-shadow:0 3px 0 rgba(30,27,75,.3)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
 .stat{padding:11px 6px;text-align:center;background:#fff;border:1px solid #e0e7ff;border-radius:18px;box-shadow:0 4px 0 #e0e7ff}
 .stat small{display:block;margin-bottom:2px;font-size:11px;font-weight:700;color:var(--text-muted)}
@@ -173,6 +170,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .amt{font-size:22px;font-weight:900;color:var(--primary)}
 .toast{position:fixed;left:50%;bottom:98px;translate:-50% 0;max-width:90vw;text-align:center;background:var(--ink);color:#fff;font-weight:800;font-size:14px;padding:11px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(30,27,75,.35);z-index:1100;animation:tin .3s cubic-bezier(.34,1.56,.64,1)}
 @keyframes tin{from{opacity:0;translate:-50% 20px}}
+#mface .v{display:none}
+#mface[data-mood=happy] .e-open,#mface[data-mood=wink] .e-open,#mface[data-mood=love] .e-open,#mface[data-mood=surprised] .e-open,#mface[data-mood=excited] .e-open{display:none}
+#mface[data-mood=happy] .e-happy,#mface[data-mood=excited] .e-happy,#mface[data-mood=wink] .e-wink,#mface[data-mood=love] .e-heart,#mface[data-mood=surprised] .e-wide{display:inline}
+#mface[data-mood=surprised] .mo-smile,#mface[data-mood=excited] .mo-smile,#mface[data-mood=love] .mo-smile{display:none}
+#mface[data-mood=surprised] .mo-o,#mface[data-mood=excited] .mo-grin,#mface[data-mood=love] .mo-grin,#mface[data-mood=excited] .stars{display:inline}
+.brow{transition:transform .35s cubic-bezier(.34,1.5,.64,1)}
+#mface[data-mood=surprised] .brow{transform:translateY(-9px)}
+#mface[data-mood=happy] .brow,#mface[data-mood=love] .brow,#mface[data-mood=excited] .brow{transform:translateY(-4px)}
+.hb{transform-box:fill-box;transform-origin:center;animation:beat .7s ease-in-out infinite}
+@keyframes beat{50%{transform:scale(1.18)}}
+.stars .tw{transform-box:fill-box;transform-origin:center;animation:tw 1.4s ease-in-out infinite}
+.cf{position:fixed;pointer-events:none;z-index:400;font-weight:900}
+.mbx>.btn{margin-top:10px}
+.pv{width:100%;height:220px;border:1px solid var(--border);border-radius:12px;margin:12px 0 2px;background:#f8fafc}
+.lk{word-break:break-all;font-size:12px;font-weight:700;color:var(--primary);background:#eef2ff;border-radius:10px;padding:8px 10px;margin-bottom:6px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -257,7 +269,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <div class="m3" id="m3">
         <div class="mb" id="mb" role="button" tabindex="0" aria-label="Colek maskot Cazo">
           <svg class="msvg" id="msvg" viewBox="0 0 240 280" aria-hidden="true">
-            <g id="mface">
+            <g id="mface" data-mood="idle">
               <path d="M78 90C70 20 170 20 162 90" fill="none" stroke="#FFD166" stroke-width="11" stroke-linecap="round"/>
               <rect x="136" y="64" width="26" height="32" rx="5" fill="#7C5CFF" transform="rotate(12 149 80)"/><rect x="140" y="71" width="18" height="5" rx="2" fill="#fff" fill-opacity=".65" transform="rotate(12 149 80)"/>
               <ellipse cx="88" cy="256" rx="20" ry="10" fill="#E85D04"/><ellipse cx="152" cy="256" rx="20" ry="10" fill="#E85D04"/>
@@ -268,10 +280,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
               <path d="M62 95H178" stroke="#fff" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="7 6" stroke-linecap="round"/>
               <circle cx="120" cy="234" r="14" fill="#FFD166"/><text x="120" y="240.5" text-anchor="middle" font-family="Inter,sans-serif" font-weight="900" font-size="19" fill="#E85D04">C</text>
               <ellipse cx="72" cy="174" rx="10" ry="6.5" fill="#FF5E7E" opacity=".85"/><ellipse cx="168" cy="174" rx="10" ry="6.5" fill="#FF5E7E" opacity=".85"/>
-              <g class="eb"><ellipse cx="96" cy="150" rx="14" ry="16" fill="#fff"/><g class="pup"><circle cx="96" cy="152" r="8" fill="#2b1a3a"/><circle cx="99" cy="148" r="3" fill="#fff"/></g></g>
-              <g class="eb"><ellipse cx="144" cy="150" rx="14" ry="16" fill="#fff"/><g class="pup"><circle cx="144" cy="152" r="8" fill="#2b1a3a"/><circle cx="147" cy="148" r="3" fill="#fff"/></g></g>
-              <path d="M82 128Q96 120 110 126M130 126Q144 120 158 128" fill="none" stroke="#8a3200" stroke-width="5" stroke-linecap="round" transform="translate(0 -4)"/>
-              <g class="mo-th"><path d="M106 176Q120 190 136 174" fill="none" stroke="#5a1a1a" stroke-width="5" stroke-linecap="round"/></g>
+              <g class="e-open"><g class="eb"><ellipse cx="96" cy="150" rx="14" ry="16" fill="#fff"/><g class="pup"><circle cx="96" cy="152" r="8" fill="#2b1a3a"/><circle cx="99" cy="148" r="3" fill="#fff"/></g></g><g class="eb"><ellipse cx="144" cy="150" rx="14" ry="16" fill="#fff"/><g class="pup"><circle cx="144" cy="152" r="8" fill="#2b1a3a"/><circle cx="147" cy="148" r="3" fill="#fff"/></g></g></g>
+              <g class="v e-happy" fill="none" stroke="#2b1a3a" stroke-width="6" stroke-linecap="round"><path d="M82 156Q96 136 110 156"/><path d="M130 156Q144 136 158 156"/></g>
+              <g class="v e-wink"><ellipse cx="96" cy="150" rx="14" ry="16" fill="#fff"/><circle cx="96" cy="152" r="8" fill="#2b1a3a"/><circle cx="99" cy="148" r="3" fill="#fff"/><path d="M130 156Q144 138 158 156" fill="none" stroke="#2b1a3a" stroke-width="6" stroke-linecap="round"/></g>
+              <g class="v e-heart"><path class="hb" d="M96 168C80 156 78 142 85 137C90 134 95 137 96 141C97 137 102 134 107 137C114 142 112 156 96 168Z" fill="#ff3b6b"/><path class="hb" transform="translate(48 0)" d="M96 168C80 156 78 142 85 137C90 134 95 137 96 141C97 137 102 134 107 137C114 142 112 156 96 168Z" fill="#ff3b6b"/></g>
+              <g class="v e-wide"><ellipse cx="96" cy="150" rx="16" ry="19" fill="#fff"/><circle cx="96" cy="151" r="6" fill="#2b1a3a"/><ellipse cx="144" cy="150" rx="16" ry="19" fill="#fff"/><circle cx="144" cy="151" r="6" fill="#2b1a3a"/></g>
+              <path class="brow" d="M82 124Q96 116 110 122M130 122Q144 116 158 124" fill="none" stroke="#8a3200" stroke-width="5" stroke-linecap="round"/>
+              <g class="mo-th"><path class="mo-smile" d="M106 176Q120 190 136 174" fill="none" stroke="#5a1a1a" stroke-width="5" stroke-linecap="round"/><g class="v mo-grin"><path d="M100 172Q120 172 140 172Q138 197 120 197Q102 197 100 172Z" fill="#5a1a1a"/><ellipse cx="120" cy="190" rx="8" ry="4.5" fill="#ff6b8a"/></g><ellipse class="v mo-o" cx="120" cy="185" rx="7" ry="10" fill="#5a1a1a"/></g>
+              <g class="v stars" fill="#fde047" stroke="#1e1b4b" stroke-width="2" stroke-linejoin="round"><path class="tw" d="M18 118l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/><path class="tw" d="M222 98l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/></g>
             </g>
           </svg>
         </div>
@@ -288,7 +304,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <!-- KONTEN -->
 <main class="rw">
   <div class="sh"><h2>Aktivitas Kamu</h2><p>Pantau pesanan, lanjutkan pembayaran, dan lihat hasil belanjamu.</p></div>
-  <div class="tabs" id="tabs"><button class="on" data-m="buy">Pembelian</button><button data-m="sell">Penjualan</button></div>
   <div class="stats" id="stats"></div>
   <div class="chips" id="chips"></div>
   <div id="list"></div>
@@ -304,27 +319,32 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 <div id="mr"></div>
 
-<!-- MASKOT: ketik teks, mata mengikuti kursor, miring 3D, colek -->
+<!-- MASKOT: ketik teks, ekspresi, mata mengikuti kursor, miring 3D, colek -->
 <script>
 (()=>{
 const $=s=>document.querySelector(s),reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const typed=$('#typed'),bub=$('#bubble'),m3=$('#m3'),mb=$('#mb'),svg=$('#msvg'),face=$('#mface');
-const MSG=[
- 'Halo! Semua riwayat belanjamu tersimpan di sini ♥',
- 'Pesanan yang belum dibayar bisa dilanjutkan, lho!',
- 'Status pembayaran dicek Admin, tunggu sebentar ya.',
- 'Pembelian yang selesai tinggal kamu buka produknya.',
- 'Terima kasih sudah belanja di Cazo Market!',
- 'Belum ada pesanan baru? Yuk cek Katalog!'
-],POKES=['Eh, kaget! Jangan colek-colek~','Hehe, geli! Colek lagi dong!','Aww, makasih ya ♥','Psst, pesananmu ada di bawah lho!'];
-let mi=0,pi=0,tm;
-function say(t){
-  clearInterval(tm);bub.classList.remove('pop');void bub.offsetWidth;bub.classList.add('pop');
+const MSG=[['happy','Halo! Semua riwayat belanjamu tersimpan di sini ♥'],['wink','Pesanan yang belum dibayar bisa dilanjutkan, lho!'],['idle','Status pembayaran dicek Admin, tunggu sebentar ya.'],['love','Pembelian yang selesai bisa kamu lihat isinya!'],['happy','Terima kasih sudah belanja di Cazo Market!'],['surprised','Belum ada pesanan baru? Yuk cek Katalog!']];
+const POKES=[['surprised','Eh, kaget! Jangan colek-colek~'],['excited','Hehe, geli! Colek lagi dong!'],['love','Aww, makasih ya ♥'],['wink','Psst, pesananmu ada di bawah lho!'],['happy','Hai hai! Ada yang bisa dibantu?']];
+let tm,bk,busy=0,mi=0,pi=0,pokes=[],sp=0,sc=0;
+function mood(m,ms){face.dataset.mood=m;clearTimeout(bk);if(m!=='idle')bk=setTimeout(()=>{face.dataset.mood='idle'},ms||3600)}
+function say(t,m,ms){
+  mood(m||'idle',ms);clearInterval(tm);bub.classList.remove('pop');void bub.offsetWidth;bub.classList.add('pop');
   if(reduce){typed.textContent=t;return}
   typed.textContent='';let i=0;mb.classList.add('talk');
   tm=setInterval(()=>{typed.textContent=t.slice(0,++i);if(i>=t.length){clearInterval(tm);mb.classList.remove('talk')}},30);
 }
-setTimeout(()=>say(MSG[mi++]),500);setInterval(()=>say(MSG[mi++%MSG.length]),7200);
+setTimeout(()=>say(MSG[0][1],MSG[0][0]),500);mi=1;
+setInterval(()=>{if(performance.now()<busy)return;const q=MSG[mi++%MSG.length];say(q[1],q[0])},7200);
+function burst(x,y,n,g){
+  if(reduce)return;const cols=['#fde047','#f472b6','#22d3ee','#4ade80','#fb923c','#a78bfa'];
+  for(let i=0;i<n;i++){
+    const s=document.createElement('span');s.className='cf';s.textContent=g[i%g.length];
+    s.style.cssText='left:'+x+'px;top:'+y+'px;color:'+cols[i%6]+';font-size:'+(12+Math.random()*14)+'px';document.body.appendChild(s);
+    const a=Math.random()*6.28,v=60+Math.random()*110,dx=Math.cos(a)*v,dy=Math.sin(a)*v-50;
+    s.animate([{transform:'translate(-50%,-50%) scale(.4)',opacity:1},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(1)`,opacity:1,offset:.55},{transform:`translate(calc(-50% + ${dx*1.1}px),calc(-50% + ${dy+90}px)) scale(.6)`,opacity:0}],{duration:900+Math.random()*500,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>s.remove();
+  }
+}
 let tx=0,ty=0,rx=0,ry=0,last=-1e9;
 addEventListener('pointermove',e=>{
   last=performance.now();tx=(e.clientX/innerWidth-.5)*2;ty=(e.clientY/innerHeight-.5)*2;
@@ -333,10 +353,17 @@ addEventListener('pointermove',e=>{
 },{passive:true});
 (function f(now){
   const t=(now||0)/1000,gx=now-last<3500?tx:Math.sin(t*.5)*.5,gy=now-last<3500?ty:Math.sin(t*.7)*.2;
-  rx+=(-gy*12+3-rx)*.1;ry+=(gx*30-ry)*.1;m3.style.transform='rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg)';
+  rx+=(-gy*12+3-rx)*.1;ry+=(gx*30-ry)*.1;sc+=(sp-sc)*.07;
+  m3.style.transform='rotateX('+rx.toFixed(2)+'deg) rotateY('+(ry+sc).toFixed(2)+'deg)';
   if(!reduce)requestAnimationFrame(f);
 })(0);
-function poke(){svg.classList.remove('poke');void svg.offsetWidth;svg.classList.add('poke');say(POKES[pi++%POKES.length])}
+function poke(){
+  const n=performance.now();pokes=pokes.filter(p=>n-p<2500);pokes.push(n);busy=n+4800;
+  svg.classList.remove('poke');void svg.offsetWidth;svg.classList.add('poke');
+  const r=mb.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.3;
+  if(pokes.length>=5){pokes=[];sp+=360;say('Wuuush! Aku muter-muter! ✦','excited',4800);burst(cx,cy,26,['★','♥','✦']);return}
+  const p=POKES[pi++%POKES.length];say(p[1],p[0],3600);burst(cx,cy,8,['♥','✦']);
+}
 mb.addEventListener('click',poke);
 mb.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();poke()}});
 svg.addEventListener('animationend',e=>{if(e.animationName==='squish')svg.classList.remove('poke')});
@@ -359,7 +386,7 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": 
 const rupiah = n => "Rp" + Number(n || 0).toLocaleString("id-ID");
 const fmt = t => t ? new Date(t).toLocaleString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "-";
 const mmss = r => String(r / 60000 | 0).padStart(2, "0") + ":" + String(r % 60000 / 1000 | 0).padStart(2, "0");
-const S = { user: null, mode: "buy", filter: "all", orders: [], products: {}, got: {}, fx: new Set(), unsub: null, pt: 0 };
+const S = { user: null, filter: "all", orders: [], products: {}, got: {}, fx: new Set(), unsub: null, pt: 0 };
 
 /* status: pay=menunggu bayar, verify=menunggu verifikasi admin, done=selesai */
 const META = { pay: ["Menunggu Pembayaran", "wait"], verify: ["Menunggu Verifikasi", "wait"], done: ["Selesai", "ok"], cancel: ["Dibatalkan", "no"], expired: ["Kedaluwarsa", "no"], reject: ["Ditolak", "no"] };
@@ -416,7 +443,6 @@ window.payNow = id => {
 window.info = id => {
   const o = S.orders.find(x => x.id === id); if (!o) return;
   const rows = [["ID Pesanan", id], ["Produk", o.productTitleSnapshot || "-"], ["Status", META[kind(o)][0]], ["Harga", rupiah(o.priceSnapshot)]];
-  if (S.mode === "sell") rows.push(["Komisi", rupiah(o.commissionSnapshot)], ["Pendapatan", rupiah(o.sellerAmountSnapshot)], ["Pembeli", o.buyerName || "-"]);
   rows.push(["Dibuat", fmt(o.createdAt)], ["Batas bayar", fmt(o.expiresAt)]);
   modal(`<h3>Rincian Pesanan</h3><div class="rows">${rows.map(([a, b]) => `<div><span>${a}</span><b>${esc(b)}</b></div>`).join("")}</div><button class="btn btn-primary" style="margin-top:18px" onclick="closeM()">Tutup</button>`);
 };
@@ -430,38 +456,49 @@ window.login = async () => {
 };
 
 /* ---- render ---- */
+const fix = u => { u = String(u || "").trim(); return !u ? "" : /^https?:\/\//i.test(u) ? u : "https://" + u.replace(/^\/+/, ""); };
+const host = u => { try { return new URL(u).host.replace(/^www\./, ""); } catch { return u; } };
+
+/* Isi produk = fileDownloadURL (+ demoURL) yang diisi Admin di panel produk; hanya untuk pesanan yang sudah lunas */
+window.openContent = id => {
+  const o = S.orders.find(x => x.id === id); if (!o || kind(o) !== "done") return;
+  const p = S.products[o.productId] || {}, f = fix(p.fileDownloadURL), d = fix(p.demoURL);
+  if (!f && !d) { modal(`<h3>Isi Produk</h3><p class="dsc">Admin belum mengisi file atau kode HTML untuk produk ini. Hubungi Admin supaya segera dikirim.</p><a class="btn btn-primary" href="kontak.html">Hubungi Admin</a><button class="btn btn-outline" onclick="closeM()">Tutup</button>`); return; }
+  modal(`<h3>${esc(o.productTitleSnapshot || p.title || "Isi Produk")}</h3><p class="dsc">Pembayaran sudah terverifikasi. Ini isi produkmu.</p>
+    ${f ? `<div class="lk">${esc(host(f))}</div><a class="btn btn-primary" href="${esc(f)}" target="_blank" rel="noopener noreferrer">Buka / Unduh File</a><button class="btn btn-outline" id="cpy">Salin Link</button>` : ""}
+    ${d ? `<iframe class="pv" src="${esc(d)}" sandbox="allow-scripts allow-same-origin" loading="lazy" title="Pratinjau demo"></iframe><a class="btn btn-outline" href="${esc(d)}" target="_blank" rel="noopener noreferrer">Buka Demo</a>` : ""}
+    <button class="btn btn-outline" onclick="closeM()">Tutup</button>`);
+  if (f) $("cpy").onclick = () => navigator.clipboard.writeText(f).then(() => toast("Link disalin"), () => toast("Gagal menyalin, salin manual"));
+};
+
 function card(o, i) {
-  const p = S.products[o.productId] || {}, m = META[o.k], buy = S.mode === "buy";
+  const p = S.products[o.productId] || {}, m = META[o.k];
   const img = Object.values(p.imageURLs || {})[0] || p.imageURL || "https://placehold.co/160x160/ede9fe/7c3aed?text=Cazo";
   const title = o.productTitleSnapshot || p.title || "Produk";
-  const amt = buy ? o.priceSnapshot : o.sellerAmountSnapshot;
   let note = "", act = "";
   if (o.k === "pay") {
     note = `<div class="note">⏳ Selesaikan pembayaran dalam <span data-exp="${o.expiresAt}">${mmss(o.expiresAt - Date.now())}</span></div>`;
-    if (buy) act = `<button class="btn btn-primary" onclick="payNow('${o.id}')">Lanjut Bayar</button><button class="btn btn-outline" onclick="cancelOrder('${o.id}')">Batalkan</button>`;
+    act = `<button class="btn btn-primary" onclick="payNow('${o.id}')">Lanjut Bayar</button><button class="btn btn-outline" onclick="cancelOrder('${o.id}')">Batalkan</button>`;
   } else if (o.k === "verify") note = `<div class="note">Admin sedang memverifikasi pembayaranmu.</div>`;
-  else if (o.k === "done" && buy) {
-    const L = p.link || p.linkURL || p.url || p.demoURL;
-    if (L) act += `<a class="btn btn-primary" href="${esc(L)}" target="_blank" rel="noopener noreferrer">Buka Produk</a>`;
-  }
-  if (p.title || o.productId) act += `<a class="btn btn-outline" href="detail.html?id=${esc(o.productId)}">Lihat Produk</a>`;
+  else if (o.k === "done") act = `<button class="btn btn-primary" onclick="openContent('${o.id}')">Lihat Isi Produk</button>`;
+  if (o.productId) act += `<a class="btn btn-outline" href="detail.html?id=${esc(o.productId)}">Lihat Produk</a>`;
   act += `<button class="btn btn-outline" onclick="info('${o.id}')">Rincian</button>`;
   return `<article class="oc" style="--i:${i}">
     <div class="oh"><span class="pill ${m[1]}">${m[0]}</span><time>${fmt(o.createdAt)}</time></div>
-    <div class="om"><img src="${esc(img)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/160x160/ede9fe/7c3aed?text=Cazo'"><div><h3>${esc(title)}</h3><small>${buy ? esc(p.category || "Digital") : "Pembeli: " + esc(o.buyerName || "-")} · #${esc(o.id.slice(-6).toUpperCase())}</small><b>${rupiah(amt)}</b></div></div>
+    <div class="om"><img src="${esc(img)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/160x160/ede9fe/7c3aed?text=Cazo'"><div><h3>${esc(title)}</h3><small>${esc(p.category || "Digital")} · #${esc(o.id.slice(-6).toUpperCase())}</small><b>${rupiah(o.priceSnapshot)}</b></div></div>
     ${note}<div class="oa">${act}</div></article>`;
 }
 
 function render() {
-  const buy = S.mode === "buy", st = $("stats"), ch = $("chips"), ls = $("list");
-  if (!S.user) { st.innerHTML = ch.innerHTML = ""; ls.innerHTML = `<div class="empty"><svg><use href="#mascot"/></svg><p>Masuk dulu untuk melihat riwayat ${buy ? "pembelian" : "penjualan"}mu.</p><button class="btn btn-primary" onclick="login()">Masuk dengan Google</button></div>`; return; }
+  const st = $("stats"), ch = $("chips"), ls = $("list");
+  if (!S.user) { st.innerHTML = ch.innerHTML = ""; ls.innerHTML = `<div class="empty"><svg><use href="#mascot"/></svg><p>Masuk dulu untuk melihat riwayat pembelianmu.</p><button class="btn btn-primary" onclick="login()">Masuk dengan Google</button></div>`; return; }
   if (!S.got.o) { st.innerHTML = ch.innerHTML = ""; ls.innerHTML = '<div class="spin"></div>'; return; }
   const all = S.orders.map(o => ({ ...o, k: kind(o) })), g = GRP[S.filter], rows = g ? all.filter(o => g.includes(o.k)) : all, done = all.filter(o => o.k === "done");
-  if (buy) all.forEach(o => { if (o.paymentStatus === "pending" && o.k === "expired" && !S.fx.has(o.id)) { S.fx.add(o.id); finish(o, "expired"); } });
-  const sum = done.reduce((a, o) => a + (Number(buy ? o.priceSnapshot : o.sellerAmountSnapshot) || 0), 0);
-  st.innerHTML = [["Pesanan", all.length], ["Selesai", done.length], [buy ? "Total Belanja" : "Pendapatan", rupiah(sum)]].map(([a, b]) => `<div class="stat"><small>${a}</small><b>${b}</b></div>`).join("");
+  all.forEach(o => { if (o.paymentStatus === "pending" && o.k === "expired" && !S.fx.has(o.id)) { S.fx.add(o.id); finish(o, "expired"); } });
+  const sum = done.reduce((a, o) => a + (Number(o.priceSnapshot) || 0), 0);
+  st.innerHTML = [["Pesanan", all.length], ["Selesai", done.length], ["Total Belanja", rupiah(sum)]].map(([a, b]) => `<div class="stat"><small>${a}</small><b>${b}</b></div>`).join("");
   ch.innerHTML = CHIPS.map(([k, l]) => `<button class="${k === S.filter ? "on" : ""}" data-f="${k}">${l}<em>${GRP[k] ? all.filter(o => GRP[k].includes(o.k)).length : all.length}</em></button>`).join("");
-  ls.innerHTML = rows.length ? rows.map(card).join("") : `<div class="empty"><svg><use href="#mascot"/></svg><p>${all.length ? "Tidak ada pesanan di filter ini." : "Belum ada riwayat " + (buy ? "pembelian" : "penjualan") + "."}</p>${all.length || !buy ? "" : '<a class="btn btn-primary" href="katalog.html">Belanja di Katalog</a>'}</div>`;
+  ls.innerHTML = rows.length ? rows.map(card).join("") : `<div class="empty"><svg><use href="#mascot"/></svg><p>${all.length ? "Tidak ada pesanan di filter ini." : "Belum ada riwayat pembelian."}</p>${all.length ? "" : '<a class="btn btn-primary" href="katalog.html">Belanja di Katalog</a>'}</div>`;
 }
 
 /* ---- data & auth ---- */
@@ -469,7 +506,7 @@ const ready = () => { if (S.got.a && S.got.p && (S.got.o || !S.user)) $("page-lo
 function sub() {
   if (S.unsub) S.unsub(); S.unsub = null; S.orders = []; S.got.o = 0; render();
   if (!S.user) return;
-  const f = S.mode === "buy" ? "buyerId" : "sellerId";
+  const f = "buyerId";
   S.unsub = onValue(query(ref(db, "orders"), orderByChild(f), equalTo(S.user.uid)), s => {
     S.orders = Object.entries(s.val() || {}).map(([id, o]) => ({ id, ...o })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.got.o = 1; render(); ready();
@@ -479,7 +516,6 @@ onAuthStateChanged(auth, u => { S.user = u; S.got.a = 1; sub(); ready(); });
 onValue(ref(db, "products"), s => { S.products = s.val() || {}; S.got.p = 1; render(); ready(); }, () => { S.got.p = 1; ready(); });
 setTimeout(() => $("page-loader").classList.add("hidden"), 6000);
 
-$("tabs").onclick = e => { const b = e.target.closest("button"); if (!b || b.dataset.m === S.mode) return; S.mode = b.dataset.m; S.filter = "all"; [...$("tabs").children].forEach(x => x.classList.toggle("on", x === b)); sub(); };
 $("chips").onclick = e => { const b = e.target.closest("button"); if (b) { S.filter = b.dataset.f; render(); } };
 setInterval(() => {
   let ex = 0;
