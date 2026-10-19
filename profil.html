@@ -277,7 +277,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></symbol>
   <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2.3"/><path d="M5.5 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v.5" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <!-- maskot nav (oranye, dari index.html) -->
   <symbol id="mascot" viewBox="0 0 44 34">
     <g stroke="#1e1b4b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M15 12C13 1 31 1 29 12" fill="none" stroke="#FFD166" stroke-width="3"/><path d="M10 11H34Q36 11 36.5 13.5L40 30Q41 34 37 34H7Q3 34 4 30L7.5 13.5Q8 11 10 11Z" fill="#FF7A1A"/></g>
     <path d="M7.5 13.5Q8 11 10 11H34Q36 11 36.5 13.5L37 17H7Z" fill="#E85D04"/>
@@ -287,7 +286,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     <ellipse cx="10.5" cy="28.5" rx="2.2" ry="1.4" fill="#FF5E7E" opacity=".6"/><ellipse cx="33.5" cy="28.5" rx="2.2" ry="1.4" fill="#FF5E7E" opacity=".6"/>
     <path d="M19.5 29q2.5 2.4 5 0" stroke="#5a1a1a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
   </symbol>
-  <!-- maskot loader (hijau, dari detail.html) -->
   <symbol id="mascotG" viewBox="0 0 44 34"><g stroke="#1e1b4b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M15.5 10V8.5a6.5 6.5 0 0 1 13 0V10" fill="none" stroke-width="4.4"/><path d="M15.5 10V8.5a6.5 6.5 0 0 1 13 0V10" fill="none" stroke="#a5b4fc" stroke-width="1.8"/><circle cx="4.5" cy="23" r="3" fill="#34d399"/><circle cx="39.5" cy="23" r="3" fill="#34d399"/><path d="M9 10h26l3.2 19.8q.4 3.2-3 3.2H8.8q-3.4 0-3-3.2Z" fill="#34d399"/><path d="M9 10h26l.7 4.6H8.3Z" fill="#10b981"/><circle cx="16.5" cy="21.5" r="3.6" fill="#fff" stroke-width="1.2"/><circle cx="27.5" cy="21.5" r="3.6" fill="#fff" stroke-width="1.2"/></g><circle cx="17" cy="22" r="1.9" fill="#1e1b4b"/><circle cx="27" cy="22" r="1.9" fill="#1e1b4b"/><circle cx="16.2" cy="20.9" r=".8" fill="#fff"/><circle cx="26.2" cy="20.9" r=".8" fill="#fff"/><circle cx="11.5" cy="27" r="2" fill="#fda4af" opacity=".8"/><circle cx="32.5" cy="27" r="2" fill="#fda4af" opacity=".8"/><path d="M19.5 27q2.5 2.8 5 0" stroke="#be123c" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M10.5 17l-1 10" stroke="#fff" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round"/><path d="M38 1.5l1.1 3 3 1.1-3 1.1-1.1 3-1.1-3-3-1.1 3-1.1Z" fill="#facc15" stroke="#1e1b4b" stroke-width=".9" stroke-linejoin="round"/></symbol>
 </svg>
 
@@ -404,7 +402,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
           </div>
         </div>
 
-        <!-- ikon orbit: bisa diklik -->
         <a class="orb wa" id="orbWa" href="riwayat.html" aria-label="Riwayat pesanan" style="--hs:#16a34a"><svg><use href="#i-bill"/></svg></a>
         <a class="orb mail" id="orbMl" href="kontak.html" aria-label="Hubungi kami" style="--hs:#4f46e5"><svg><use href="#i-mail"/></svg></a>
         <a class="orb tt" id="orbTk" href="katalog.html" aria-label="Katalog"><svg><use href="#i-grid"/></svg></a>
@@ -555,7 +552,7 @@ bag.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDef
 })();
 </script>
 
-<!-- DATA RIWAYAT (Firebase, memahami alur order di detail.html) -->
+<!-- DATA PROFIL (Firebase, ambil dari akun Google) -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, onValue, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -567,7 +564,12 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const rupiah = n => "Rp" + Number(n || 0).toLocaleString("id-ID");
 const fmt = t => t ? new Date(t).toLocaleString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "-";
-const mmss = r => String(r / 60000 | 0).padStart(2, "0") + ":" + String(r % 60000 / 1000 | 0).padStart(2, "0");
+
+/* ===== PERBAIKAN: state object untuk halaman profil =====
+   Sebelumnya objek S dipakai (S.user, S.orders, S.got, S.unsub, S.pt)
+   tapi TIDAK PERNAH dideklarasikan → ReferenceError saat onAuthStateChanged
+   → render() tidak jalan → loader tidak hilang → data akun tidak muncul. */
+const S = { user: null, orders: [], unsub: null, got: { a: 0, o: 0 }, pt: null };
 
 /* status: pay=menunggu bayar, verify=menunggu verifikasi admin, done=selesai */
 const META = { pay: ["Menunggu Pembayaran", "wait"], verify: ["Menunggu Verifikasi", "wait"], done: ["Selesai", "ok"], cancel: ["Dibatalkan", "no"], expired: ["Kedaluwarsa", "no"], reject: ["Ditolak", "no"] };
