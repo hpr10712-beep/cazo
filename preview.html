@@ -6,7 +6,7 @@
 <title>Preview — Cazo Market</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f8fafc;--ink:#1e1b4b;--muted:#64748b;--c1:#4c1d95;--c2:#7c3aed;--c3:#db2777;--c4:#2563eb;--primary:#7c3aed;--font:'Inter',system-ui,sans-serif;--border:#e2e8f0}
+:root{--bg:#f8fafc;--ink:#1e1b4b;--muted:#64748b;--c1:#4c1d95;--c2:#7c3aed;--c3:#db2777;--c4:#2563eb;--primary:#7c3aed;--font:'Inter',system-ui,sans-serif;--border:#e2e8f0;--danger:#dc2626}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink)}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
@@ -23,6 +23,7 @@ a{text-decoration:none;color:inherit}
 .brand svg{width:28px;height:28px}
 .btn-user{display:flex;align-items:center;gap:8px;background:#fff;color:var(--ink);padding:6px 12px 6px 6px;border-radius:99px;font-weight:800;font-size:13px;box-shadow:0 3px 0 rgba(30,27,75,.25)}
 .btn-user img{width:26px;height:26px;border-radius:50%;object-fit:cover}
+.badge-admin{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.4px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;box-shadow:0 1px 0 rgba(0,0,0,.15)}
 .hero{position:relative;margin-top:14px;text-align:center}
 .hero h1{margin:0;font-size:clamp(24px,7vw,36px);font-weight:900;letter-spacing:-.8px;text-shadow:0 3px 0 rgba(30,27,75,.3)}
 .hero p{margin:6px 0 0;font-size:14px;font-weight:500;opacity:.94}
@@ -64,7 +65,20 @@ main{max-width:1300px;margin:0 auto;padding:0 16px 80px}
 .btn-google:active{transform:translateY(2px);box-shadow:0 2px 0 #e0e7ff}
 .btn-google svg{width:20px;height:20px}
 
-.toast{position:fixed;left:50%;bottom:24px;translate:-50% 0;background:var(--ink);color:#fff;padding:11px 20px;border-radius:99px;font-weight:800;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:1000;animation:tin .3s ease}
+.denied-prompt{text-align:center;padding:30px 20px;background:linear-gradient(180deg,#fff,#fef2f2);border:2px dashed #fca5a5;border-radius:20px}
+.denied-prompt svg{width:60px;height:60px;margin-bottom:8px}
+.denied-prompt h3{margin:0 0 6px;font-size:17px;font-weight:900;color:var(--danger)}
+.denied-prompt p{margin:0 0 6px;font-size:13px;color:#7f1d1d;font-weight:600;line-height:1.5}
+.denied-prompt p b{color:var(--danger);word-break:break-all}
+.denied-prompt .btn-outline{margin-top:10px;max-width:260px;margin-left:auto;margin-right:auto;color:var(--danger);border-color:#fca5a5;box-shadow:0 4px 0 #fecaca}
+.denied-prompt .btn-outline:hover{background:#fef2f2}
+
+.verifying{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;background:#fff;border:2px solid var(--border);border-radius:20px}
+.verifying .spin{width:40px;height:40px;border:3px solid #e0e7ff;border-top-color:var(--primary);border-radius:50%;animation:rot .8s linear infinite;margin-bottom:14px}
+.verifying p{margin:0;font-weight:800;font-size:14px;color:var(--muted)}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+.toast{position:fixed;left:50%;bottom:24px;translate:-50% 0;background:var(--ink);color:#fff;padding:11px 20px;border-radius:99px;font-weight:800;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:1000;animation:tin .3s ease;max-width:90vw;text-align:center}
 @keyframes tin{from{opacity:0;translate:-50% 20px}}
 
 .link-box{margin-top:14px;padding:14px;background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border:2px solid #86efac;border-radius:14px}
@@ -85,7 +99,6 @@ main{max-width:1300px;margin:0 auto;padding:0 16px 80px}
 .loader{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .4s}
 .loader.hidden{opacity:0;visibility:hidden}
 .spin{width:40px;height:40px;border:3px solid #e0e7ff;border-top-color:#7c3aed;border-radius:50%;animation:rot .8s linear infinite}
-@keyframes rot{to{transform:rotate(360deg)}}
 
 .list{margin-top:16px}
 .list h3{margin:0 0 10px;font-size:14px;font-weight:900;color:var(--ink)}
@@ -116,19 +129,31 @@ main{max-width:1300px;margin:0 auto;padding:0 16px 80px}
     </div>
     <div class="hero">
       <h1>Preview Builder</h1>
-      <p>Tempel kode HTML, lihat hasilnya, lalu bagikan lewat satu link.</p>
+      <p>Khusus admin. Tempel kode HTML, lihat hasilnya, bagikan link.</p>
     </div>
   </header>
 
   <main>
     <div id="loginPrompt" class="login-prompt" hidden>
       <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="3" fill="#c4b5fd"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/></svg>
-      <h3>Masuk Dulu</h3>
-      <p>Login Google untuk menyimpan preview dan mendapatkan link.</p>
+      <h3>Login Admin</h3>
+      <p>Halaman ini hanya untuk admin. Login pakai akun Google yang terdaftar sebagai admin.</p>
       <button class="btn-google" id="btnLogin">
         <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 5.1 29.3 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.8-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 5.1 29.3 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 36.1 26.7 37 24 37c-5.3 0-9.7-2.6-11.3-8l-6.6 5.1C9.7 41 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.6l6.2 5.2c4.4-4 7.6-10 7.6-16.8 0-1.4-.1-2.8-.4-4z"/></svg>
         Masuk dengan Google
       </button>
+    </div>
+
+    <div id="verifying" class="verifying" hidden>
+      <div class="spin"></div>
+      <p>Memverifikasi akses admin…</p>
+    </div>
+
+    <div id="deniedPrompt" class="denied-prompt" hidden>
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#fecaca"/><path d="M12 7v6M12 17h.01" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <h3>Akses Ditolak</h3>
+      <p>Akun <b id="deniedEmail">-</b> bukan admin. Hubungi pemilik situs untuk diberi akses.</p>
+      <button class="btn-outline" id="btnLogoutDenied">Keluar &amp; Coba Akun Lain</button>
     </div>
 
     <div id="builderArea" hidden>
@@ -214,6 +239,8 @@ async function initAdmin() {
 
   const iframe = $("iframePreview"), ta = $("codeInput");
   let unsubList = null;
+  let unsubAdmin = null;
+  let isAdmin = false;
 
   const renderPreview = () => {
     const html = ta.value;
@@ -241,17 +268,30 @@ async function initAdmin() {
     }
   };
 
+  $("btnLogoutDenied").onclick = async () => { await signOut(auth); toast("Logout berhasil"); };
+
+  /* ========== UI states ========== */
+  const showOnly = (which) => {
+    $("loginPrompt").hidden  = which !== "login";
+    $("verifying").hidden    = which !== "verifying";
+    $("deniedPrompt").hidden = which !== "denied";
+    $("builderArea").hidden  = which !== "builder";
+  };
+
+  /* ========== Auth + admin verification ========== */
   onAuthStateChanged(auth, user => {
+    // Reset admin state
+    if (unsubAdmin) { unsubAdmin(); unsubAdmin = null; }
+    if (unsubList) { unsubList(); unsubList = null; }
+    isAdmin = false;
+
     if (!user) {
-      $("loginPrompt").hidden = false;
-      $("builderArea").hidden = true;
       $("userArea").innerHTML = "";
-      if (unsubList) { unsubList(); unsubList = null; }
+      showOnly("login");
       return;
     }
-    $("loginPrompt").hidden = true;
-    $("builderArea").hidden = false;
 
+    // Tampilkan chip user sementara (sebelum verifikasi selesai)
     $("userArea").innerHTML = `
       <div class="btn-user">
         ${user.photoURL ? `<img src="${esc(user.photoURL)}" referrerpolicy="no-referrer" alt="">` : ""}
@@ -262,13 +302,51 @@ async function initAdmin() {
       </div>`;
     $("btnLogout").onclick = () => signOut(auth);
 
-    if (!ta.value.trim()) renderPreview();
-    loadList(user.uid);
+    showOnly("verifying");
+
+    // Verifikasi admin secara real-time (jika dicabut, langsung ditolak)
+    unsubAdmin = onValue(ref(db, "admins/" + user.uid), snap => {
+      const isAdminNow = snap.val() === true;
+
+      if (isAdminNow) {
+        if (!isAdmin) {
+          // Baru jadi admin / login pertama
+          isAdmin = true;
+          $("userArea").innerHTML = `
+            <div class="btn-user">
+              ${user.photoURL ? `<img src="${esc(user.photoURL)}" referrerpolicy="no-referrer" alt="">` : ""}
+              <span>${esc((user.displayName || user.email || "User").split(" ")[0])}</span>
+              <span class="badge-admin">★ Admin</span>
+              <button id="btnLogout" title="Keluar" style="display:grid;place-items:center;padding:2px;border-radius:50%;background:transparent;color:var(--muted)">
+                <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>`;
+          $("btnLogout").onclick = () => signOut(auth);
+          showOnly("builder");
+          if (!ta.value.trim()) renderPreview();
+          loadList(user.uid);
+        }
+      } else {
+        // Bukan admin (atau admin dicabut saat masih login)
+        isAdmin = false;
+        if (unsubList) { unsubList(); unsubList = null; }
+        $("deniedEmail").textContent = user.email || "-";
+        showOnly("denied");
+      }
+    }, err => {
+      // Fallback: jika tidak bisa baca admins (rules), anggap bukan admin
+      console.warn("Gagal verifikasi admin:", err);
+      $("deniedEmail").textContent = user.email || "-";
+      showOnly("denied");
+      toast("Gagal verifikasi admin. Cek rules Firebase.");
+    });
   });
 
+  /* ========== Save ========== */
   $("btnSave").onclick = async () => {
     const user = auth.currentUser;
     if (!user) return toast("Login dulu!");
+    if (!isAdmin) return toast("Hanya admin yang bisa membuat preview!");
     const code = ta.value.trim();
     if (!code) return toast("Kode masih kosong");
     if (code.length > 500000) return toast("Kode terlalu besar (max 500KB)");
@@ -300,6 +378,7 @@ async function initAdmin() {
     }
   };
 
+  /* ========== List ========== */
   function loadList(uid) {
     if (unsubList) unsubList();
     const listArea = $("listArea"), listItems = $("listItems");
