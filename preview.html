@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — Cazo Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f8fafc;--ink:#1e1b4b;--muted:#64748b;--c1:#4c1d95;--c2:#7c3aed;--c3:#db2777;--c4:#2563eb;--primary:#7c3aed;--font:'Inter',system-ui,sans-serif;--border:#e2e8f0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{text-decoration:none;color:inherit}
+[hidden]{display:none!important}
+
+.hdr{position:relative;background:linear-gradient(120deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c1));background-size:300% 300%;animation:flow 14s ease-in-out infinite;color:#fff;padding:20px 16px 24px;border-radius:0 0 24px 24px;margin-bottom:16px;overflow:hidden}
+@keyframes flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hdr::before{content:"";position:absolute;inset:0;opacity:.4;background-image:linear-gradient(rgba(255,255,255,.3) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.3) 2px,transparent 2px);background-size:30px 30px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 75%)}
+.hdr-in{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hdr-t{display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.95);padding:6px 14px 6px 6px;border-radius:99px;box-shadow:0 3px 0 rgba(30,27,75,.25)}
+.brand b{font-weight:900;font-size:15px;color:var(--ink);letter-spacing:-.3px}
+.brand svg{width:28px;height:28px}
+.btn-user{display:flex;align-items:center;gap:8px;background:#fff;color:var(--ink);padding:6px 12px 6px 6px;border-radius:99px;font-weight:800;font-size:13px;box-shadow:0 3px 0 rgba(30,27,75,.25)}
+.btn-user img{width:26px;height:26px;border-radius:50%;object-fit:cover}
+.hero{position:relative;margin-top:14px;text-align:center}
+.hero h1{margin:0;font-size:clamp(24px,7vw,36px);font-weight:900;letter-spacing:-.8px;text-shadow:0 3px 0 rgba(30,27,75,.3)}
+.hero p{margin:6px 0 0;font-size:14px;font-weight:500;opacity:.94}
+
+main{max-width:1300px;margin:0 auto;padding:0 16px 80px}
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+
+.panel{background:#fff;border:2px solid var(--border);border-radius:20px;padding:16px;box-shadow:0 4px 0 rgba(30,27,75,.06)}
+.panel h2{margin:0 0 4px;font-size:16px;font-weight:900;color:var(--ink)}
+.panel p{margin:0 0 12px;font-size:13px;color:var(--muted);font-weight:500}
+.ta{width:100%;min-height:280px;padding:14px;border:2px solid var(--border);border-radius:14px;font:500 13px/1.5 'Courier New',monospace;color:var(--ink);outline:none;resize:vertical;background:#fafbff}
+.ta:focus{border-color:var(--primary);box-shadow:0 0 0 3px #ede9fe}
+.row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:12px;font-weight:800;font-size:14px;transition:.2s;flex:1 1 auto}
+.btn:active{transform:translateY(2px)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:linear-gradient(135deg,var(--c2),var(--c3));color:#fff;box-shadow:0 4px 0 rgba(30,27,75,.3)}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-outline{background:#fff;color:var(--ink);border:2px solid var(--border);box-shadow:0 4px 0 #e0e7ff}
+.btn-outline:hover{background:#f5f3ff}
+.btn svg{width:18px;height:18px}
+
+.preview-wrap{background:#fff;border:2px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 4px 0 rgba(30,27,75,.06);display:flex;flex-direction:column;min-height:400px}
+.preview-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;background:#fafbff;border-bottom:2px solid var(--border);font-size:12px;font-weight:800;color:var(--muted)}
+.preview-hd .dots{display:flex;gap:5px}
+.preview-hd .dots i{width:10px;height:10px;border-radius:50%;background:#fca5a5}
+.preview-hd .dots i:nth-child(2){background:#fcd34d}
+.preview-hd .dots i:nth-child(3){background:#86efac}
+.preview-hd b{color:var(--ink);font-size:13px}
+#iframePreview{flex:1;border:0;width:100%;min-height:420px;background:#fff}
+
+.login-prompt{text-align:center;padding:30px 20px;background:linear-gradient(180deg,#fff,#f5f3ff);border:2px dashed #c4b5fd;border-radius:20px}
+.login-prompt svg{width:60px;height:60px;margin-bottom:8px}
+.login-prompt h3{margin:0 0 6px;font-size:17px;font-weight:900;color:var(--ink)}
+.login-prompt p{margin:0 0 16px;font-size:13px;color:var(--muted);font-weight:500}
+.btn-google{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:var(--ink);border:2px solid var(--border);padding:12px 22px;border-radius:12px;font-weight:800;font-size:14px;box-shadow:0 4px 0 #e0e7ff;transition:.2s}
+.btn-google:hover{background:#fafbff}
+.btn-google:active{transform:translateY(2px);box-shadow:0 2px 0 #e0e7ff}
+.btn-google svg{width:20px;height:20px}
+
+.toast{position:fixed;left:50%;bottom:24px;translate:-50% 0;background:var(--ink);color:#fff;padding:11px 20px;border-radius:99px;font-weight:800;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:1000;animation:tin .3s ease}
+@keyframes tin{from{opacity:0;translate:-50% 20px}}
+
+.link-box{margin-top:14px;padding:14px;background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border:2px solid #86efac;border-radius:14px}
+.link-box small{display:block;font-size:11px;font-weight:800;color:#166534;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.link-box .url{display:flex;gap:6px;align-items:center}
+.link-box input{flex:1;padding:10px 12px;border:2px solid #bbf7d0;border-radius:10px;font:700 12px 'Courier New',monospace;color:#14532d;background:#fff;outline:none;min-width:0}
+.link-box button{padding:10px 14px;border-radius:10px;background:#16a34a;color:#fff;font-weight:800;font-size:13px;box-shadow:0 3px 0 #14532d;flex:none}
+.link-box button:active{transform:translateY(2px);box-shadow:0 1px 0 #14532d}
+
+#viewerMode{position:fixed;inset:0;background:#fff;z-index:9999}
+#iframeView{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.viewer-bar{position:fixed;left:50%;bottom:18px;translate:-50% 0;display:flex;gap:6px;padding:6px;background:rgba(30,27,75,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:99px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:10000}
+.viewer-bar button{display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:99px;color:#fff;font-weight:800;font-size:13px;background:rgba(255,255,255,.1)}
+.viewer-bar button:hover{background:rgba(255,255,255,.2)}
+.viewer-bar button svg{width:16px;height:16px}
+.viewer-bar .home{background:linear-gradient(135deg,#7c3aed,#db2777)}
+
+.loader{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .4s}
+.loader.hidden{opacity:0;visibility:hidden}
+.spin{width:40px;height:40px;border:3px solid #e0e7ff;border-top-color:#7c3aed;border-radius:50%;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+.list{margin-top:16px}
+.list h3{margin:0 0 10px;font-size:14px;font-weight:900;color:var(--ink)}
+.item{display:flex;gap:10px;padding:12px;background:#fff;border:2px solid var(--border);border-radius:12px;margin-bottom:8px;align-items:center}
+.item-info{flex:1;min-width:0}
+.item-info b{display:block;font-size:13px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-info small{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
+.item-btns{display:flex;gap:4px}
+.item-btns button{padding:7px 10px;border-radius:8px;font-weight:800;font-size:11px;border:1.5px solid var(--border);background:#fff;color:var(--ink)}
+.item-btns button.open{background:linear-gradient(135deg,#7c3aed,#db2777);color:#fff;border:0}
+.item-btns button.del{color:#be123c;border-color:#fecdd3}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader"><div class="spin"></div></div>
+
+<div id="adminMode" hidden>
+  <header class="hdr">
+    <div class="hdr-in">
+      <div class="hdr-t">
+        <a class="brand" href="index.html">
+          <svg viewBox="0 0 64 64"><defs><clipPath id="lgClip"><rect x="4" y="4" width="56" height="56" rx="18"/></clipPath><linearGradient id="lgBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset=".55" stop-color="#7c3aed"/><stop offset="1" stop-color="#db2777"/></linearGradient></defs><rect x="4" y="4" width="56" height="56" rx="18" fill="url(#lgBg)" stroke="#1e1b4b" stroke-width="3"/><path d="M22 24v-3a10 10 0 0 1 20 0v3" fill="none" stroke="#1e1b4b" stroke-width="3.6" stroke-linecap="round"/><path d="M14 25h36l-3 28a4 4 0 0 1-4 3.5H21a4 4 0 0 1-4-3.5z" fill="#fff" stroke="#1e1b4b" stroke-width="3" stroke-linejoin="round"/><path d="M27 35l-6 6 6 6M37 35l6 6-6 6M34 33l-4 16" fill="none" stroke="#22c55e" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <b>Cazo Market</b>
+        </a>
+      </div>
+      <div class="hdr-t" id="userArea"></div>
+    </div>
+    <div class="hero">
+      <h1>Preview Builder</h1>
+      <p>Tempel kode HTML, lihat hasilnya, lalu bagikan lewat satu link.</p>
+    </div>
+  </header>
+
+  <main>
+    <div id="loginPrompt" class="login-prompt" hidden>
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="3" fill="#c4b5fd"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <h3>Masuk Dulu</h3>
+      <p>Login Google untuk menyimpan preview dan mendapatkan link.</p>
+      <button class="btn-google" id="btnLogin">
+        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 5.1 29.3 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.1-2.8-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 5.1 29.3 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 36.1 26.7 37 24 37c-5.3 0-9.7-2.6-11.3-8l-6.6 5.1C9.7 41 16.3 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.1 5.6l6.2 5.2c4.4-4 7.6-10 7.6-16.8 0-1.4-.1-2.8-.4-4z"/></svg>
+        Masuk dengan Google
+      </button>
+    </div>
+
+    <div id="builderArea" hidden>
+      <div class="grid">
+        <section class="panel">
+          <h2>Kode HTML</h2>
+          <p>Tempel kode di sini. Preview muncul otomatis.</p>
+          <textarea class="ta" id="codeInput" placeholder="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;&#10;  &lt;head&gt;&lt;title&gt;Hello&lt;/title&gt;&lt;/head&gt;&#10;  &lt;body&gt;&lt;h1&gt;Hello World!&lt;/h1&gt;&lt;/body&gt;&#10;&lt;/html&gt;"></textarea>
+          <div class="row">
+            <button class="btn btn-outline" id="btnClear">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Hapus
+            </button>
+            <button class="btn btn-primary" id="btnSave">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 0 16 0 8 8 0 0 0-16 0Z" stroke="currentColor" stroke-width="2"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Buat Link
+            </button>
+          </div>
+          <div id="linkResult"></div>
+        </section>
+
+        <section class="preview-wrap">
+          <div class="preview-hd">
+            <div class="dots"><i></i><i></i><i></i></div>
+            <b>Preview</b>
+            <span id="previewSize" style="font-size:11px">—</span>
+          </div>
+          <iframe id="iframePreview" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"></iframe>
+        </section>
+      </div>
+
+      <div class="list" id="listArea" hidden>
+        <h3>Preview Saya</h3>
+        <div id="listItems"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="viewerMode" hidden>
+  <iframe id="iframeView" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"></iframe>
+  <div class="viewer-bar">
+    <button class="home" id="btnHome">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Kembali
+    </button>
+    <button id="btnCopyLink">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="12" height="12" rx="3" stroke="currentColor" stroke-width="2.3"/><path d="M5.5 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v.5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+      Salin Link
+    </button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, set, get, remove, query, orderByChild, equalTo, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = { apiKey: "AIzaSyCHr0eemIkfHNFDUkSaFDklp_c1OgmSnl8", authDomain: "mybro-9ba5f.firebaseapp.com", databaseURL: "https://mybro-9ba5f-default-rtdb.firebaseio.com", projectId: "mybro-9ba5f", storageBucket: "mybro-9ba5f.firebasestorage.app", messagingSenderId: "820948893264", appId: "1:820948893264:web:e564509a8fdc4c56335b55" };
+const app = initializeApp(firebaseConfig), db = getDatabase(app), auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const toast = m => {
+  document.querySelectorAll(".toast").forEach(t => t.remove());
+  const t = document.createElement("div"); t.className = "toast"; t.textContent = m;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2500);
+};
+
+const loader = $("loader");
+const hideLoader = () => loader.classList.add("hidden");
+
+const hash = location.hash.slice(1);
+if (hash) initViewer(hash);
+else initAdmin();
+
+/* ==================== ADMIN MODE ==================== */
+async function initAdmin() {
+  $("adminMode").hidden = false;
+  hideLoader();
+
+  const iframe = $("iframePreview"), ta = $("codeInput");
+  let unsubList = null;
+
+  const renderPreview = () => {
+    const html = ta.value;
+    if (!html.trim()) {
+      iframe.srcdoc = "<html><body style='font-family:system-ui;color:#94a3b8;display:grid;place-items:center;height:100vh;margin:0;text-align:center;padding:20px'>Preview akan muncul di sini...</body></html>";
+      return;
+    }
+    const doc = /<html[\s>]/i.test(html)
+      ? html
+      : `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:system-ui,-apple-system,sans-serif;margin:20px;color:#1e1b4b}</style></head><body>${html}</body></html>`;
+    iframe.srcdoc = doc;
+    $("previewSize").textContent = (html.length / 1024).toFixed(1) + " KB";
+  };
+
+  let tmr;
+  ta.addEventListener("input", () => { clearTimeout(tmr); tmr = setTimeout(renderPreview, 400); });
+
+  $("btnClear").onclick = () => { ta.value = ""; renderPreview(); $("linkResult").innerHTML = ""; ta.focus(); };
+
+  $("btnLogin").onclick = async () => {
+    try { await signInWithPopup(auth, provider); }
+    catch (e) {
+      if (["auth/popup-blocked", "auth/operation-not-supported-in-this-environment", "auth/web-storage-unsupported"].includes(e.code)) return signInWithRedirect(auth, provider);
+      if (!["auth/popup-closed-by-user", "auth/cancelled-popup-request"].includes(e.code)) toast("Gagal masuk: " + e.message);
+    }
+  };
+
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      $("loginPrompt").hidden = false;
+      $("builderArea").hidden = true;
+      $("userArea").innerHTML = "";
+      if (unsubList) { unsubList(); unsubList = null; }
+      return;
+    }
+    $("loginPrompt").hidden = true;
+    $("builderArea").hidden = false;
+
+    $("userArea").innerHTML = `
+      <div class="btn-user">
+        ${user.photoURL ? `<img src="${esc(user.photoURL)}" referrerpolicy="no-referrer" alt="">` : ""}
+        <span>${esc((user.displayName || user.email || "User").split(" ")[0])}</span>
+        <button id="btnLogout" title="Keluar" style="display:grid;place-items:center;padding:2px;border-radius:50%;background:transparent;color:var(--muted)">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>`;
+    $("btnLogout").onclick = () => signOut(auth);
+
+    if (!ta.value.trim()) renderPreview();
+    loadList(user.uid);
+  });
+
+  $("btnSave").onclick = async () => {
+    const user = auth.currentUser;
+    if (!user) return toast("Login dulu!");
+    const code = ta.value.trim();
+    if (!code) return toast("Kode masih kosong");
+    if (code.length > 500000) return toast("Kode terlalu besar (max 500KB)");
+
+    const btn = $("btnSave"); btn.disabled = true;
+    try {
+      const id = pushId();
+      const data = { code, createdAt: Date.now(), createdBy: user.uid, title: user.displayName || "Preview" };
+      await set(ref(db, "previews/" + id), data);
+      const url = location.origin + location.pathname + "#" + id;
+      $("linkResult").innerHTML = `
+        <div class="link-box">
+          <small>✦ Link Preview</small>
+          <div class="url">
+            <input id="linkInput" readonly value="${esc(url)}">
+            <button id="btnCopy">Salin</button>
+          </div>
+        </div>`;
+      $("btnCopy").onclick = () => {
+        navigator.clipboard.writeText(url).then(() => toast("Link disalin!"), () => toast("Gagal menyalin"));
+      };
+      loadList(user.uid);
+      toast("Link dibuat!");
+    } catch (e) {
+      console.error(e);
+      toast("Gagal: " + (e.message || "Error"));
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  function loadList(uid) {
+    if (unsubList) unsubList();
+    const listArea = $("listArea"), listItems = $("listItems");
+    unsubList = onValue(query(ref(db, "previews"), orderByChild("createdBy"), equalTo(uid)), snap => {
+      const data = snap.val();
+      if (!data) { listArea.hidden = true; return; }
+      const items = Object.entries(data).map(([id, v]) => ({ id, ...v })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      if (!items.length) { listArea.hidden = true; return; }
+      listArea.hidden = false;
+      listItems.innerHTML = items.map(it => {
+        const dt = new Date(it.createdAt || 0).toLocaleString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+        return `<div class="item">
+          <div class="item-info">
+            <b>${esc(it.title || "Preview")}</b>
+            <small>${dt} · ${((it.code || "").length / 1024).toFixed(1)} KB</small>
+          </div>
+          <div class="item-btns">
+            <button class="open" data-id="${it.id}" data-act="open">Buka</button>
+            <button data-id="${it.id}" data-act="copy">Link</button>
+            <button class="del" data-id="${it.id}" data-act="del">Hapus</button>
+          </div>
+        </div>`;
+      }).join("");
+      listItems.querySelectorAll("button").forEach(b => {
+        b.onclick = async () => {
+          const id = b.dataset.id, act = b.dataset.act;
+          const url = location.origin + location.pathname + "#" + id;
+          if (act === "open") window.open(url, "_blank");
+          else if (act === "copy") navigator.clipboard.writeText(url).then(() => toast("Link disalin!"), () => toast("Gagal menyalin"));
+          else if (act === "del") {
+            if (!confirm("Hapus preview ini?")) return;
+            try { await remove(ref(db, "previews/" + id)); toast("Dihapus"); } catch (e) { toast("Gagal: " + e.message); }
+          }
+        };
+      });
+    });
+  }
+}
+
+/* ==================== VIEWER MODE ==================== */
+async function initViewer(id) {
+  $("viewerMode").hidden = false;
+  hideLoader();
+
+  const iframe = $("iframeView");
+  $("btnHome").onclick = () => { window.location.href = location.pathname; };
+  $("btnCopyLink").onclick = () => {
+    navigator.clipboard.writeText(location.href).then(() => toast("Link disalin!"), () => toast("Gagal menyalin"));
+  };
+
+  try {
+    const snap = await get(ref(db, "previews/" + id));
+    if (!snap.exists()) {
+      iframe.srcdoc = `<html><body style="font-family:system-ui;display:grid;place-items:center;height:100vh;margin:0;text-align:center;padding:20px;color:#64748b"><div><h2 style="color:#1e1b4b">Preview tidak ditemukan</h2><p>Link mungkin salah atau sudah dihapus.</p></div></body></html>`;
+      return;
+    }
+    const { code } = snap.val();
+    const html = code || "";
+    const doc = /<html[\s>]/i.test(html)
+      ? html
+      : `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:system-ui,-apple-system,sans-serif;margin:20px;color:#1e1b4b}</style></head><body>${html}</body></html>`;
+    iframe.srcdoc = doc;
+  } catch (e) {
+    console.error(e);
+    iframe.srcdoc = `<html><body style="font-family:system-ui;display:grid;place-items:center;height:100vh;margin:0;text-align:center;padding:20px;color:#64748b"><div><h2 style="color:#b91c1c">Gagal memuat</h2><p>${esc(e.message || "Error")}</p></div></body></html>`;
+  }
+}
+
+/* ==================== UTILS ==================== */
+function pushId() {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let s = "";
+  const arr = new Uint8Array(8);
+  crypto.getRandomValues(arr);
+  for (const n of arr) s += chars[n % chars.length];
+  return s;
+}
+</script>
+</body>
+</html>
