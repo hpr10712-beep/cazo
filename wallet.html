@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cazo – Dompet Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f6f5;--card:#fff;--ink:#0f2220;--mut:#6a7f7c;--line:#e1eae8;--ic:#0b5a54;--deep:#073a36;--gold:#ffc233;--tint:#e3f2ef;--red:#d2453c;--grn:#12845a;--pg:#dff5ea;--pr:#fdeae8;--sh:0 1px 2px rgba(7,58,54,.06),0 10px 28px rgba(7,58,54,.07);color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#0a1413;--card:#122120;--ink:#e9f3f1;--mut:#8ba4a0;--line:#223835;--ic:#6fd6c8;--tint:#1a3431;--red:#ff7d72;--grn:#4fd39a;--pg:#173a2e;--pr:#3a1f1d;--sh:none;color-scheme:dark}}
+*{box-sizing:border-box;margin:0}
+html,body{background:var(--bg);color:var(--ink);font:400 15px/1.5 "Plus Jakarta Sans",system-ui,sans-serif}
+body{max-width:440px;margin:auto;padding:env(safe-area-inset-top,0px) 0 calc(104px + env(safe-area-inset-bottom,0px))}
+button,input{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1{font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.25}
+h2{font-size:17px;font-weight:700}
+.mut{color:var(--mut);font-size:13px}
+.brand{font-weight:800;font-size:21px;letter-spacing:-.04em;color:var(--ic)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 14px}
+.who{display:flex;gap:12px;align-items:center;line-height:1.25}.who b{font-weight:700}
+.av{width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--deep);font-weight:800;display:grid;place-items:center;flex:none}
+.bal{margin:0 18px;border-radius:24px;padding:22px;color:#fff;background:linear-gradient(135deg,#0e6f66,#073a36);position:relative;overflow:hidden;box-shadow:var(--sh)}
+.bal::before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;right:-60px;top:-80px;background:rgba(255,194,51,.22)}
+.bal::after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:46px;bottom:-72px;background:rgba(255,255,255,.07)}
+.bal>*{position:relative;z-index:1}
+.row{display:flex;justify-content:space-between;align-items:center}
+.bal .lbl{font-size:13px;color:#b8dcd6}.bal .num{font-size:13px;color:#d6ece8}
+.amt{font-size:32px;font-weight:800;letter-spacing:-.03em;margin:6px 0 14px}
+.eyeb{background:rgba(255,255,255,.15);border:0;color:#fff;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:20px 18px 2px}
+.qa button{background:none;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12.5px;font-weight:500}
+.qa span{width:58px;height:58px;border-radius:20px;background:var(--tint);color:var(--ic);display:grid;place-items:center}
+.sec{display:flex;justify-content:space-between;align-items:center;margin:22px 18px 8px}
+.lnk{background:none;border:0;color:var(--ic);font-weight:700;font-size:13px;cursor:pointer}
+.list{margin:0 18px;background:var(--card);border-radius:20px;padding:2px 14px;box-shadow:var(--sh)}
+.tx{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.tx:last-child{border:0}
+.tx .m{flex:1;min-width:0}.tx b{display:block;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx .mut{font-size:12px}
+.ti{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;flex:none}
+.ti.p{background:var(--pg);color:var(--grn)}.ti.m{background:var(--pr);color:var(--red)}
+.in{color:var(--grn);font-weight:700;font-size:14px}.out{color:var(--red);font-weight:700;font-size:14px}
+.empty{padding:30px 0;text-align:center}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 2px}
+.chips button{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 15px;cursor:pointer;font-size:13.5px;font-weight:500}
+.chips button.on{background:var(--ic);border-color:var(--ic);color:var(--card);font-weight:700}
+.page .chips{margin:0 18px 14px}
+label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px}
+input{width:100%;padding:13px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card)}
+.btn{border:0;border-radius:16px;padding:15px;font-weight:700;cursor:pointer;background:var(--gold);color:#10201f;width:100%;margin-top:22px}
+.btn:disabled{opacity:.5}
+.hero{background:linear-gradient(160deg,#0e6f66,#073a36);color:#fff;padding:calc(env(safe-area-inset-top,0px) + 40px) 24px 76px;border-radius:0 0 34px 34px}
+.hero .brand{color:var(--gold);font-size:30px}.hero h1{margin-top:22px;font-size:25px}
+.acard{background:var(--card);margin:-46px 18px 0;border-radius:22px;padding:6px 18px 20px;box-shadow:var(--sh);position:relative}
+.tabs{display:flex;background:var(--bg);border-radius:14px;padding:4px;margin:16px 0 2px}
+.tabs button{flex:1;border:0;background:none;padding:10px;border-radius:10px;font-weight:700;cursor:pointer;color:var(--mut)}
+.tabs button.on{background:var(--ic);color:var(--card)}
+.prof{display:flex;flex-direction:column;align-items:center;padding:10px 0 20px;text-align:center}
+.prof .av{width:78px;height:78px;font-size:30px;margin-bottom:10px}
+.mi{display:flex;align-items:center;gap:14px;width:100%;background:none;border:0;border-bottom:1px solid var(--line);padding:14px 0;font-weight:600;text-align:left;cursor:pointer}
+.mi:last-child{border:0}.mi .ti{background:var(--tint);color:var(--ic)}.mi.red{color:var(--red)}.mi.red .ti{background:var(--pr);color:var(--red)}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 6px calc(env(safe-area-inset-bottom,0px) + 8px);z-index:4}
+.nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;color:var(--mut);cursor:pointer;font-weight:500}
+.nav button.on{color:var(--ic);font-weight:700}
+.nav .fab{color:var(--ink);font-weight:700}
+.nav .fab span{width:54px;height:54px;border-radius:50%;background:var(--gold);color:var(--deep);display:grid;place-items:center;margin-top:-32px;border:4px solid var(--bg)}
+.sheet{position:fixed;inset:0;background:rgba(5,15,14,.55);display:flex;align-items:flex-end;justify-content:center;z-index:8}
+.sheet[hidden]{display:none}
+.panel{background:var(--bg);width:100%;max-width:440px;max-height:90%;overflow:auto;border-radius:26px 26px 0 0;padding:10px 18px calc(env(safe-area-inset-bottom,0px) + 22px);animation:up .22s ease-out}
+.grab{width:40px;height:4px;border-radius:4px;background:var(--line);margin:0 auto 14px}
+.ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.x{background:var(--card);border:0;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.panel{animation:none}}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:999px;font-size:14px;z-index:9;max-width:90%;text-align:center}
+#toast:empty{display:none}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="sheet" id="sheet" hidden><div class="panel" id="panel"></div></div>
+<div id="toast" role="status"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, set, push, onValue, get, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+// 1. Inisialisasi Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyCHr0eemIkfHNFDUkSaFDklp_c1OgmSnl8",
+    authDomain: "mybro-9ba5f.firebaseapp.com",
+    databaseURL: "https://mybro-9ba5f-default-rtdb.firebaseio.com/",
+    projectId: "mybro-9ba5f"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ---------- Helper ----------
+const $ = s => document.querySelector(s);
+const rp = n => 'Rp' + Number(n || 0).toLocaleString('id-ID');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => '&#' + c.charCodeAt(0) + ';');
+const norm = p => { p = String(p).replace(/\D/g, ''); return p.startsWith('62') ? '0' + p.slice(2) : p; };
+const hash = async s => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode('cazo:' + s)))].map(b => b.toString(16).padStart(2, '0')).join('');
+const fd = t => t ? new Date(t).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+const I = {
+  home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>', plus: '<path d="M12 5v14M5 12h14"/>',
+  send: '<path d="M7 17 17 7M8 7h9v9"/>', down: '<path d="M17 7 7 17M16 17H7V8"/>',
+  bank: '<path d="M3 10 12 4l9 6"/><path d="M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"/>', bill: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeoff: '<path d="M3 3l18 18"/><path d="M6.5 7.5C3.8 9.3 2 12 2 12s4 7 10 7c1.5 0 2.8-.4 4-1M10.6 5.1A10 10 0 0 1 12 5c6 0 10 7 10 7a17 17 0 0 1-3 3.6"/>',
+  lock: '<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>', out: '<path d="M9 21H5V3h4M16 17l5-5-5-5M21 12H9"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>', copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>'
+};
+const ic = n => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+let tt; const toast = m => { const t = $('#toast'); t.textContent = m; clearTimeout(tt); tt = setTimeout(() => t.textContent = '', 3200); };
+const sheet = (t, h) => { $('#panel').innerHTML = `<div class="grab"></div><div class="ph"><h2>${t}</h2><button class="x" data-a="close" aria-label="Tutup">${ic('x')}</button></div>${h}`; $('#sheet').hidden = false; };
+const close = () => $('#sheet').hidden = true;
+const pinField = (id = 'k', l = 'PIN kamu') => `<label for="${id}">${l}</label><input id="${id}" type="password" inputmode="numeric" maxlength="6" autocomplete="off">`;
+const amtField = (id = 'a') => `<label for="${id}">Nominal</label><input id="${id}" type="number" inputmode="numeric" placeholder="0">`;
+const chips = (arr, act, cur) => `<div class="chips">${arr.map(v => `<button data-a="${act}" data-v="${v}" class="${v == cur ? 'on' : ''}">${act == 'chip' ? rp(v) : v}</button>`).join('')}</div>`;
+
+// ---------- State ----------
+let me = localStorage.getItem('cazo_me'), user = null, txs = [], hide = false, mode = 'login', tab = 'home', flt = 'all', cat = 'Pulsa', bank = 'BCA', unsub = [];
+const TX = { topup: ['plus', 'Isi saldo'], in: ['down', 'Dari '], out: ['send', 'Ke '], wd: ['bank', 'Tarik ke '], bill: ['bill', 'Bayar '] };
+const plusT = t => t == 'topup' || t == 'in';
+
+function start() {
+  unsub.forEach(f => f()); unsub = []; user = null; txs = [];
+  if (me) {
+    unsub.push(onValue(ref(db, 'users/' + me), s => { user = s.val(); if (!user) return logout(); render(); }));
+    unsub.push(onValue(ref(db, 'transactions/' + me), s => { txs = Object.values(s.val() || {}).sort((a, b) => b.ts - a.ts).slice(0, 100); render(); }));
+  }
+  render();
+}
+function logout() { localStorage.removeItem('cazo_me'); me = null; tab = 'home'; close(); start(); }
+
+// ---------- Tampilan ----------
+const txRow = t => {
+  const [i, l] = TX[t.type] || TX.out, p = plusT(t.type);
+  return `<div class="tx"><span class="ti ${p ? 'p' : 'm'}">${ic(i)}</span><div class="m"><b>${t.type == 'topup' ? l : l + esc(t.peer)}</b><span class="mut">${fd(t.ts)}${t.note ? ' · ' + esc(t.note) : ''}</span></div><span class="${p ? 'in' : 'out'}">${p ? '+' : '−'}${rp(t.amount)}</span></div>`;
+};
+const list = a => `<div class="list">${a.length ? a.map(txRow).join('') : '<p class="mut empty">Belum ada transaksi.</p>'}</div>`;
+
+function render() {
+  const el = $('#app');
+  if (!me) {
+    el.innerHTML = `<div class="hero"><div class="brand">cazo</div><h1>Kirim, bayar, dan simpan uangmu dalam satu dompet</h1></div>
+      <div class="acard"><div class="tabs"><button data-a="tab" data-m="login" class="${mode == 'login' ? 'on' : ''}">Masuk</button><button data-a="tab" data-m="reg" class="${mode == 'reg' ? 'on' : ''}">Daftar</button></div>
+      ${mode == 'reg' ? '<label for="n">Nama lengkap</label><input id="n" autocomplete="name">' : ''}
+      <label for="p">Nomor HP</label><input id="p" type="tel" inputmode="numeric" placeholder="08123456789" autocomplete="tel">
+      ${pinField('k', 'PIN 6 angka')}
+      <button class="btn" data-a="auth">${mode == 'reg' ? 'Buat akun Cazo' : 'Masuk'}</button></div>`;
+    return;
+  }
+  if (!user) { el.innerHTML = '<p class="mut" style="text-align:center;padding:90px 0">Memuat dompetmu…</p>'; return; }
+  const ini = esc((user.name.trim()[0] || 'C').toUpperCase());
+  let s = '';
+  if (tab == 'home') s = `<div class="top"><div class="who"><span class="av">${ini}</span><div><span class="mut">Halo,</span><br><b>${esc(user.name)}</b></div></div><span class="brand">cazo</span></div>
+    <div class="bal"><div class="row"><span class="lbl">Saldo Cazo</span><button class="eyeb" data-a="eye" aria-label="Tampilkan atau sembunyikan saldo">${ic(hide ? 'eyeoff' : 'eye')}</button></div>
+      <div class="amt">${hide ? 'Rp••••••' : rp(user.balance)}</div><div class="num">${esc(me)}</div></div>
+    <div class="qa">${[['topup', 'plus', 'Isi saldo'], ['send', 'send', 'Kirim'], ['wd', 'bank', 'Tarik'], ['bill', 'bill', 'Bayar']].map(([a, i, l]) => `<button data-a="${a}"><span>${ic(i)}</span>${l}</button>`).join('')}</div>
+    <div class="sec"><h2>Transaksi terakhir</h2><button class="lnk" data-a="go" data-t="hist">Lihat semua</button></div>${list(txs.slice(0, 5))}`;
+  else if (tab == 'hist') {
+    const f = txs.filter(t => flt == 'all' || (flt == 'in') == plusT(t.type));
+    s = `<div class="page"><div class="top"><h1>Riwayat</h1></div><div class="chips">${[['all', 'Semua'], ['in', 'Masuk'], ['out', 'Keluar']].map(([v, l]) => `<button data-a="flt" data-v="${v}" class="${flt == v ? 'on' : ''}">${l}</button>`).join('')}</div>${list(f)}</div>`;
+  } else s = `<div class="top"><h1>Akun</h1></div><div class="prof"><span class="av">${ini}</span><h2>${esc(user.name)}</h2><span class="mut">${esc(me)}${user.createdAt ? ' · Anggota sejak ' + new Date(user.createdAt).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }) : ''}</span></div>
+    <div class="list">${[['copy', 'copy', 'Salin nomor HP'], ['chpin', 'lock', 'Ganti PIN'], ['logout', 'out', 'Keluar', 'red']].map(([a, i, l, c = '']) => `<button class="mi ${c}" data-a="${a}"><span class="ti">${ic(i)}</span>${l}</button>`).join('')}</div>`;
+  const nb = (a, t, i, l, c = '') => `<button class="${c}${tab == t ? ' on' : ''}" data-a="${a}" data-t="${t}">${c ? `<span>${ic(i)}</span>` : ic(i)}${l}</button>`;
+  el.innerHTML = s + `<nav class="nav">${nb('go', 'home', 'home', 'Beranda')}${nb('go', 'hist', 'clock', 'Riwayat')}${nb('send', '', 'send', 'Kirim', 'fab')}${nb('bill', '', 'bill', 'Bayar')}${nb('go', 'acc', 'user', 'Akun')}</nav>`;
+}
+
+// ---------- Logika ----------
+async function pinOk(p) { if (await hash(p) !== user.pin) throw 'PIN salah'; }
+async function debit(amt) {
+  const r = await runTransaction(ref(db, 'users/' + me + '/balance'), v => v === null ? 0 : (v >= amt ? v - amt : undefined));
+  if (!r.committed) throw 'Saldo tidak cukup';
+}
+const log = (uid, o) => push(ref(db, 'transactions/' + uid), { ...o, ts: serverTimestamp() });
+async function run(b, fn) {
+  b.disabled = true;
+  try { const m = await fn(); close(); toast(m); }
+  catch (e) { toast(typeof e == 'string' ? e : 'Gagal. Periksa koneksi lalu coba lagi'); b.disabled = false; }
+}
+
+const acts = {
+  tab: b => { mode = b.dataset.m; render(); },
+  go: b => { tab = b.dataset.t; render(); scrollTo(0, 0); },
+  flt: b => { flt = b.dataset.v; render(); },
+  eye: () => { hide = !hide; render(); },
+  close, logout,
+  chip: b => { $('#a').value = b.dataset.v; },
+  cat: b => { cat = b.dataset.v; document.querySelectorAll('[data-a=cat]').forEach(x => x.classList.toggle('on', x == b)); $('#lt').textContent = cat == 'Pulsa' ? 'Nomor HP' : 'ID pelanggan'; },
+  bank: b => { bank = b.dataset.v; document.querySelectorAll('[data-a=bank]').forEach(x => x.classList.toggle('on', x == b)); },
+  copy: () => navigator.clipboard.writeText(me).then(() => toast('Nomor HP disalin')).catch(() => toast('Nomor kamu: ' + me)),
+  topup: () => sheet('Isi saldo', `<p class="mut">Simulasi top-up untuk uji coba.</p>${amtField()}${chips([20000, 50000, 100000, 500000], 'chip')}<button class="btn" data-a="dotopup">Isi saldo</button>`),
+  send: () => sheet('Kirim uang', `<label for="t">Nomor HP tujuan</label><input id="t" type="tel" inputmode="numeric">${amtField()}<label for="c">Catatan (opsional)</label><input id="c" maxlength="40">${pinField()}<button class="btn" data-a="dosend">Kirim sekarang</button>`),
+  wd: () => { bank = 'BCA'; sheet('Tarik saldo', `<p class="mut">Simulasi penarikan ke rekening bank.</p>${chips(['BCA', 'BRI', 'Mandiri', 'BNI'], 'bank', bank)}<label for="r">Nomor rekening</label><input id="r" type="tel" inputmode="numeric">${amtField()}${pinField()}<button class="btn" data-a="dowd">Tarik saldo</button>`); },
+  bill: () => { cat = 'Pulsa'; sheet('Bayar tagihan', `<p class="mut">Simulasi pembayaran tagihan.</p>${chips(['Pulsa', 'Listrik', 'Internet', 'Air'], 'cat', cat)}<label for="r" id="lt">Nomor HP</label><input id="r" inputmode="numeric">${amtField()}${pinField()}<button class="btn" data-a="dobill">Bayar sekarang</button>`); },
+  chpin: () => sheet('Ganti PIN', `${pinField('o', 'PIN lama')}${pinField('n', 'PIN baru (6 angka)')}<button class="btn" data-a="dochpin">Simpan PIN baru</button>`),
+
+  async auth(b) {
+    const phone = norm($('#p').value), pin = $('#k').value;
+    if (phone.length < 9) return toast('Nomor HP tidak valid');
+    if (!/^\d{6}$/.test(pin)) return toast('PIN harus 6 angka');
+    b.disabled = true;
+    try {
+      const snap = await get(ref(db, 'users/' + phone)), h = await hash(pin);
+      if (mode == 'reg') {
+        const name = $('#n').value.trim();
+        if (!name) throw 'Nama wajib diisi';
+        if (snap.exists()) throw 'Nomor sudah terdaftar. Silakan masuk';
+        await set(ref(db, 'users/' + phone), { name, pin: h, balance: 0, createdAt: serverTimestamp() });
+      } else if (!snap.exists() || snap.val().pin !== h) throw 'Nomor HP atau PIN salah';
+      me = phone; localStorage.setItem('cazo_me', me); start();
+    } catch (e) { toast(typeof e == 'string' ? e : 'Gagal terhubung. Coba lagi'); b.disabled = false; }
+  },
+  dotopup: b => run(b, async () => {
+    const amt = Math.floor(+$('#a').value);
+    if (!(amt >= 10000)) throw 'Minimal isi saldo Rp10.000';
+    await runTransaction(ref(db, 'users/' + me + '/balance'), v => (v || 0) + amt);
+    await log(me, { type: 'topup', amount: amt });
+    return 'Saldo bertambah ' + rp(amt);
+  }),
+  dosend: b => run(b, async () => {
+    const to = norm($('#t').value), amt = Math.floor(+$('#a').value), note = $('#c').value.trim();
+    if (!to || to == me) throw 'Nomor tujuan tidak valid';
+    if (!(amt >= 1000)) throw 'Minimal kirim Rp1.000';
+    await pinOk($('#k').value);
+    const rs = await get(ref(db, 'users/' + to));
+    if (!rs.exists()) throw 'Nomor tujuan belum terdaftar di Cazo';
+    await debit(amt);
+    await runTransaction(ref(db, 'users/' + to + '/balance'), v => (v || 0) + amt);
+    await Promise.all([log(me, { type: 'out', amount: amt, peer: rs.val().name, phone: to, note }), log(to, { type: 'in', amount: amt, peer: user.name, phone: me, note })]);
+    return rp(amt) + ' terkirim ke ' + rs.val().name;
+  }),
+  dowd: b => run(b, async () => {
+    const rek = $('#r').value.replace(/\D/g, ''), amt = Math.floor(+$('#a').value);
+    if (rek.length < 6) throw 'Nomor rekening tidak valid';
+    if (!(amt >= 10000)) throw 'Minimal tarik Rp10.000';
+    await pinOk($('#k').value); await debit(amt);
+    await log(me, { type: 'wd', amount: amt, peer: bank + ' ' + rek });
+    return rp(amt) + ' ditarik ke ' + bank;
+  }),
+  dobill: b => run(b, async () => {
+    const no = $('#r').value.trim(), amt = Math.floor(+$('#a').value);
+    if (no.length < 4) throw 'Isi nomor atau ID pelanggan';
+    if (!(amt >= 5000)) throw 'Minimal pembayaran Rp5.000';
+    await pinOk($('#k').value); await debit(amt);
+    await log(me, { type: 'bill', amount: amt, peer: cat, note: no });
+    return 'Pembayaran ' + cat + ' berhasil';
+  }),
+  dochpin: b => run(b, async () => {
+    const nw = $('#n').value;
+    if (!/^\d{6}$/.test(nw)) throw 'PIN baru harus 6 angka';
+    await pinOk($('#o').value);
+    await set(ref(db, 'users/' + me + '/pin'), await hash(nw));
+    return 'PIN berhasil diganti';
+  })
+};
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-a]');
+  if (b) acts[b.dataset.a]?.(b);
+  else if (e.target.id == 'sheet') close();
+});
+start();
+</script>
+</body>
+</html>
