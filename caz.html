@@ -1520,21 +1520,17 @@ function describeAuthError(err) {
 
 /**
  * Memulai login Google.
- * - Perangkat mobile: signInWithRedirect (halaman dimuat ulang, hasil dibaca
- *   oleh handleRedirectResult).
- * - Desktop: signInWithPopup. Jika popup diblokir, otomatis fallback ke redirect.
- * Mengembalikan "popup" atau "redirect".
+ * DIUBAH: Selalu prioritaskan Popup (lebih stabil di mobile modern).
+ * Jika popup diblokir, baru fallback ke redirect.
  */
 async function startGoogleSignIn() {
   try {
-    if (isMobileBrowser()) {
-      await signInWithRedirect(auth, googleProvider);
-      return "redirect";
-    }
+    // 1. Selalu coba gunakan Popup terlebih dahulu
     await signInWithPopup(auth, googleProvider);
     return "popup";
   } catch (err) {
-    if (err?.code === "auth/popup-blocked") {
+    // 2. Jika popup diblokir, gunakan Redirect sebagai cadangan
+    if (err?.code === "auth/popup-blocked" || err?.code === "auth/cancelled-popup-request") {
       try {
         await signInWithRedirect(auth, googleProvider);
         return "redirect";
@@ -1542,6 +1538,7 @@ async function startGoogleSignIn() {
         throw new AppError(describeAuthError(redirectErr), redirectErr?.code);
       }
     }
+    // 3. Jika error lain (misal domain belum didaftarkan)
     throw new AppError(describeAuthError(err), err?.code);
   }
 }
